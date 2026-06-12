@@ -1,0 +1,2876 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0c0e10" />
+<meta name="color-scheme" content="dark" />
+<meta name="description" content="BuildHive Architects — Mumbai masterplanners, architects and interior designers. One studio from masterplan to door handle, with a 95%+ match between the render you approve and the keys you receive." />
+<title>BuildHive Architects · Mumbai — Masterplanners · Architects · Interior Designers</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<script>
+/* theme gate — runs BEFORE the stylesheet so the first paint is already the
+   right theme (no flash). User choice persists in localStorage('bh-theme');
+   default follows prefers-color-scheme, dark where unsupported. */
+(function(){
+  var t = null;
+  try { t = localStorage.getItem('bh-theme'); } catch(e){}
+  if (t !== 'dark' && t !== 'light'){
+    t = 'dark';
+    try {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) t = 'light';
+    } catch(e){}
+  }
+  document.documentElement.setAttribute('data-theme', t);
+  function syncMeta(theme){
+    var tc = document.querySelector('meta[name="theme-color"]');
+    if (tc) tc.setAttribute('content', theme === 'light' ? '#f2efe9' : '#0c0e10');
+    var cs = document.querySelector('meta[name="color-scheme"]');
+    if (cs) cs.setAttribute('content', theme === 'light' ? 'light' : 'dark');
+  }
+  syncMeta(t);
+  window.__syncThemeMeta = syncMeta;   // the toggle re-syncs the metas on switch
+})();
+</script>
+<style>
+  :root{
+    /* ---- DARK theme (default) — overridden wholesale by [data-theme="light"] ---- */
+    color-scheme:dark;
+    --bg:#0c0e10;                          /* very dark neutral — not pure black */
+    --bg-2:#101317;                        /* raised surface */
+    --bg-rgb:12,14,16;                     /* --bg as r,g,b for translucent surfaces */
+    --bg2-rgb:16,19,23;
+    --scrim-rgb:9,11,13;                   /* mode-3d canvas scrim tint */
+    --ink:#eef3f6;                         /* cool off-white */
+    --body-c:#c3cdd4;                      /* body copy on dark (~12:1) */
+    --muted:#9aa3ab;                       /* kickers / labels (~7.5:1, AA) */
+    --faint:#6d7680;                       /* decorative separators only */
+    --blue:#6EC1E4;                        /* sky blue — the drafting line */
+    --blue-deep:#3196CC;                   /* deep brand blue — fills */
+    --blue-display:#6EC1E4;                /* large serif display accents only */
+    --blue-hover:#9ad6ef;                  /* hover lift on links / scrollbar */
+    --line:rgba(238,243,246,.12);
+    --line-2:rgba(238,243,246,.06);
+    --bline:rgba(110,193,228,.34);         /* blue drafting hairline */
+    --bline-2:rgba(110,193,228,.15);
+    --bline-strong:rgba(110,193,228,.62);  /* card hover border */
+    --scroll-bed:rgba(238,243,246,.05);    /* scrollbar track */
+    --modal-ov:rgba(6,8,10,.72);
+    --panel-bg:#0e1114;                    /* modal panel */
+
+    /* photo-bedded furniture (hero / plates / proof comparisons): these NEVER
+       swap — white furniture over photographs in both themes */
+    --p-ink:#eef3f6; --p-body:#c3cdd4; --p-muted:#9aa3ab; --p-blue:#6EC1E4;
+    --p-bline:rgba(110,193,228,.34); --p-bline-2:rgba(110,193,228,.15);
+    --p-line:rgba(238,243,246,.12); --p-line-2:rgba(238,243,246,.06);
+
+    /* fixed chrome: follows the theme on paper, flips back to photo furniture
+       while a full-bleed photo stage is under it (html.ph, light theme only) */
+    --chrome-ink:var(--ink); --chrome-muted:var(--muted);
+    --chrome-blue:var(--blue); --chrome-line:var(--line);
+
+    --serif:'EB Garamond', Georgia, 'Times New Roman', serif;
+    --sans:Tahoma, Geneva, Verdana, system-ui, sans-serif;
+
+    /* fluid type scale */
+    --t-kicker:clamp(10px, .5vw + 8px, 12px);
+    --t-body:clamp(15px, .45vw + 13px, 17px);
+    --t-h3:clamp(21px, 1.6vw + 14px, 32px);
+    --t-h2:clamp(30px, 3.6vw + 10px, 60px);
+    --t-display:clamp(40px, 7vw + 8px, 104px);   /* plate titles want more weight */
+    --t-num:clamp(36px, 3.4vw + 18px, 64px);
+
+    /* spacing scale */
+    --edge:clamp(18px, 3.2vw, 46px);          /* fixed-chrome inset */
+    --gutter:clamp(26px, 5.4vw, 84px);        /* generous live margin for plate furniture */
+    --section:clamp(84px, 13vh, 184px);       /* wider editorial margins */
+
+    /* featured-work plate system */
+    --plate-run:500vh;                              /* multi-leaf plate runway (urna) */
+    --plate-run-1:300vh;                            /* single plate runway (AMODAA) */
+    --anno:#6EC1E4;                                 /* alias of --blue for SVG clarity */
+
+    /* motion grammar — paper is heavy, the instrument is light */
+    --ease-page:cubic-bezier(.22,.61,.30,1);        /* boutique 80% — heavy decel, settles still */
+    --ease-draw:cubic-bezier(.65,.02,.30,1);        /* futurist 20% — a pen drawing, stops clean */
+    --ease-instrument:cubic-bezier(.40,0,.20,1);    /* WebGL instruments — symmetric, calm */
+
+    --safe-b:env(safe-area-inset-bottom, 0px);
+    --safe-l:env(safe-area-inset-left, 0px);
+    --safe-r:env(safe-area-inset-right, 0px);
+    --safe-t:env(safe-area-inset-top, 0px);
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{ -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; background:var(--bg); overflow-x:hidden; }
+  body{
+    background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:var(--t-body); letter-spacing:.01em; overflow-x:hidden;
+    /* height is set by JS to the full content height to drive native scroll */
+  }
+  ::selection{ background:var(--blue-deep); color:#fff; }
+
+  /* sleek on-theme scrollbar */
+  html{ scrollbar-width:thin; scrollbar-color:var(--blue-deep) var(--scroll-bed); }
+  ::-webkit-scrollbar{ width:9px; height:9px; }
+  ::-webkit-scrollbar-track{ background:var(--scroll-bed); }
+  ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg, var(--blue), var(--blue-deep));
+    border:2px solid var(--bg); border-radius:20px; background-clip:padding-box; }
+  ::-webkit-scrollbar-thumb:hover{ background:linear-gradient(180deg, var(--blue-hover), var(--blue));
+    border:2px solid var(--bg); background-clip:padding-box; }
+  ::-webkit-scrollbar-corner{ background:transparent; }
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible{
+    outline:2px solid var(--blue); outline-offset:3px;
+  }
+
+  /* ---------- fixed WebGL placeholder (Task 10 mounts Three.js here) ---------- */
+  #gl{ position:fixed; inset:0; z-index:0; pointer-events:none; }
+  #gl canvas{ display:block; width:100%; height:100%; }
+
+  /* ---------- fixed hero visual: blueprint → render resolve ----------
+     photo bed — theme-independent (always the dark night render) */
+  #heroVis{ position:fixed; inset:0; z-index:1; background:#0c0e10; overflow:hidden; }
+  #heroVis .hv{ position:absolute; inset:0; }
+  #heroVis .hv img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
+  /* 2D blueprint phase: filtered duplicate of the render that fades out first */
+  #heroBlue img{ filter:saturate(.1) brightness(.7) sepia(1) hue-rotate(165deg) contrast(1.08); }
+  .hv-scrim{ position:absolute; inset:0; pointer-events:none;
+    background:
+      linear-gradient(100deg, rgba(9,11,13,.74) 0%, rgba(9,11,13,.34) 46%, rgba(9,11,13,.08) 78%),
+      linear-gradient(to bottom, rgba(9,11,13,.5) 0%, rgba(9,11,13,.08) 26%, rgba(9,11,13,.14) 60%, rgba(9,11,13,.8) 100%);
+  }
+  .hv-tags{ position:absolute; right:calc(var(--edge) + var(--safe-r)); bottom:calc(72px + var(--safe-b));
+    width:max-content; height:34px; pointer-events:none; }
+  .tag{ position:absolute; right:0; bottom:0; white-space:nowrap;
+    font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--p-ink);
+    padding:9px 14px 9px 12px; border:1px solid var(--p-bline); background:rgba(12,14,16,.58);
+    -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+    transition:opacity .5s ease; }
+  .tag::before{ content:""; display:inline-block; width:16px; height:1px; background:var(--p-blue);
+    vertical-align:middle; margin:-2px 10px 0 0; }
+  .hv-tags .tag{ opacity:0; }
+  .hv-tags[data-stage="0"] .tag-w{ opacity:1; }
+  .hv-tags[data-stage="1"] .tag-r{ opacity:1; }
+
+  /* ---------- virtual smooth-scroll stage ---------- */
+  #scroll{ position:fixed; inset:0; z-index:2; }
+  #content{ position:relative; will-change:transform; }
+
+  /* HERO: transparent runway over the fixed visual. px height is set in JS;
+     this vh value is only a pre-JS fallback. */
+  .hero{ position:relative; height:250vh; }
+  .hero-copy{ position:absolute; top:0; left:0; width:100%; height:100vh;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding:0 calc(var(--gutter) + var(--safe-r)) clamp(108px, 16vh, 170px) calc(var(--gutter) + var(--safe-l)); }
+  .hero-copy .sub{ max-width:54ch; }
+  /* 2D mode beds the hero copy on the dark photograph — photo furniture in both
+     themes. (3D mode beds it on the canvas, which follows the theme.) */
+  .mode-2d .hero-copy .kicker, .mode-2d .hero-copy .lede em{ color:var(--p-blue); }
+  .mode-2d .hero-copy .lede{ color:var(--p-ink); }
+  .mode-2d .hero-copy .sub{ color:var(--p-body); }
+
+  /* ---------- FEATURED WORKS: full-bleed plate system ----------
+     Plates are fixed full-bleed visuals (same layer as #heroVis) driven by the
+     chapter progress of their transparent runway sections inside #content.
+     Identical in both modes; the WebGL canvas dims behind them. */
+  .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+  .plate-run{ position:relative; }
+  .plate-run--I{ height:var(--plate-run); }
+  .plate-run--II{ height:var(--plate-run-1); }
+  /* proof runway: entry beat ~100vh + two comparison beats ~170vh each */
+  .plate-run--proof{ height:440vh; }
+
+  .plate{ position:fixed; inset:0; z-index:1; background:#0c0e10;
+    opacity:0; visibility:hidden; pointer-events:none; }
+  /* printed plate keyline, inset to the live edge */
+  .plate::after{ content:""; position:absolute; inset:var(--edge);
+    border:1px solid var(--p-line-2); pointer-events:none; z-index:5; }
+  .leaf{ position:absolute; inset:0; overflow:hidden; opacity:0; }
+  .leaf:first-child{ opacity:1; }
+  .plate-bed{ position:absolute; inset:0; }
+  .plate-bed img{ width:100%; height:100%; object-fit:cover;
+    filter:saturate(.92) contrast(1.03) brightness(.96);
+    transform-origin:50% 42%; will-change:transform; }
+  .plate--amodaa .plate-bed img{ object-position:center 38%; }
+  /* AMODAA inset plate: above 1600px the bed becomes a tipped-in illustration */
+  @media(min-width:1601px){
+    .plate--amodaa .leaf{ left:50%; transform:translateX(-50%); width:1600px; right:auto;
+      box-shadow:0 0 0 1px var(--p-line-2); }
+  }
+  .plate-scrim{ position:absolute; inset:0; pointer-events:none;
+    background:
+      linear-gradient(105deg, rgba(9,11,13,.82) 0%, rgba(9,11,13,.40) 40%, rgba(9,11,13,.04) 72%),
+      linear-gradient(to top, rgba(9,11,13,.78) 0%, rgba(9,11,13,.10) 40%, rgba(9,11,13,0) 64%); }
+
+  /* featured-work mark — engraved kicker + project name */
+  .plate-mark{ position:absolute; top:calc(var(--edge) + var(--safe-t) + 40px);
+    left:calc(var(--gutter) + var(--safe-l)); display:flex; align-items:baseline; gap:14px;
+    opacity:0; transform:translateY(8px);
+    transition:opacity .7s var(--ease-page), transform .7s var(--ease-page); }
+  .lf-on .plate-mark{ opacity:1; transform:none; }
+  .plate-mark::before{ content:""; width:34px; height:1px; background:var(--p-bline);
+    align-self:center; margin-right:2px; }
+  .plate-mark .pm-word{ font-size:11px; letter-spacing:.42em; text-transform:uppercase; color:var(--p-muted); }
+  .plate-mark .pm-name{ font-family:var(--serif); font-weight:500; font-style:italic;
+    font-size:clamp(16px, .9vw + 11px, 22px); color:var(--p-blue); letter-spacing:.04em; }
+
+  /* plate title + caption block, bottom-left */
+  .plate-foot{ position:absolute; left:calc(var(--gutter) + var(--safe-l));
+    bottom:calc(var(--section) * .6 + var(--safe-b)); max-width:46ch; z-index:4;
+    opacity:0; transform:translateY(40px);
+    transition:opacity 1.1s var(--ease-page), transform 1.1s var(--ease-page);
+    transition-delay:.12s; }
+  .lf-on .plate-foot{ opacity:1; transform:none; }
+  .plate-title{ font-family:var(--serif); font-weight:400; line-height:1.02;
+    font-size:var(--t-display); color:var(--p-ink); }
+  .plate-title em{ font-style:italic; color:var(--p-blue); }
+  .plate-caption{ margin-top:22px; padding-top:20px; border-top:1px solid var(--p-bline-2);
+    font-family:var(--serif); font-style:italic; font-size:clamp(16px, .7vw + 13px, 22px);
+    line-height:1.55; color:var(--p-body); }
+  .plate-caption .pc-tag{ display:block; margin-top:14px; font-family:var(--sans); font-style:normal;
+    font-size:10.5px; letter-spacing:.28em; text-transform:uppercase; color:var(--p-muted); }
+
+  /* leaf locator tag (leaves 2-4 of urna) */
+  .leaf-tag{ position:absolute; left:calc(var(--gutter) + var(--safe-l));
+    bottom:calc(var(--section) * .6 + var(--safe-b)); z-index:4;
+    font-family:var(--serif); font-style:italic; font-size:clamp(18px, 1.2vw + 12px, 28px);
+    color:var(--p-ink); opacity:0; transform:translateY(24px);
+    transition:opacity .9s var(--ease-page), transform .9s var(--ease-page); transition-delay:.1s; }
+  .lf-on .leaf-tag{ opacity:1; transform:none; }
+
+  /* M1 — plate corner registration ticks */
+  .plate-corner{ position:absolute; width:13px; height:13px; pointer-events:none; opacity:.5; z-index:5; }
+  .plate-corner::before,.plate-corner::after{ content:""; position:absolute; background:var(--p-blue); }
+  .plate-corner::before{ width:13px; height:1px; }
+  .plate-corner::after{ width:1px; height:13px; }
+  .pc-tl{ top:var(--edge); left:var(--edge); }
+  .pc-tr{ top:var(--edge); right:var(--edge); } .pc-tr::before{ right:0; } .pc-tr::after{ right:0; }
+  .pc-bl{ bottom:var(--edge); left:var(--edge); } .pc-bl::before{ bottom:0; } .pc-bl::after{ bottom:0; }
+  .pc-br{ bottom:var(--edge); right:var(--edge); } .pc-br::before,.pc-br::after{ bottom:0; right:0; }
+
+  /* M3 — folio rule: hairline running-foot rule ending in two dimension ticks */
+  .folio-rule{ height:1px; background:var(--bline-2); position:relative; }
+  .folio-rule::before,.folio-rule::after{ content:""; position:absolute; top:-5px;
+    width:2px; height:11px; background:var(--blue); opacity:.5; }
+  .folio-rule::before{ left:0; } .folio-rule::after{ right:0; }
+
+  /* ---------- annotation layer — the instrument (futurism 20%) ---------- */
+  .plate-anno{ position:absolute; inset:0; width:100%; height:100%;
+    pointer-events:none; opacity:.5; z-index:3; }
+  .plate-anno line, .plate-anno path, .plate-anno circle, .plate-anno polyline{
+    stroke:var(--anno); stroke-width:1; fill:none; vector-effect:non-scaling-stroke; }
+  .plate-anno .tk{ stroke-width:2; }              /* M2 — dimension end ticks */
+  .plate-anno .ld{ stroke-dasharray:4 5; }        /* dashed callout leaders */
+  .plate-anno .dt{ fill:var(--anno); stroke:none; }
+  .plate-anno text{ font-family:var(--sans); font-weight:600; font-size:13px;
+    letter-spacing:2px; text-transform:uppercase; fill:#9ad6ef; stroke:none; }
+  .plate-anno .t-sm{ font-size:11px; letter-spacing:1.6px; }
+  .plate-anno .dim-grid{ opacity:.35; }
+  /* draw-in: drawables carry pathLength="1"; faders pop in after their stroke */
+  .anno-d{ stroke-dasharray:1; stroke-dashoffset:1; }
+  .anno-f{ opacity:0; }
+  .lf-on .anno-d{ stroke-dashoffset:0;
+    transition:stroke-dashoffset .9s var(--ease-draw); transition-delay:var(--d, 0ms); }
+  .lf-on .anno-f{ opacity:1;
+    transition:opacity .32s var(--ease-draw); transition-delay:var(--d, 0ms); }
+
+  /* ---------- fixed chrome ---------- */
+  #chrome{ position:fixed; inset:0; z-index:3; pointer-events:none; }
+  .brand{ position:absolute; top:calc(var(--edge) + var(--safe-t)); left:calc(var(--edge) + var(--safe-l));
+    display:flex; align-items:flex-start; gap:11px; }
+  .brand svg{ width:19px; height:19px; flex:none; margin-top:1px; color:var(--chrome-blue); }
+  .brand .bw{ font-size:13px; letter-spacing:.4em; text-transform:uppercase; color:var(--chrome-ink); }
+  .brand .bw small{ display:block; font-size:9px; letter-spacing:.3em; color:var(--chrome-muted); margin-top:6px; }
+  .topright{ position:absolute; top:calc(var(--edge) + var(--safe-t)); right:calc(var(--edge) + var(--safe-r));
+    font-size:10px; letter-spacing:.32em; text-transform:uppercase; color:var(--chrome-muted); text-align:right; line-height:1.7; }
+
+  /* theme toggle — minimal pill riding the chrome, below the top-right folio line.
+     Lives OUTSIDE #chrome (which is aria-hidden) and re-enables its own hit-testing. */
+  .theme-toggle{ position:fixed; top:calc(var(--edge) + var(--safe-t) + 30px);
+    right:calc(var(--edge) + var(--safe-r)); z-index:5;
+    appearance:none; -webkit-appearance:none; display:inline-flex; align-items:center; gap:9px;
+    padding:6px 11px; background:transparent; border:1px solid var(--chrome-line); border-radius:999px;
+    font:inherit; font-size:10px; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--chrome-muted); cursor:pointer; pointer-events:auto;
+    transition:color .3s ease, border-color .3s ease, background-color .3s ease; }
+  .theme-toggle:hover{ color:var(--chrome-blue); border-color:var(--chrome-blue); }
+  .theme-toggle:focus-visible{ outline:2px solid var(--chrome-blue); outline-offset:3px; }
+  .tt-disc{ position:relative; width:14px; height:14px; flex:none;
+    border-radius:50%; border:1px solid currentColor; }
+  .tt-disc::after{ content:""; position:absolute; inset:2px; border-radius:50%;
+    background:currentColor; transform:scale(1); transition:transform .3s var(--ease-page); }
+  [data-theme="light"] .tt-disc::after{ transform:scale(.45); }   /* the disc inverts */
+  .tt-word{ display:none; letter-spacing:.3em; padding-right:2px; }
+  @media(min-width:900px){ .tt-word{ display:inline; } }
+  @media(max-width:620px){ .theme-toggle{ top:calc(var(--edge) + var(--safe-t)); } }
+
+  .cue{ position:absolute; left:50%; bottom:calc(56px + var(--safe-b)); transform:translateX(-50%);
+    text-align:center; transition:opacity .7s ease; }
+  .cue .word{ font-size:10px; letter-spacing:.42em; text-transform:uppercase; color:var(--chrome-muted); }
+  .cue .track{ width:1px; height:48px; margin:12px auto 0; background:linear-gradient(var(--chrome-ink), transparent);
+    position:relative; overflow:hidden; opacity:.7; }
+  .cue .track::after{ content:""; position:absolute; left:0; top:-40%; width:1px; height:40%;
+    background:var(--chrome-blue); animation:drop 2.1s cubic-bezier(.7,0,.3,1) infinite; }
+  @keyframes drop{ 0%{top:-40%} 60%{top:100%} 100%{top:100%} }
+
+  /* slim progress bar + chapter ticks */
+  #progress{ position:fixed; left:0; bottom:0; height:2px; width:100%; z-index:4;
+    transform-origin:0 50%; transform:scaleX(0);
+    background:linear-gradient(90deg, var(--blue-deep), var(--blue)); pointer-events:none; }
+  #scenes{ position:fixed; left:0; bottom:calc(13px + var(--safe-b)); width:100%; z-index:4; pointer-events:none;
+    display:flex; justify-content:space-between; gap:8px;
+    padding:0 calc(var(--edge) + var(--safe-r)) 0 calc(var(--edge) + var(--safe-l));
+    font-size:10px; letter-spacing:.26em; text-transform:uppercase; color:var(--chrome-muted); }
+  /* ticks are real buttons (jump navigation) — reset UA chrome so layout is unchanged,
+     and re-enable hit-testing inside the pointer-events:none chrome band */
+  #scenes button{ appearance:none; -webkit-appearance:none; background:none; border:0;
+    padding:0; margin:0; display:inline-block;
+    font:inherit; letter-spacing:inherit; text-transform:inherit; color:inherit; line-height:inherit;
+    pointer-events:auto; cursor:pointer;
+    opacity:.5; transition:color .4s ease, opacity .4s ease; white-space:nowrap; }
+  #scenes button:hover{ color:var(--chrome-blue); opacity:.85; }
+  #scenes button.on{ color:var(--chrome-blue); opacity:1; }
+
+  /* ---------- panels: opaque sections that rise over the hero visual ---------- */
+  .panel{ position:relative; background:var(--bg);
+    display:flex; flex-direction:column; justify-content:center; }
+  .panel .wrap{ position:relative; z-index:1; width:100%; max-width:1180px; margin:0 auto;
+    padding:var(--section) calc(var(--gutter) + var(--safe-r)) var(--section) calc(var(--gutter) + var(--safe-l)); }
+  /* chapter runway budgets — plates keep their dwell, prose reads brisk */
+  .panel[data-chapter="studio"]{ min-height:140vh; }
+  .panel[data-chapter="scale"]{ min-height:240vh; }
+  .panel[data-chapter="method"]{ min-height:420vh; }   /* cards + the merged two-phase timeline */
+  .panel[data-chapter="index"]{ min-height:200vh; }
+  .panel[data-chapter="principals"]{ min-height:150vh; }
+  .panel[data-chapter="contact"]{ min-height:120vh; }
+
+  /* subtle photographic backdrop accents */
+  .backdrop{ position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+  .backdrop img{ width:100%; height:100%; object-fit:cover; opacity:.13; filter:saturate(.65) brightness(.92); }
+  .backdrop::after{ content:""; position:absolute; inset:0;
+    background:linear-gradient(to bottom, var(--bg) 0%, rgba(var(--bg-rgb),.3) 32%, rgba(var(--bg-rgb),.42) 68%, var(--bg) 100%); }
+
+  /* engineering-drawing motifs */
+  .kicker{ font-size:var(--t-kicker); letter-spacing:.36em; text-transform:uppercase; color:var(--blue); }
+  .pm-rule{ display:inline-block; width:34px; height:1px; background:var(--bline);
+    vertical-align:middle; margin:-2px 14px 0 0; }
+  .chap-head{ display:flex; align-items:center; gap:20px; }
+  .chap-head::after{ content:""; flex:1; height:1px; background:var(--bline-2); }
+  .ticks{ margin-top:clamp(28px, 4vh, 44px); height:8px; border-top:1px solid var(--bline);
+    background-image:repeating-linear-gradient(90deg, var(--bline) 0 1px, transparent 1px 32px);
+    background-size:100% 6px; background-repeat:no-repeat; }
+  /* the drafting rule draws itself left-to-right — first overt instrument moment after the hero */
+  .ticks.rv{ opacity:1; transform:none; clip-path:inset(0 100% 0 0);
+    transition:clip-path .9s var(--ease-draw) .2s; }
+  .ticks.rv.in{ clip-path:inset(0 0 0 0); }
+
+  .lede{ font-family:var(--serif); font-weight:400; line-height:1.06;
+    font-size:var(--t-h2); letter-spacing:.002em; margin:26px 0 0; }
+  .lede-xl{ font-size:var(--t-display); line-height:1.03; margin-top:22px; }
+  .lede em{ font-style:italic; color:var(--blue-display); }
+  .sub{ max-width:62ch; margin-top:24px; color:var(--body-c); font-size:var(--t-body); line-height:1.8; }
+
+  /* studio facts */
+  .facts{ list-style:none; margin-top:clamp(44px, 7vh, 84px); border-top:1px solid var(--bline-2); }
+  .facts li{ display:grid; grid-template-columns:54px 1fr; gap:18px; align-items:baseline;
+    padding:21px 2px; border-bottom:1px dotted var(--bline);
+    font-size:clamp(16px, .9vw + 12px, 21px); color:var(--ink);
+    opacity:0; transform:translateY(14px);
+    transition:opacity .62s var(--ease-page), transform .62s var(--ease-page); }
+  .facts.rv.in li{ opacity:1; transform:none; }
+  .facts li:nth-child(2){ transition-delay:80ms; }
+  .facts li:nth-child(3){ transition-delay:160ms; }
+  .facts li:nth-child(4){ transition-delay:240ms; }
+  .facts li:nth-child(5){ transition-delay:320ms; }
+  .facts .fx{ font-family:var(--serif); color:var(--blue); font-size:17px; letter-spacing:.08em; }
+
+  /* count-up stats */
+  .stats{ display:grid; grid-template-columns:repeat(auto-fit, minmax(186px, 1fr)); gap:1px;
+    margin-top:clamp(40px, 7vh, 80px); background:var(--line-2); border:1px solid var(--line-2); }
+  .stats .cell{ background:var(--bg); padding:clamp(24px, 3vw, 42px) clamp(16px, 2vw, 30px); }
+  .stats .num{ font-family:var(--serif); font-size:var(--t-num); line-height:1; color:var(--ink); font-weight:400;
+    font-variant-numeric:tabular-nums; }
+  .stats .num .unit, .stats .num .pct{ font-size:.55em; color:var(--blue); letter-spacing:.04em; margin-left:2px; }
+  .stats .lab{ margin-top:13px; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); line-height:1.7; }
+  .stats .cell-sm .num{ font-size:calc(var(--t-num) * .72); }
+  /* 4-cell mark as the stat bullet — tiny, monochrome blue, static (subtlety rules) */
+  .stats .lab .hive-mark{ width:13px; height:13px; vertical-align:-2px;
+    margin-right:9px; color:var(--blue-deep); }
+
+  /* method cards — real buttons that open the pillar modals */
+  .cards{ display:grid; grid-template-columns:repeat(3, 1fr); gap:clamp(16px, 2vw, 28px); margin-top:clamp(44px, 7vh, 84px); }
+  .cards .card:nth-child(2){ transition-delay:100ms; }
+  .cards .card:nth-child(3){ transition-delay:200ms; }
+  .card{ appearance:none; -webkit-appearance:none; display:block; width:100%;
+    font:inherit; font-size:var(--t-body); letter-spacing:.01em; color:var(--ink); text-align:left;
+    border:1px dotted var(--bline); background:var(--bg-2); padding:clamp(24px, 2.6vw, 38px);
+    cursor:pointer; }
+  .card:hover{ border-color:var(--bline-strong); }
+  .card .meta{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+  .card .dom{ font-size:10.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--blue); }
+  .card .ix{ font-family:var(--serif); color:var(--muted); font-size:15px; }
+  .card .card-h{ display:block; font-family:var(--serif); font-weight:400; font-size:var(--t-h3); line-height:1.15; margin-top:18px; }
+  .card .card-p{ display:block; margin-top:16px; color:var(--body-c); line-height:1.8; font-size:15.5px; }
+  .card .card-note{ display:block; margin-top:18px; padding-top:14px; border-top:1px dotted var(--bline); }
+  .card .card-note .cn-k{ display:block; font-size:10px; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--blue); margin-bottom:8px; }
+  .card .card-note em{ font-family:var(--serif); font-style:italic; font-size:16px; color:var(--body-c); }
+  /* hover hint — the invitation line */
+  .card .card-hint{ display:block; margin-top:18px; font-size:10.5px; letter-spacing:.26em;
+    text-transform:uppercase; color:var(--blue); opacity:0; transform:translateY(4px);
+    transition:opacity .35s ease, transform .35s ease; }
+  .card .card-hint::before{ content:""; display:inline-block; width:14px; height:1px;
+    background:var(--blue); vertical-align:middle; margin:-2px 9px 0 0; }
+  .card:hover .card-hint, .card:focus-visible .card-hint{ opacity:1; transform:none; }
+  @media(hover:none){ .card .card-hint{ opacity:.8; transform:none; } }
+  @media(max-width:900px){ .cards{ grid-template-columns:1fr; } }
+
+  /* ---------- method modal: one accessible dialog, three contents ---------- */
+  html.modal-open{ overflow:hidden; }
+  .modal{ position:fixed; inset:0; z-index:6; display:flex; align-items:center; justify-content:center;
+    padding:clamp(16px, 3vw, 44px); }
+  .modal[hidden]{ display:none; }
+  .modal-ov{ position:absolute; inset:0; background:var(--modal-ov);
+    -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); opacity:0;
+    transition:opacity .35s ease; }
+  .modal-panel{ position:relative; width:100%; max-width:62ch; max-height:min(86vh, 100%);
+    overflow:auto; overscroll-behavior:contain; background:var(--panel-bg);
+    border:1px solid var(--line); border-top:1px solid var(--bline);
+    padding:clamp(28px, 4vw, 50px) clamp(24px, 3.6vw, 48px) clamp(32px, 4.4vw, 56px);
+    opacity:0; transform:translateY(14px);
+    transition:opacity .45s var(--ease-page), transform .45s var(--ease-page); }
+  .modal.open .modal-ov{ opacity:1; }
+  .modal.open .modal-panel{ opacity:1; transform:none; }
+  .modal-head{ display:flex; align-items:center; gap:14px;
+    padding-bottom:18px; border-bottom:1px solid var(--bline-2); }
+  .modal-head .hive-mark{ flex:none; color:var(--blue-deep); }
+  .modal-title{ font-family:var(--serif); font-weight:400; font-size:var(--t-h3);
+    line-height:1.15; margin-right:auto; }
+  .modal-x{ appearance:none; -webkit-appearance:none; flex:none; width:38px; height:38px;
+    background:none; border:1px solid var(--line); color:var(--muted);
+    font-size:19px; line-height:1; cursor:pointer;
+    transition:color .25s ease, border-color .25s ease; }
+  .modal-x:hover{ color:var(--blue); border-color:var(--bline); }
+  .modal-body p{ margin-top:18px; color:var(--body-c); line-height:1.85; font-size:15.5px; }
+  .modal-body p:first-child{ margin-top:24px; font-family:var(--serif); font-style:italic;
+    font-size:clamp(17px, .9vw + 12px, 22px); line-height:1.6; color:var(--ink); }
+  .modal-spec{ margin:28px 0 0; border-top:1px solid var(--bline-2); }
+  .modal-spec > div{ display:grid; grid-template-columns:minmax(0, 1.1fr) minmax(0, 1.5fr);
+    gap:14px; padding:12px 2px; border-bottom:1px dotted var(--bline); }
+  .modal-spec dt{ font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--blue); padding-top:3px; }
+  .modal-spec dd{ margin:0; font-family:var(--serif); font-style:italic;
+    font-size:15.5px; color:var(--body-c); }
+  @media(max-width:620px){
+    .modal{ padding:0; }              /* full-bleed sheet on phones */
+    .modal-panel{ max-width:none; height:100%; max-height:none; border-left:0; border-right:0; }
+  }
+
+  /* method delivery half — serif headline that opens the merged two-phase timeline */
+  .meth-split{ font-family:var(--serif); font-weight:400; font-size:var(--t-h3); line-height:1.2;
+    margin-top:clamp(64px, 10vh, 120px); padding-top:clamp(24px, 3.5vh, 40px);
+    border-top:1px solid var(--bline-2); }
+  .meth-split em{ font-style:italic; color:var(--blue); }
+
+  /* floating 3D district labels (massing city, module-only) */
+  .glab{ position:absolute; left:0; top:0; will-change:transform; pointer-events:none; white-space:nowrap;
+    font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--ink);
+    padding:8px 12px 8px 10px; border:1px solid var(--bline); background:rgba(var(--bg-rgb),.42);
+    -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); opacity:0; }
+  .glab::before{ content:""; display:inline-block; width:14px; height:1px; background:var(--blue);
+    vertical-align:middle; margin:-2px 9px 0 0; }
+
+  /* ---------- PROOF: full-bleed render -> as-built reveal stage ----------
+     A fixed full-bleed layer (same mechanism as the featured-work plates) driven
+     by the proof runway's chapter progress. Identical in both modes. It sits
+     ABOVE #scroll (z-index 2, later in DOM) so the drag handle is reachable;
+     pointer-events are gated in JS so it never blocks the page when inactive. */
+  .proof-stage{ position:fixed; inset:0; z-index:2; background:var(--bg);
+    opacity:0; visibility:hidden; pointer-events:none; }
+  .proof-stage::after{ content:""; position:absolute; inset:var(--edge);
+    border:1px solid var(--p-line-2); pointer-events:none; z-index:5; }
+  .pf-beat{ position:absolute; inset:0; opacity:0; }
+  .pf-beat:first-child{ opacity:1; }
+  /* furniture fades in as each beat lands */
+  .pf-ui{ opacity:0; transform:translateY(10px);
+    transition:opacity .8s var(--ease-page), transform .8s var(--ease-page); }
+  .pf-beat.on .pf-ui{ opacity:1; transform:none; }
+  .pf-beat.on .pf-ui:nth-child(2){ transition-delay:90ms; }
+  .pf-beat.on .pf-ui:nth-child(3){ transition-delay:180ms; }
+
+  /* entry beat — the promise / receipt verdict */
+  .pf-entry{ display:flex; flex-direction:column; justify-content:center; align-items:center;
+    text-align:center; background:var(--bg);
+    padding:0 calc(var(--gutter) + var(--safe-r)) 0 calc(var(--gutter) + var(--safe-l)); }
+  .pf-num{ margin-top:22px; font-family:var(--serif); font-weight:400; line-height:1;
+    font-size:calc(var(--t-display) * 1.6); color:var(--ink); font-variant-numeric:tabular-nums; }
+  .pf-num .pf-pct{ font-size:.42em; color:var(--blue-display); margin-left:.04em; }
+  .pf-tagline{ margin-top:30px; font-family:var(--serif); font-style:italic;
+    font-size:clamp(17px, 1.1vw + 12px, 26px); color:var(--body-c); max-width:36ch; line-height:1.55; }
+  .pf-tagline em{ color:var(--blue); font-style:italic; }
+
+  /* comparison beats — render base, as-built revealed right of the drafting line */
+  .pf-cmp{ --pos:88%; overflow:hidden; touch-action:pan-y; cursor:ew-resize;
+    user-select:none; -webkit-user-select:none; }
+  .pf-cmp img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    -webkit-user-drag:none; pointer-events:none; }
+  .pf-top{ position:absolute; inset:0; clip-path:inset(0 0 0 var(--pos)); }
+  .pf-lab{ position:absolute; top:calc(var(--edge) + var(--safe-t) + 44px);
+    font-size:11px; letter-spacing:.42em; text-transform:uppercase; color:var(--p-ink);
+    padding:9px 14px 9px 12px; background:rgba(12,14,16,.55); border:1px solid var(--p-line);
+    -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); pointer-events:none; }
+  .pf-lab-l{ left:calc(var(--gutter) + var(--safe-l)); }
+  .pf-lab-l::before{ content:""; display:inline-block; width:14px; height:1px; background:var(--p-blue);
+    vertical-align:middle; margin:-2px 10px 0 0; }
+  .pf-lab-r{ right:calc(var(--gutter) + var(--safe-r)); }
+  .pf-cap{ position:absolute; left:calc(var(--gutter) + var(--safe-l));
+    bottom:calc(var(--section) * .35 + var(--safe-b)); pointer-events:none; }
+  .pf-cap .pc-name{ font-family:var(--serif); font-style:italic;
+    font-size:clamp(17px, 1vw + 12px, 24px); color:var(--p-ink); }
+  .pf-cap .pc-sub{ display:block; margin-top:9px; font-size:10.5px;
+    letter-spacing:.28em; text-transform:uppercase; color:var(--p-muted); }
+  /* the drafting line — hairline + end ticks, the brand instrument */
+  .pf-line{ position:absolute; top:0; bottom:0; left:var(--pos); width:0; pointer-events:none; }
+  .pf-line::before{ content:""; position:absolute; top:0; bottom:0; left:-.5px; width:1px;
+    background:var(--p-blue); box-shadow:0 0 12px rgba(110,193,228,.5); }
+  .pf-tk{ position:absolute; left:-6.5px; width:13px; height:1px; background:var(--p-blue); }
+  .pf-tk-t{ top:var(--edge); }
+  .pf-tk-b{ bottom:var(--edge); }
+  /* drag handle — the 4-cell logo glyph rides the line */
+  .pf-handle{ position:absolute; top:50%; left:var(--pos); width:48px; height:48px;
+    margin:-24px 0 0 -24px; display:flex; align-items:center; justify-content:center;
+    cursor:ew-resize; touch-action:none; }
+  .pf-grip{ width:40px; height:40px; border-radius:50%; border:1px solid var(--p-blue);
+    background:rgba(12,14,16,.66); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);
+    display:flex; align-items:center; justify-content:center; color:var(--p-blue); }
+  .pf-grip svg{ display:block; width:22px; height:22px; }
+  .pf-handle:focus-visible{ outline:none; }
+  .pf-handle:focus-visible .pf-grip{ outline:2px solid var(--p-blue); outline-offset:3px; }
+  @media(max-width:620px){
+    .pf-lab{ top:calc(var(--edge) + var(--safe-t) + 56px); }
+    .pf-cap{ bottom:calc(var(--section) * .3 + var(--safe-b)); }
+  }
+
+  /* delivery timeline (method, second half) */
+  .phase{ margin-top:clamp(48px, 8vh, 92px); }
+  .ph-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; }
+  .ph-k{ font-size:10.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--blue); }
+  .ph-head .ph-h{ font-family:var(--serif); font-weight:400; font-size:var(--t-h3); margin-top:10px; }
+  .ph-days{ text-align:right; }
+  .ph-days .num{ font-family:var(--serif); font-size:clamp(30px, 2.4vw + 14px, 48px); line-height:1; color:var(--ink); }
+  .ph-days .u{ display:block; margin-top:6px; font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); }
+  .tl{ list-style:none; display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+    margin-top:clamp(22px, 3vh, 34px); }
+  .tl li{ position:relative; border-top:1px solid var(--bline-2); padding:18px 18px 4px 0;
+    opacity:0; transform:translateY(10px);
+    transition:opacity .62s var(--ease-page), transform .62s var(--ease-page); }
+  .tl li::before{ content:""; position:absolute; top:-1px; left:0; width:1px; height:11px; background:var(--blue);
+    transform:scaleY(0); transform-origin:top; transition:transform .3s var(--ease-draw); }
+  /* each stage is plotted on the schedule line (tick draws), then written (text lifts) */
+  .phase.rv.in .tl li{ opacity:1; transform:none; }
+  .phase.rv.in .tl li::before{ transform:scaleY(1); }
+  .tl li:nth-child(1){ transition-delay:220ms; } .tl li:nth-child(1)::before{ transition-delay:0ms; }
+  .tl li:nth-child(2){ transition-delay:300ms; } .tl li:nth-child(2)::before{ transition-delay:80ms; }
+  .tl li:nth-child(3){ transition-delay:380ms; } .tl li:nth-child(3)::before{ transition-delay:160ms; }
+  .tl li:nth-child(4){ transition-delay:460ms; } .tl li:nth-child(4)::before{ transition-delay:240ms; }
+  .tl li:nth-child(5){ transition-delay:540ms; } .tl li:nth-child(5)::before{ transition-delay:320ms; }
+  .tl .st-ix{ display:block; font-size:10px; letter-spacing:.3em; color:var(--blue); }
+  .tl .st-name{ display:block; margin-top:9px; font-size:15px; color:var(--ink); line-height:1.45; }
+  .tl .st-days{ display:block; margin-top:7px; font-size:12px; letter-spacing:.08em; color:var(--muted); }
+  /* dimension-string total bracket under each phase timeline (Primitive A in CSS) */
+  .tl-rule{ margin-top:clamp(20px, 3vh, 30px); display:flex; justify-content:flex-end; }
+  .tl-rule .folio-rule{ width:100%; }
+  .tl-rule .tr-lab{ position:absolute; right:0; top:-24px; font-family:var(--serif);
+    font-style:italic; font-size:13px; letter-spacing:.06em; color:var(--muted); }
+  /* closing callout — the 90-day record */
+  .ap-callout{ margin-top:clamp(48px, 8vh, 92px); }
+  .ap-callout .folio-rule{ margin-bottom:26px; }
+  .apc-line{ font-family:var(--serif); font-style:italic; font-size:clamp(19px, 1.4vw + 12px, 28px);
+    color:var(--body-c); line-height:1.5; max-width:36ch; }
+  .apc-line em{ color:var(--blue); font-style:italic; }
+  .apc-tag{ margin-top:14px; font-size:10.5px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); }
+
+  /* ---------- WORKS: the project index ---------- */
+  .index{ list-style:none; margin-top:clamp(40px, 6vh, 72px); border-top:1px solid var(--bline); }
+  .index li{ position:relative; display:grid; grid-template-columns:2.4fr 1fr 1.1fr 1.3fr;
+    gap:18px 28px; align-items:baseline; padding:20px 2px; }
+  .index li::after{ content:""; position:absolute; left:0; bottom:0; height:1px; width:0;
+    background-image:repeating-linear-gradient(90deg, var(--bline) 0 1px, transparent 1px 7px);
+    transition:width .6s var(--ease-draw); transition-delay:calc(var(--i, 0) * 60ms + 180ms); }
+  .index li.in::after{ width:100%; }
+  .index li::before{ content:""; position:absolute; left:0; top:50%; margin-top:-6px;
+    width:0; height:12px; background:var(--blue); transition:width .25s var(--ease-draw); }
+  /* the index prints itself: rows cascade, each rule drawn as the row lands */
+  .index li.rv{ transition-delay:calc(var(--i, 0) * 60ms); }
+  .ix-name{ font-family:var(--serif); font-size:clamp(18px, 1vw + 13px, 24px); color:var(--ink);
+    transition:color .25s ease; }
+  .ix-type,.ix-place{ font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); }
+  .ix-fact{ font-family:var(--serif); font-style:italic; color:var(--body-c); font-size:15px;
+    text-align:right; font-variant-numeric:tabular-nums; }
+  @media(hover:hover){
+    .index li:hover::before{ width:16px; }
+    .index li:hover .ix-name{ color:var(--blue); }
+  }
+  .ix-note{ margin-top:clamp(26px, 4vh, 40px); font-family:var(--serif); font-style:italic;
+    font-size:14px; letter-spacing:.04em; color:var(--muted); }
+  @media(max-width:780px){
+    .index li{ grid-template-columns:1fr auto; gap:8px 18px; }
+    .ix-name{ grid-column:1 / -1; }
+    .ix-fact{ grid-column:2; }
+  }
+
+  /* principals */
+  .pp-grid{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px, 4vw, 56px); margin-top:clamp(44px, 7vh, 84px); }
+  .pp{ border-top:1px solid var(--bline); padding-top:24px; position:relative; }
+  .pp::before{ content:""; position:absolute; top:-1px; left:0; width:1px; height:11px; background:var(--blue);
+    transform:scaleY(0); transform-origin:top; transition:transform .3s var(--ease-draw) .1s; }
+  .pp.rv.in::before{ transform:scaleY(1); }
+  .pp-grid .pp:nth-child(2){ transition-delay:100ms; }
+  .pp .role{ font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--blue); }
+  .pp h3{ font-family:var(--serif); font-weight:400; font-size:var(--t-h3); margin-top:12px; }
+  .pp p{ margin-top:14px; color:var(--body-c); line-height:1.8; font-size:15.5px; max-width:48ch; }
+  @media(max-width:780px){ .pp-grid{ grid-template-columns:1fr; } }
+  /* hand-drawn urna sketch: inverted white-paper line art reads as faint blueprint linework.
+     The clip wipe makes the tower appear to be drawn live behind the principals. */
+  .pp-sketch{ position:absolute; top:50%; right:clamp(10px, 3vw, 56px); transform:translateY(-50%);
+    width:clamp(230px, 30vw, 460px); pointer-events:none; }
+  .pp-sketch img{ display:block; width:100%; height:auto;
+    filter:invert(1) sepia(1) hue-rotate(155deg) saturate(1.3); mix-blend-mode:screen; opacity:.20;
+    clip-path:inset(0 100% 0 0); }
+  .pp-sketch.in img{ clip-path:inset(0 0 0 0); transition:clip-path 1.6s var(--ease-draw); }
+  .pp-sketch-cap{ margin-top:10px; text-align:right; font-family:var(--serif); font-style:italic;
+    font-size:13px; letter-spacing:.05em; color:var(--muted); opacity:0; transition:opacity .9s var(--ease-page) 1.4s; }
+  .pp-sketch.in .pp-sketch-cap{ opacity:.85; }
+  .pp-strap{ display:flex; align-items:baseline; gap:20px; flex-wrap:wrap;
+    margin-top:clamp(44px, 7vh, 80px); border-top:1px solid var(--bline-2); padding-top:30px; }
+  .pp-strap .num{ font-family:var(--serif); font-size:var(--t-num); line-height:1; color:var(--ink); }
+  .pp-strap .lab{ font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); }
+  .partners{ margin-top:30px; color:var(--body-c); font-size:14px; line-height:1.9; letter-spacing:.03em; }
+  .partners .c-lab{ margin-right:16px; }
+
+  /* contact / footer */
+  .c-lab{ display:inline-block; font-size:10px; letter-spacing:.32em; text-transform:uppercase; color:var(--blue); }
+  .c-grid{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:clamp(24px, 3vw, 40px);
+    margin-top:clamp(44px, 7vh, 80px); }
+  .c-grid .c-block{ opacity:0; transform:translateY(12px);
+    transition:opacity .7s var(--ease-page), transform .7s var(--ease-page); }
+  .c-grid.rv.in .c-block{ opacity:1; transform:none; }
+  .c-grid .c-block:nth-child(2){ transition-delay:60ms; }
+  .c-grid .c-block:nth-child(3){ transition-delay:120ms; }
+  .c-grid .c-block:nth-child(4){ transition-delay:180ms; }
+  .c-block .c-lab{ margin-bottom:13px; }
+  .c-block p{ color:var(--body-c); line-height:1.85; font-size:15px; }
+  .c-block a{ color:var(--ink); text-decoration:none; border-bottom:1px solid var(--bline);
+    transition:color .25s ease, border-color .25s ease; }
+  .c-block a:hover{ color:var(--blue); border-color:var(--blue); }
+  @media(max-width:900px){ .c-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
+  @media(max-width:480px){ .c-grid{ grid-template-columns:1fr; } }
+
+  footer.panel .wrap{ padding-bottom:calc(clamp(48px, 7vh, 80px) + var(--safe-b)); }
+  .close-rule{ margin-top:clamp(52px, 9vh, 100px); }
+  .credit{ display:flex; align-items:baseline; flex-wrap:wrap; gap:10px 16px;
+    margin-top:36px; }
+  .credit .by{ font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--muted); }
+  .credit .lab{ font-family:var(--serif); font-size:clamp(22px, 2vw + 14px, 30px); line-height:1;
+    color:var(--blue); font-weight:400; letter-spacing:.01em; text-decoration:none; }
+  .credit .lab:hover{ color:var(--blue-hover); }
+  .credit .links{ display:flex; align-items:baseline; flex-wrap:wrap; gap:8px 12px;
+    font-size:13px; letter-spacing:.04em; color:var(--muted); }
+  .credit .links a{ color:var(--muted); text-decoration:none; border-bottom:1px solid transparent;
+    transition:color .25s ease, border-color .25s ease; }
+  .credit .links a:hover{ color:var(--blue); border-color:var(--bline); }
+  .credit .sep{ color:var(--faint); opacity:.6; }
+  .footmeta{ display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap;
+    margin-top:30px; color:var(--muted); font-size:11px; letter-spacing:.08em; }
+
+  /* soft reveals (JS adds .in; reduced-motion shows everything immediately) */
+  .rv{ opacity:0; transform:translateY(18px); transition:opacity .9s var(--ease-page), transform .9s var(--ease-page); }
+  .rv.in{ opacity:1; transform:none; }
+
+  /* serif display line reveal — mask wipe + lift, the signature boutique gesture */
+  .line{ display:block; overflow:hidden; padding-bottom:.10em; margin-bottom:-.10em; }
+  .line-inner{ display:block; transform:translateY(120%);
+    transition:transform 1.1s var(--ease-page); }
+  .line + .line .line-inner{ transition-delay:90ms; }
+  .rv.in .line-inner, .lf-on .line-inner{ transform:none; }
+
+  /* responsive chrome */
+  @media(max-width:960px){
+    #scenes{ justify-content:center; letter-spacing:.3em; }
+    #scenes button{ display:none; }
+    #scenes button.on{ display:inline-block; }
+  }
+  @media(max-width:620px){
+    .brand .bw{ font-size:11px; letter-spacing:.3em; }
+    .topright{ display:none; }
+    /* plate furniture: keep the foot block clear of the featured-work mark above
+       and the fixed progress/scenes band below */
+    .plate-caption{ max-width:34ch; font-size:15px; line-height:1.5;
+      margin-top:16px; padding-top:14px; }
+    .plate-foot{ max-width:38ch; bottom:calc(var(--section) * .45 + var(--safe-b)); }
+    .leaf-tag{ bottom:calc(var(--section) * .45 + var(--safe-b)); }
+    /* the façade study grid would graze the full-width caption on phones */
+    .plate-anno .dim-grid{ display:none; }
+  }
+  @media(prefers-reduced-motion:reduce){
+    .cue .track::after{ animation:none; }
+    .rv{ opacity:1; transform:none; transition:none; }
+    .tag{ transition:none; }
+    .theme-toggle, .tt-disc::after{ transition:none; }
+    /* the instrument layer is shown complete, never animated */
+    .anno-d{ stroke-dashoffset:0; transition:none; }
+    .anno-f{ opacity:1; transition:none; }
+    .plate-mark, .plate-foot, .leaf-tag{ opacity:1; transform:none; transition:none; }
+    .pf-ui{ opacity:1; transform:none; transition:none; }
+    .card .card-hint{ transition:none; transform:none; }
+    .modal-ov, .modal-panel{ opacity:1; transform:none; transition:none; }
+    .pp-sketch img{ clip-path:none; transition:none; }
+    .pp-sketch-cap{ opacity:.85; transition:none; }
+    .index li::after{ width:100%; transition:none; }
+    .index li::before{ transition:none; }
+    .line-inner{ transform:none; transition:none; }
+    .facts li, .tl li, .c-grid .c-block{ opacity:1; transform:none; transition:none; }
+    .tl li::before, .pp::before{ transform:none; transition:none; }
+    .ticks.rv{ clip-path:none; transition:none; }
+    .backdrop img{ transform:none !important; }
+  }
+
+  /* ---------- 3D mode (Task 10): capability-gated Three.js journey ----------
+     .mode-2d leaves the 2D site exactly as-is. In .mode-3d the WebGL scene
+     renders the hero resolve, so the DOM hero hides and the set-piece panels
+     turn translucent so the journey reads through them. The proof stage is a
+     DOM layer in both modes. */
+  .mode-3d #heroVis{ display:none; }
+  .mode-3d #gl::after{ content:""; position:absolute; inset:0; pointer-events:none;
+    background:
+      linear-gradient(100deg, rgba(var(--scrim-rgb),.6) 0%, rgba(var(--scrim-rgb),.22) 46%, rgba(var(--scrim-rgb),.05) 78%),
+      linear-gradient(to bottom, rgba(var(--scrim-rgb),.45) 0%, rgba(var(--scrim-rgb),.05) 30%, rgba(var(--scrim-rgb),.1) 62%, rgba(var(--scrim-rgb),.72) 100%); }
+  .mode-3d .panel{ background:rgba(var(--bg-rgb),.62); }
+  .mode-3d .panel .backdrop{ display:none; }   /* 3D atmosphere planes replace the 2D backdrops */
+  .mode-3d .panel .wrap{ text-shadow:0 1px 10px rgba(var(--bg-rgb),.85), 0 0 22px rgba(var(--bg-rgb),.55); }
+  .mode-3d .stats .cell{ background:rgba(var(--bg-rgb),.5); }
+  .mode-3d .card{ background:rgba(var(--bg2-rgb),.55); -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px); }
+  /* the Works index is a typeset spread — opaque paper in both modes */
+  .mode-3d .panel[data-chapter="index"]{ background:var(--bg); }
+  .mode-3d .panel[data-chapter="principals"],
+  .mode-3d .panel[data-chapter="contact"]{ background:rgba(var(--bg-rgb),.8); }
+
+  /* ============ LIGHT THEME — "gallery print": the monograph on white paper ============
+     Same tokens, redefined. Photo-bedded furniture (--p-*) is deliberately NOT
+     overridden: plates, proof comparisons and the 2D hero keep dark scrims and
+     white furniture in both themes. AA verified: body 9.14:1, muted 5.55:1,
+     deep blue #20689a 5.22:1 on paper / 4.81:1 on raised (spec's #2477a8
+     computed 4.28:1 — below AA — so the deep is pulled one step darker;
+     display accent #2e8dc0 3.22:1, ≥30px serif display only). */
+  [data-theme="light"]{
+    color-scheme:light;
+    --bg:#f2efe9;                          /* gallery paper */
+    --bg-2:#eae6dd;                        /* raised card stock */
+    --bg-rgb:242,239,233;
+    --bg2-rgb:234,230,221;
+    --scrim-rgb:242,239,233;               /* mode-3d canvas scrim turns to paper glow */
+    --ink:#15181b;
+    --body-c:#3a4046;
+    --muted:#5a6066;
+    --faint:#8a9199;
+    --blue:#20689a;                        /* deep drafting blue — AA on paper at label sizes */
+    --blue-deep:#17567c;
+    --blue-display:#2e8dc0;                /* large serif display accents (≥3:1) */
+    --blue-hover:#17567c;                  /* hovers dive deeper instead of lighter */
+    --line:rgba(21,24,27,.16);
+    --line-2:rgba(21,24,27,.08);
+    --bline:rgba(32,104,154,.42);
+    --bline-2:rgba(32,104,154,.20);
+    --bline-strong:rgba(32,104,154,.62);
+    --scroll-bed:rgba(21,24,27,.07);
+    --modal-ov:rgba(21,24,27,.38);
+    --panel-bg:#f7f4ee;
+  }
+  /* over a full-bleed photo stage (html.ph, set by the engine) the chrome flips
+     back to photo furniture — white over the dark plates, in light theme too */
+  html.ph[data-theme="light"]{
+    --chrome-ink:#eef3f6; --chrome-muted:#9aa3ab;
+    --chrome-blue:#6EC1E4; --chrome-line:rgba(238,243,246,.16);
+  }
+  /* the dark accent photographs read as faint plates pressed into the paper */
+  [data-theme="light"] .backdrop img{ opacity:.09; filter:saturate(.45) brightness(1.05) contrast(.9); }
+  /* the urna sketch is dark line art on white stock: on paper it prints
+     directly (multiply) instead of the dark theme's invert + screen */
+  [data-theme="light"] .pp-sketch img{ filter:sepia(.35) hue-rotate(165deg) saturate(1.2) contrast(1.05);
+    mix-blend-mode:multiply; opacity:.26; }
+
+  /* 300ms cross-paint on themed surfaces only — never on plates/images, and
+     never on elements that already carry reveal transitions (.rv etc.) */
+  @media(prefers-reduced-motion:no-preference){
+    html, body, .panel, .stats .cell, .pf-entry, .glab,
+    .brand .bw, .brand .bw small, .brand svg, .topright, .cue .word{
+      transition:background-color .3s ease, color .3s ease, border-color .3s ease;
+    }
+    /* the method cards are .rv reveals — restate the reveal pair alongside the
+       theme pair so neither transition clobbers the other */
+    .cards .card{
+      transition:opacity .9s var(--ease-page), transform .9s var(--ease-page),
+                 background-color .3s ease, color .3s ease, border-color .3s ease;
+    }
+  }
+</style>
+
+<!-- ============ 3D experience (Task 10): import map + capability gate ============
+     three.js is pinned to 0.170.0 on jsDelivr. If an offline deploy is ever needed,
+     download https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js next to
+     this file and change the import map entry to "./three.module.js". -->
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }
+</script>
+<script>
+(function(){
+  var ok = false;
+  try { var c = document.createElement('canvas');
+        ok = !!(window.WebGL2RenderingContext && c.getContext('webgl2')); } catch(e){}
+  if (new URLSearchParams(location.search).has('no3d')) ok = false;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) ok = false;
+  document.documentElement.classList.add(ok ? 'mode-3d' : 'mode-2d');
+  window.__use3d = ok;
+})();
+</script>
+</head>
+<body>
+
+  <!-- fixed WebGL layer placeholder — Task 10 mounts Three.js here (z below content) -->
+  <div id="gl" aria-hidden="true"><canvas></canvas></div>
+
+  <!-- fixed hero visual: the urna night render, drawn first as its own blueprint -->
+  <div id="heroVis">
+    <picture class="hv">
+      <source srcset="img/mittal-tower-night.webp" type="image/webp">
+      <img src="img/mittal-tower-night.jpg" loading="eager" fetchpriority="high"
+           alt="Night render of the urna twin residential towers glowing over Versova, Mumbai — design-stage visualization by BuildHive Architects" />
+    </picture>
+    <picture class="hv" id="heroBlue" aria-hidden="true">
+      <source srcset="img/mittal-tower-night.webp" type="image/webp">
+      <img src="img/mittal-tower-night.jpg" loading="eager" alt="" />
+    </picture>
+    <div class="hv-scrim" aria-hidden="true"></div>
+  </div>
+
+  <!-- ============ FEATURED WORK — urna (fixed full-bleed plate, four leaves) ============ -->
+  <div class="plate plate--urna" id="plateUrna" data-plate-for="urna" data-push="1.06">
+
+    <!-- leaf 1 · the tower at night -->
+    <div class="leaf" data-w="0,0.30">
+      <div class="plate-bed"><picture>
+        <source srcset="img/mittal-tower-night.webp" type="image/webp">
+        <img src="img/mittal-tower-night.jpg" loading="lazy"
+             alt="Night render of the urna twin residential towers glowing over Versova, Mumbai — design-stage visualization" />
+      </picture></div>
+      <div class="plate-scrim" aria-hidden="true"></div>
+      <svg class="plate-anno" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g>
+          <!-- tower-height dimension string — right edge; lower-left is furniture-only -->
+          <line class="anno-d" pathLength="1" x1="905" y1="268" x2="905" y2="470" style="--d:0ms"/>
+          <line class="anno-d" pathLength="1" x1="905" y1="640" x2="905" y2="820" style="--d:0ms"/>
+          <line class="tk anno-f" x1="899" y1="268" x2="911" y2="268" style="--d:960ms"/>
+          <line class="tk anno-f" x1="899" y1="820" x2="911" y2="820" style="--d:960ms"/>
+          <text class="anno-f" transform="rotate(-90 905 555)" x="905" y="559" text-anchor="middle" style="--d:960ms">UP TO 18 STOREYS · FSI 5.4</text>
+          <text class="anno-f t-sm" transform="rotate(-90 925 555)" x="925" y="559" text-anchor="middle" style="--d:1180ms">THE DENSEST MUMBAI PERMITS</text>
+          <!-- data callout: the towers -->
+          <circle class="dt anno-f" cx="600" cy="330" r="3" style="--d:240ms"/>
+          <line class="ld anno-f" x1="600" y1="330" x2="690" y2="225" style="--d:360ms"/>
+          <line class="anno-d" pathLength="1" x1="690" y1="225" x2="975" y2="225" style="--d:480ms"/>
+          <text class="anno-f" x="692" y="211" style="--d:1100ms">TWIN TOWERS · VERSOVA, MUMBAI</text>
+          <!-- status callout — the honesty line -->
+          <circle class="dt anno-f" cx="518" cy="555" r="3" style="--d:600ms"/>
+          <line class="ld anno-f" x1="518" y1="555" x2="590" y2="480" style="--d:700ms"/>
+          <line class="anno-d" pathLength="1" x1="590" y1="480" x2="820" y2="480" style="--d:800ms"/>
+          <text class="anno-f" x="592" y="466" style="--d:1300ms">STAGE — DESIGN DEVELOPMENT</text>
+          <!-- façade-module study hint — right region (x>700), clear of the
+               dimension string at x=905 and of the lower-left title zone -->
+          <g class="dim-grid">
+            <line class="anno-d" pathLength="1" x1="772" y1="640" x2="772" y2="836" style="--d:480ms"/>
+            <line class="anno-d" pathLength="1" x1="808" y1="640" x2="808" y2="836" style="--d:560ms"/>
+            <line class="anno-d" pathLength="1" x1="844" y1="640" x2="844" y2="836" style="--d:640ms"/>
+            <line class="anno-d" pathLength="1" x1="760" y1="845" x2="856" y2="845" style="--d:720ms"/>
+          </g>
+        </g>
+      </svg>
+      <div class="plate-mark" aria-hidden="true"><span class="pm-word">Featured Work</span><span class="pm-name">urna</span></div>
+      <div class="plate-foot">
+        <p class="plate-title"><span class="line"><span class="line-inner">urna</span></span><span class="line"><span class="line-inner"><em>by Sanjay Mittal.</em></span></span></p>
+        <p class="plate-caption">Twin residential towers rising over Versova, Mumbai — a zero-discharge, parametric Art-Deco landmark of roughly 97,000 built-up square feet across twin towers rising to eighteen storeys.
+          <span class="pc-tag">urna by Sanjay Mittal · The Residences — currently in design development</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- leaf 2 · the roofscape -->
+    <div class="leaf" data-w="0.30,0.55">
+      <div class="plate-bed"><picture>
+        <source srcset="img/mittal-aerial-terraces.webp" type="image/webp">
+        <img src="img/mittal-aerial-terraces.jpg" loading="lazy"
+             alt="Drone aerial render of urna's curved parametric green-roof terraces crowning the twin towers" />
+      </picture></div>
+      <div class="plate-scrim" aria-hidden="true"></div>
+      <svg class="plate-anno" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g>
+          <!-- plot dimension string — right half; lower-left is furniture-only -->
+          <line class="anno-d" pathLength="1" x1="540" y1="625" x2="660" y2="625" style="--d:0ms"/>
+          <line class="anno-d" pathLength="1" x1="850" y1="625" x2="960" y2="625" style="--d:0ms"/>
+          <line class="tk anno-f" x1="540" y1="619" x2="540" y2="631" style="--d:960ms"/>
+          <line class="tk anno-f" x1="960" y1="619" x2="960" y2="631" style="--d:960ms"/>
+          <text class="anno-f" x="755" y="630" text-anchor="middle" style="--d:960ms">≈ 18,000 SQFT PLOT</text>
+          <!-- terrace callout -->
+          <circle class="dt anno-f" cx="430" cy="390" r="3" style="--d:240ms"/>
+          <line class="ld anno-f" x1="430" y1="390" x2="382" y2="280" style="--d:360ms"/>
+          <line class="anno-d" pathLength="1" x1="160" y1="278" x2="380" y2="278" style="--d:480ms"/>
+          <text class="anno-f" style="--d:1100ms"><tspan x="162" y="246">PARAMETRIC GREEN ROOF</tspan><tspan x="162" y="264">ZERO-DISCHARGE</tspan></text>
+          <!-- built-up callout -->
+          <circle class="dt anno-f" cx="585" cy="470" r="3" style="--d:600ms"/>
+          <line class="ld anno-f" x1="585" y1="470" x2="700" y2="415" style="--d:700ms"/>
+          <line class="anno-d" pathLength="1" x1="700" y1="418" x2="905" y2="418" style="--d:800ms"/>
+          <text class="anno-f" x="702" y="404" style="--d:1300ms">~97,000 SQFT BUILT-UP</text>
+          <!-- north arrow -->
+          <circle class="anno-d" pathLength="1" cx="880" cy="798" r="34" style="--d:240ms"/>
+          <line class="anno-d" pathLength="1" x1="880" y1="820" x2="880" y2="776" style="--d:400ms"/>
+          <polyline class="anno-f" points="872,786 880,772 888,786" style="--d:1040ms"/>
+          <text class="anno-f" x="880" y="746" text-anchor="middle" style="--d:1040ms">N</text>
+        </g>
+      </svg>
+      <p class="leaf-tag">The roofscape</p>
+    </div>
+
+    <!-- leaf 3 · the arrival -->
+    <div class="leaf" data-w="0.55,0.78">
+      <div class="plate-bed"><picture>
+        <source srcset="img/mittal-porte-cochere.webp" type="image/webp">
+        <img src="img/mittal-porte-cochere.jpg" loading="lazy"
+             alt="urna porte-cochère render at night — a car waiting under the lit arrival canopy on wet marble" />
+      </picture></div>
+      <div class="plate-scrim" aria-hidden="true"></div>
+      <svg class="plate-anno" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g>
+          <circle class="dt anno-f" cx="520" cy="430" r="3" style="--d:0ms"/>
+          <line class="ld anno-f" x1="520" y1="430" x2="660" y2="300" style="--d:120ms"/>
+          <line class="anno-d" pathLength="1" x1="660" y1="300" x2="790" y2="300" style="--d:240ms"/>
+          <text class="anno-f" x="662" y="286" style="--d:900ms">THE ARRIVAL</text>
+        </g>
+      </svg>
+      <p class="leaf-tag">The arrival</p>
+    </div>
+
+    <!-- leaf 4 · the lobby -->
+    <div class="leaf" data-w="0.78,1">
+      <div class="plate-bed"><picture>
+        <source srcset="img/mittal-lobby.webp" type="image/webp">
+        <img src="img/mittal-lobby.jpg" loading="lazy"
+             alt="urna lobby lounge render — gold sculpture against a parametric wood wave wall" />
+      </picture></div>
+      <div class="plate-scrim" aria-hidden="true"></div>
+      <svg class="plate-anno" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g>
+          <circle class="dt anno-f" cx="610" cy="400" r="3" style="--d:0ms"/>
+          <line class="ld anno-f" x1="610" y1="400" x2="720" y2="278" style="--d:120ms"/>
+          <line class="anno-d" pathLength="1" x1="720" y1="278" x2="975" y2="278" style="--d:240ms"/>
+          <text class="anno-f" x="722" y="264" style="--d:900ms">PARAMETRIC WOOD WAVE WALL</text>
+        </g>
+      </svg>
+      <p class="leaf-tag">The lobby</p>
+    </div>
+
+    <span class="plate-corner pc-tl" aria-hidden="true"></span>
+    <span class="plate-corner pc-tr" aria-hidden="true"></span>
+    <span class="plate-corner pc-bl" aria-hidden="true"></span>
+    <span class="plate-corner pc-br" aria-hidden="true"></span>
+  </div>
+
+  <!-- ============ FEATURED WORK — AMODAA, Lonavala (single leaf) ============ -->
+  <div class="plate plate--amodaa" id="plateAmodaa" data-plate-for="amodaa" data-push="1.05">
+    <div class="leaf" data-w="0,1">
+      <div class="plate-bed"><picture>
+        <source srcset="img/arch-lonavala-bungalow.webp" type="image/webp">
+        <img src="img/arch-lonavala-bungalow.jpg" loading="lazy"
+             alt="AMODAA bungalow at Lonavala at dusk — lit perforated-metal feature screen over the entrance" />
+      </picture></div>
+      <div class="plate-scrim" aria-hidden="true"></div>
+      <svg class="plate-anno" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g>
+          <!-- built-area dimension string — right half; lower-left is furniture-only -->
+          <line class="anno-d" pathLength="1" x1="555" y1="580" x2="645" y2="580" style="--d:0ms"/>
+          <line class="anno-d" pathLength="1" x1="855" y1="580" x2="945" y2="580" style="--d:0ms"/>
+          <line class="tk anno-f" x1="555" y1="574" x2="555" y2="586" style="--d:960ms"/>
+          <line class="tk anno-f" x1="945" y1="574" x2="945" y2="586" style="--d:960ms"/>
+          <text class="anno-f" x="750" y="585" text-anchor="middle" style="--d:960ms">4,500 SQFT BUA · BUILT WORK</text>
+          <!-- feature screen callout -->
+          <circle class="dt anno-f" cx="425" cy="365" r="3" style="--d:240ms"/>
+          <line class="ld anno-f" x1="425" y1="365" x2="545" y2="248" style="--d:360ms"/>
+          <line class="anno-d" pathLength="1" x1="545" y1="248" x2="875" y2="248" style="--d:480ms"/>
+          <text class="anno-f" x="547" y="234" style="--d:1100ms">PERFORATED-METAL / FEATURE SCREEN</text>
+          <!-- location callout -->
+          <circle class="dt anno-f" cx="700" cy="640" r="3" style="--d:600ms"/>
+          <line class="ld anno-f" x1="700" y1="640" x2="790" y2="735" style="--d:700ms"/>
+          <line class="anno-d" pathLength="1" x1="790" y1="738" x2="955" y2="738" style="--d:800ms"/>
+          <text class="anno-f" x="792" y="724" style="--d:1300ms">AMODAA · LONAVALA</text>
+        </g>
+      </svg>
+      <div class="plate-mark" aria-hidden="true"><span class="pm-word">Featured Work</span><span class="pm-name">AMODAA</span></div>
+      <div class="plate-foot">
+        <p class="plate-title"><span class="line"><span class="line-inner">AMODAA.</span></span><span class="line"><span class="line-inner"><em>A bungalow at Lonavala.</em></span></span></p>
+        <p class="plate-caption">A hill-station bungalow wrapped at dusk in a lit perforated-metal screen — a single house carrying the studio's full range from massing to the last joint.
+          <span class="pc-tag">AMODAA · Lonavala — built work</span>
+        </p>
+      </div>
+    </div>
+    <span class="plate-corner pc-tl" aria-hidden="true"></span>
+    <span class="plate-corner pc-tr" aria-hidden="true"></span>
+    <span class="plate-corner pc-bl" aria-hidden="true"></span>
+    <span class="plate-corner pc-br" aria-hidden="true"></span>
+  </div>
+
+  <!-- fixed chrome -->
+  <div id="chrome" aria-hidden="true">
+    <div class="brand">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M20 12 H25 A8 8 0 0 1 33 20 V27.5 A2.5 2.5 0 0 1 30.5 30 H20 A8 8 0 0 1 12 22 V20 A8 8 0 0 1 20 12 Z"/>
+          <path d="M43 12 H45 A7 7 0 0 1 52 19 V23 A7 7 0 0 1 45 30 H38.5 A2.5 2.5 0 0 1 36 27.5 V19 A7 7 0 0 1 43 12 Z"/>
+          <path d="M20 34 H30.5 A2.5 2.5 0 0 1 33 36.5 V44 A8 8 0 0 1 25 52 H20 A8 8 0 0 1 12 44 V42 A8 8 0 0 1 20 34 Z"/>
+          <path d="M38.5 34 H45 A7 7 0 0 1 52 41 V45 A7 7 0 0 1 45 52 H43 A7 7 0 0 1 36 45 V36.5 A2.5 2.5 0 0 1 38.5 34 Z"/>
+        </g>
+      </svg>
+      <span class="bw">Buildhive<small>Architects · Mumbai</small></span>
+    </div>
+    <div class="topright">Company Profile · 2026</div>
+    <div class="cue" id="cue"><div class="word">Scroll</div><div class="track"></div></div>
+    <div class="hv-tags" id="heroTags" data-stage="0">
+      <span class="tag tag-w">Drawn</span>
+      <span class="tag tag-r">Rendered</span>
+    </div>
+  </div>
+
+  <!-- theme switch — outside #chrome (aria-hidden) so assistive tech reaches it -->
+  <button type="button" id="themeBtn" class="theme-toggle" aria-label="Switch to light theme">
+    <span class="tt-disc" aria-hidden="true"></span>
+    <span class="tt-word" aria-hidden="true">Dark</span>
+  </button>
+
+  <nav id="scenes" aria-label="Chapters">
+    <button type="button" aria-label="Go to Intro">Intro</button>
+    <button type="button" aria-label="Go to urna">urna</button>
+    <button type="button" aria-label="Go to AMODAA">AMODAA</button>
+    <button type="button" aria-label="Go to Studio">Studio</button>
+    <button type="button" aria-label="Go to Scale">Scale</button>
+    <button type="button" aria-label="Go to Method">Method</button>
+    <button type="button" aria-label="Go to Proof">Proof</button>
+    <button type="button" aria-label="Go to Works">Works</button>
+    <button type="button" aria-label="Go to People">People</button>
+    <button type="button" aria-label="Go to Contact">Contact</button>
+  </nav>
+  <div id="progress" aria-hidden="true"></div>
+
+  <!-- virtual smooth-scroll stage -->
+  <div id="scroll"><div id="content">
+
+    <!-- HERO: transparent runway over the crossfading visual -->
+    <section class="hero" id="hero" data-chapter="hero">
+      <div class="hero-copy" id="heroCopy">
+        <p class="kicker rv">BuildHive Architects · Mumbai</p>
+        <h1 class="lede lede-xl rv"><span class="line"><span class="line-inner">What we draw</span></span><span class="line"><span class="line-inner"><em>is what we build.</em></span></span></h1>
+        <p class="sub rv">Masterplanners, architects and interior designers — with a 95%+ match between the render you approve and the keys you receive.</p>
+      </div>
+    </section>
+
+    <!-- FEATURED WORK — urna: transparent runway over the fixed plate -->
+    <section class="plate-run plate-run--I" data-chapter="urna" id="runUrna">
+      <h2 class="sr-only">Featured work — urna by Sanjay Mittal. Twin residential towers, Versova, Mumbai — currently in design development.</h2>
+    </section>
+
+    <!-- FEATURED WORK — AMODAA: transparent runway over the fixed plate -->
+    <section class="plate-run plate-run--II" data-chapter="amodaa" id="runAmodaa">
+      <h2 class="sr-only">Featured work — AMODAA. A bungalow at Lonavala — built work.</h2>
+    </section>
+
+    <!-- 01 — THE STUDIO -->
+    <section class="panel" data-chapter="studio">
+      <div class="backdrop" aria-hidden="true">
+        <picture>
+          <source srcset="img/novatr-tower-dusk.webp" type="image/webp">
+          <img src="img/novatr-tower-dusk.jpg" alt="" loading="lazy" />
+        </picture>
+      </div>
+      <div class="wrap">
+        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>01 — The Studio</p></div>
+        <h2 class="lede rv"><span class="line"><span class="line-inner">A boutique studio</span></span><span class="line"><span class="line-inner"><em>that builds like a tech company.</em></span></span></h2>
+        <p class="sub rv">Two principal architects and one tight team — small enough that the people who sketch your building are the ones standing on its slab, equipped like a firm ten times the size.</p>
+        <ul class="facts rv">
+          <li><span class="fx">01</span>Principals in every meeting, on every site</li>
+          <li><span class="fx">02</span>One contract — masterplan to door handle</li>
+          <li><span class="fx">03</span>The BIM model is the single source of truth: BOQs, clashes, as-builts</li>
+          <li><span class="fx">04</span>A live camera on every site, 24/7</li>
+          <li><span class="fx">05</span>Geopathic + Vastu mapping before a line is drawn</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 02 — BUILT AT SCALE -->
+    <section class="panel" data-chapter="scale">
+      <div class="wrap">
+        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>02 — Built at Scale</p></div>
+        <h2 class="lede rv"><span class="line"><span class="line-inner">Measured in square feet —</span></span><span class="line"><span class="line-inner"><em>and in days.</em></span></span></h2>
+        <div class="ticks rv" aria-hidden="true"></div>
+        <div class="stats rv" id="stats">
+          <div class="cell">
+            <div class="num"><span class="cnt" data-count="0.6" data-dec="1">0.6</span><span class="unit">M</span></div>
+            <div class="lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>sqft delivered &amp; in progress</div>
+          </div>
+          <div class="cell">
+            <div class="num"><span class="cnt" data-count="75">75</span>–<span class="cnt" data-count="90">90</span></div>
+            <div class="lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>days design-to-handover</div>
+          </div>
+          <div class="cell">
+            <div class="num"><span class="cnt" data-count="95">95</span><span class="pct">%+</span></div>
+            <div class="lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>render-to-reality match</div>
+          </div>
+          <div class="cell">
+            <div class="num"><span class="cnt" data-count="48">48</span><span class="pct">+</span></div>
+            <div class="lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>years across two principals</div>
+          </div>
+          <div class="cell cell-sm">
+            <div class="num"><span class="cnt" data-count="7">7</span></div>
+            <div class="lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>cities — Mumbai to London</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 — METHOD: how we design, and how we deliver -->
+    <section class="panel" data-chapter="method">
+      <div class="wrap">
+        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>03 — Method</p></div>
+        <h2 class="lede rv"><span class="line"><span class="line-inner">How we design —</span></span><span class="line"><span class="line-inner"><em>and how we deliver.</em></span></span></h2>
+        <div class="cards">
+          <button type="button" class="card rv" data-modal="0" aria-haspopup="dialog">
+            <span class="meta"><span class="dom">Design</span><span class="ix">01</span></span>
+            <span class="card-h">Modular Intelligence</span>
+            <span class="card-p">A 100,000 sqft floor is twelve modules, not a thousand decisions. Modular planning is why our schedules hold.</span>
+            <span class="card-hint">Open: how modules hold schedules</span>
+          </button>
+          <button type="button" class="card rv" data-modal="1" aria-haspopup="dialog">
+            <span class="meta"><span class="dom">Technology</span><span class="ix">02</span></span>
+            <span class="card-h">BIM + AI</span>
+            <span class="card-p">Every discipline coordinated in one 3D model — clashes die on screen, not on site. AI speeds iteration; BOQs come straight from the model; cameras stream every site, day and night.</span>
+            <span class="card-note"><span class="cn-k">As-built BIM at handover · 4D scheduling</span><em>You receive the building — and its model.</em></span>
+            <span class="card-hint">Open: where clashes die first</span>
+          </button>
+          <button type="button" class="card rv" data-modal="2" aria-haspopup="dialog">
+            <span class="meta"><span class="dom">Wellness</span><span class="ix">03</span></span>
+            <span class="card-h">Geopathic + Vastu</span>
+            <span class="card-p">Earth-energy lines mapped before planning. Boardrooms, cabins and finance zones placed where people perform — corrected at fitout, because it cannot be corrected after.</span>
+            <span class="card-hint">Open: the floor we map first</span>
+          </button>
+        </div>
+
+        <!-- delivery half: the two-phase timeline -->
+        <h3 class="meth-split rv">Two phases. <em>Every day accounted for.</em></h3>
+
+        <div class="phase rv">
+          <div class="ph-head">
+            <div><span class="ph-k">Phase 1</span><h4 class="ph-h">Design Development</h4></div>
+            <div class="ph-days"><span class="num">35</span><span class="u">days</span></div>
+          </div>
+          <ol class="tl">
+            <li><span class="st-ix">1</span><span class="st-name">Strategic brief</span></li>
+            <li><span class="st-ix">2</span><span class="st-name">Concept design</span></li>
+            <li><span class="st-ix">3</span><span class="st-name">Detailed design</span></li>
+            <li><span class="st-ix">4</span><span class="st-name">Technical docs</span></li>
+          </ol>
+          <div class="tl-rule" aria-hidden="true"><div class="folio-rule" style="position:relative; width:100%;"><span class="tr-lab">35 days, end to end</span></div></div>
+        </div>
+
+        <div class="phase rv">
+          <div class="ph-head">
+            <div><span class="ph-k">Phase 2</span><h4 class="ph-h">Build</h4></div>
+            <div class="ph-days"><span class="num">90–120</span><span class="u">days</span></div>
+          </div>
+          <ol class="tl">
+            <li><span class="st-ix">1</span><span class="st-name">Mobilization</span><span class="st-days">7–10 days</span></li>
+            <li><span class="st-ix">2</span><span class="st-name">Core services</span><span class="st-days">30–35 days</span></li>
+            <li><span class="st-ix">3</span><span class="st-name">Interior build-out</span><span class="st-days">30–40 days</span></li>
+            <li><span class="st-ix">4</span><span class="st-name">Finishing</span><span class="st-days">18–30 days</span></li>
+            <li><span class="st-ix">5</span><span class="st-name">Handover</span><span class="st-days">5–15 days</span></li>
+          </ol>
+          <div class="tl-rule" aria-hidden="true"><div class="folio-rule" style="position:relative; width:100%;"><span class="tr-lab">90–120 days, site to keys</span></div></div>
+        </div>
+
+        <p class="sub rv">Phases overlap — approvals and procurement run while design details. Door to door: 75–90 days.</p>
+
+        <div class="ap-callout rv">
+          <div class="folio-rule" aria-hidden="true"></div>
+          <p class="apc-line">Twelve commercial projects in the record — <em>every one handed over in ninety days.</em></p>
+          <p class="apc-tag">12 projects · every one: 90 days</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 — THE PROOF: transparent runway over the fixed full-bleed proof stage -->
+    <section class="plate-run plate-run--proof" data-chapter="proof" id="runProof">
+      <h2 class="sr-only">The proof — a 95% match between the render approved and the space photographed as built. Open office and board room, render versus as-built photograph.</h2>
+    </section>
+
+    <!-- 05 — WORKS -->
+    <section class="panel" data-chapter="index">
+      <div class="wrap">
+        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>05 — Works</p></div>
+        <h2 class="lede rv"><span class="line"><span class="line-inner">From masterplan</span></span><span class="line"><span class="line-inner"><em>to door handle.</em></span></span></h2>
+        <ol class="index">
+          <li class="rv" style="--i:0">
+            <span class="ix-name">urna by Sanjay Mittal</span>
+            <span class="ix-type">Residential towers</span>
+            <span class="ix-place">Versova, Mumbai</span>
+            <span class="ix-fact">In design development</span>
+          </li>
+          <li class="rv" style="--i:1">
+            <span class="ix-name">AMODAA bungalow</span>
+            <span class="ix-type">Architecture</span>
+            <span class="ix-place">Lonavala</span>
+            <span class="ix-fact">Built work</span>
+          </li>
+          <li class="rv" style="--i:2">
+            <span class="ix-name">Villa township masterplan</span>
+            <span class="ix-type">Masterplanning</span>
+            <span class="ix-place">Mira Bhayandar</span>
+            <span class="ix-fact">100 plots</span>
+          </li>
+          <li class="rv" style="--i:3">
+            <span class="ix-name">Hotel + retail</span>
+            <span class="ix-type">Architecture</span>
+            <span class="ix-place">Daman</span>
+            <span class="ix-fact">50,000 sqft · design to permit</span>
+          </li>
+          <li class="rv" style="--i:4">
+            <span class="ix-name">Shanmukhananda Hall facelift</span>
+            <span class="ix-type">Cultural</span>
+            <span class="ix-place">Matunga, Mumbai</span>
+            <span class="ix-fact">Civic landmark</span>
+          </li>
+          <li class="rv" style="--i:5">
+            <span class="ix-name">Senvion</span>
+            <span class="ix-type">Workplace</span>
+            <span class="ix-place">Mumbai</span>
+            <span class="ix-fact">15,000 sqft · 90 days · 2024</span>
+          </li>
+          <li class="rv" style="--i:6">
+            <span class="ix-name">ACG</span>
+            <span class="ix-type">Workplace</span>
+            <span class="ix-place">Kandivali</span>
+            <span class="ix-fact">8,500 sqft · 90 days · 2025</span>
+          </li>
+          <li class="rv" style="--i:7">
+            <span class="ix-name">AstaGuru</span>
+            <span class="ix-type">Workplace</span>
+            <span class="ix-place">Fort, Mumbai</span>
+            <span class="ix-fact">9,000 sqft · 90 days · 2025</span>
+          </li>
+          <li class="rv" style="--i:8">
+            <span class="ix-name">BSM</span>
+            <span class="ix-type">Workplace</span>
+            <span class="ix-place">Olympia, Powai</span>
+            <span class="ix-fact">20,000 sqft · 90 days · 2022</span>
+          </li>
+        </ol>
+        <p class="ix-note rv">The index spans BuildHive and DBC — sister concerns, shared principals, one team.</p>
+      </div>
+    </section>
+
+    <!-- 06 — THE PRINCIPALS -->
+    <section class="panel" data-chapter="principals">
+      <div class="backdrop" aria-hidden="true">
+        <picture>
+          <source srcset="img/novatr-tower-night.webp" type="image/webp">
+          <img src="img/novatr-tower-night.jpg" alt="" loading="lazy" />
+        </picture>
+      </div>
+      <div class="pp-sketch" aria-hidden="true">
+        <picture>
+          <source srcset="img/mittal-tower-sketch.webp" type="image/webp">
+          <img src="img/mittal-tower-sketch.jpg" alt="" loading="lazy" />
+        </picture>
+        <p class="pp-sketch-cap">first sketch — urna towers.</p>
+      </div>
+      <div class="wrap">
+        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>06 — The Principals</p></div>
+        <h2 class="lede rv"><span class="line"><span class="line-inner">Two architects.</span></span><span class="line"><span class="line-inner"><em>One signature.</em></span></span></h2>
+        <div class="pp-grid">
+          <article class="pp rv">
+            <span class="role">Principal</span>
+            <h3>Ar. Deepakk Bhatija</h3>
+            <p>23 years of large-scale projects — now midway through a Master's in Computational Design. The hand that sketches also writes the algorithm.</p>
+          </article>
+          <article class="pp rv">
+            <span class="role">Principal</span>
+            <h3>Ar. Darius Dalal</h3>
+            <p>24 years and a UK practice behind him, with one obsession: the built thing must match the drawing. He is the reason the 95% number exists.</p>
+          </article>
+        </div>
+        <div class="pp-strap rv">
+          <span class="num">48+</span>
+          <span class="lab">years combined design &amp; execution experience</span>
+        </div>
+        <p class="partners rv"><span class="c-lab">Key partners</span>Harsh Gangar &amp; Associates · Epicons Consultants · Avinash Raj &amp; Associates · AP Energy</p>
+      </div>
+    </section>
+
+    <!-- 07 — CONTACT / FOOTER -->
+    <footer class="panel" data-chapter="contact">
+      <div class="wrap">
+        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>07 — Contact</p></div>
+        <h2 class="lede rv"><span class="line"><span class="line-inner">Great Architecture</span></span><span class="line"><span class="line-inner"><em>begins with listening.</em></span></span></h2>
+        <p class="sub rv">Tell us what you're building.</p>
+        <div class="c-grid rv">
+          <div class="c-block">
+            <span class="c-lab">Studio</span>
+            <p>601, C Wing, Kailash Business Park,<br>Vikhroli West, Mumbai</p>
+          </div>
+          <div class="c-block">
+            <span class="c-lab">Email</span>
+            <p><a href="mailto:design@buildhive.co.in">design@buildhive.co.in</a><br>
+               <a href="mailto:buildhive21@gmail.com">buildhive21@gmail.com</a></p>
+          </div>
+          <div class="c-block">
+            <span class="c-lab">Phone</span>
+            <p><a href="tel:+919920130126">+91 99201 30126</a><br>
+               <a href="tel:+919820001791">+91 98200 01791</a></p>
+          </div>
+          <div class="c-block">
+            <span class="c-lab">Web</span>
+            <p><a href="https://buildhive.co.in" target="_blank" rel="noopener">buildhive.co.in</a></p>
+          </div>
+        </div>
+        <div class="folio-rule close-rule" aria-hidden="true"></div>
+        <div class="credit">
+          <span class="by">Created by</span>
+          <a class="lab" href="https://www.aetherlab.in" target="_blank" rel="noopener">Aether&nbsp;Lab</a>
+          <span class="links">
+            <a href="https://www.aetherlab.in" target="_blank" rel="noopener">www.aetherlab.in</a>
+            <span class="sep">·</span>
+            <a href="tel:+918591300630">+91&nbsp;85913&nbsp;00630</a>
+          </span>
+        </div>
+        <div class="footmeta">
+          <div>© 2026 · BuildHive Architects</div>
+          <div>Company Profile · Vikhroli West, Mumbai</div>
+        </div>
+      </div>
+    </footer>
+
+  </div></div>
+
+  <!-- ============ PROOF STAGE — fixed full-bleed render -> as-built reveal ============
+       Sits after #scroll (same z-index) so the drag handle is hit-testable above the
+       transparent proof runway. Driven by the proof chapter's progress; identical in
+       both modes. The drafting line is scroll-driven until the visitor takes it. -->
+  <div class="proof-stage" id="proofStage">
+
+    <!-- entry beat: the verdict -->
+    <div class="pf-beat pf-entry" data-w="0,0.26">
+      <p class="kicker pf-ui"><span class="pm-rule"></span>04 — The Proof</p>
+      <div class="pf-num pf-ui" aria-hidden="true"><span id="pfCount" data-count="95">95</span><span class="pf-pct">%</span></div>
+      <p class="pf-tagline pf-ui">The render is the promise; <em>the photograph is the receipt.</em></p>
+    </div>
+
+    <!-- comparison beat I: open office -->
+    <div class="pf-beat pf-cmp" data-w="0.26,0.63">
+      <picture>
+        <source srcset="img/open-office-render.webp" type="image/webp">
+        <img src="img/open-office-render.jpg" loading="lazy"
+             alt="Open office render — workstations, ceiling grid and cabins as visualized before construction" />
+      </picture>
+      <div class="pf-top" aria-hidden="true">
+        <picture>
+          <source srcset="img/open-office-actual.webp" type="image/webp">
+          <img src="img/open-office-actual.jpg" loading="lazy" alt="" />
+        </picture>
+      </div>
+      <div class="pf-line" aria-hidden="true"><span class="pf-tk pf-tk-t"></span><span class="pf-tk pf-tk-b"></span></div>
+      <span class="pf-lab pf-lab-l pf-ui" aria-hidden="true">Render</span>
+      <span class="pf-lab pf-lab-r pf-ui" aria-hidden="true">As Built</span>
+      <div class="pf-cap pf-ui"><span class="pc-name">Open office</span><span class="pc-sub">render / as built</span></div>
+      <div class="pf-handle" role="slider" tabindex="0" aria-hidden="true" aria-orientation="horizontal"
+           aria-label="Comparison line, open office: render versus as-built photograph"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="88" aria-valuetext="88% render">
+        <span class="pf-grip" aria-hidden="true">
+          <svg class="hive-mark" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true" focusable="false">
+            <path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+
+    <!-- comparison beat II: board room -->
+    <div class="pf-beat pf-cmp" data-w="0.63,1">
+      <picture>
+        <source srcset="img/boardroom-render.webp" type="image/webp">
+        <img src="img/boardroom-render.jpg" loading="lazy"
+             alt="Board room render — conference table, panelling and lighting as visualized before construction" />
+      </picture>
+      <div class="pf-top" aria-hidden="true">
+        <picture>
+          <source srcset="img/boardroom-actual.webp" type="image/webp">
+          <img src="img/boardroom-actual.jpg" loading="lazy" alt="" />
+        </picture>
+      </div>
+      <div class="pf-line" aria-hidden="true"><span class="pf-tk pf-tk-t"></span><span class="pf-tk pf-tk-b"></span></div>
+      <span class="pf-lab pf-lab-l pf-ui" aria-hidden="true">Render</span>
+      <span class="pf-lab pf-lab-r pf-ui" aria-hidden="true">As Built</span>
+      <div class="pf-cap pf-ui"><span class="pc-name">Board room</span><span class="pc-sub">render / as built · the same frame</span></div>
+      <div class="pf-handle" role="slider" tabindex="0" aria-hidden="true" aria-orientation="horizontal"
+           aria-label="Comparison line, board room: render versus as-built photograph"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="88" aria-valuetext="88% render">
+        <span class="pf-grip" aria-hidden="true">
+          <svg class="hive-mark" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true" focusable="false">
+            <path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+
+    <span class="plate-corner pc-tl" aria-hidden="true"></span>
+    <span class="plate-corner pc-tr" aria-hidden="true"></span>
+    <span class="plate-corner pc-bl" aria-hidden="true"></span>
+    <span class="plate-corner pc-br" aria-hidden="true"></span>
+  </div>
+
+  <!-- ============ METHOD MODALS — one dialog, three contents (method-modals.md, verbatim) ============ -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal-ov" id="modalOv"></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
+      <div class="modal-head">
+        <svg class="hive-mark" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true" focusable="false">
+          <path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/>
+        </svg>
+        <h3 class="modal-title" id="modalTitle"></h3>
+        <button type="button" class="modal-x" id="modalX" aria-label="Close dialog">×</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <template id="tplModal0" data-title="Designed in Modules">
+    <p>A floor is not one decision. It is hundreds, repeated.</p>
+    <p>We resolve them once. A floor decomposes into a small set of workplace modules — a desk cluster, a meeting room, a corridor run — designed to a fixed standard, then replicated across the plate. Each repeat reuses a settled detail, so the decision count collapses and the schedule holds. Fewer unique parts means fewer things to draw, price, procure, and check.</p>
+    <p>Repetition also disciplines the services. Intelligent zoning and load balancing size the cooling to the way the floor actually works, rather than to a worst-case guess. A 100,000 sqft office carries roughly 400 TR of air-conditioning load; zoning that load module by module is where the operating cost comes down — and where the energy targets are met without compromise.</p>
+    <p>The module is the unit. The building is the count.</p>
+    <dl class="modal-spec">
+      <div><dt>AC load, 100,000 sqft</dt><dd>~400 TR</dd></div>
+      <div><dt>Cooling sized by</dt><dd>intelligent zoning + load balancing</dd></div>
+      <div><dt>Repeating unit</dt><dd>desk cluster · meeting room · corridor</dd></div>
+    </dl>
+  </template>
+
+  <template id="tplModal1" data-title="Built Twice">
+    <p>We build the project twice. First in the model, then on site.</p>
+    <p>In the model, every discipline — architecture, structure, MEP, interiors — occupies the same coordinated space. A duct that wants the path of a beam shows up as a clash on screen, where it costs a redraw. So clashes die on the screen, not on site, where they cost a week. The bill of quantities is extracted straight from the model, so what is priced is what is drawn. 4D scheduling ties the geometry to the calendar, so the sequence is tested before anyone mobilises.</p>
+    <p>Through the build, 24/7 live HD cameras keep the site visible from anywhere. At handover the model is updated to as-built, so you receive the building — and its model: a single source of truth that outlasts the keys.</p>
+    <dl class="modal-spec">
+      <div><dt>Coordination</dt><dd>clashes resolved in model, pre-site</dd></div>
+      <div><dt>BOQ</dt><dd>extracted from the model</dd></div>
+      <div><dt>Handover</dt><dd>as-built model + 24/7 live cameras</dd></div>
+    </dl>
+  </template>
+
+  <template id="tplModal2" data-title="Mapped First">
+    <p>Before a single workstation is placed, we map the floor.</p>
+    <p>Geopathic stress is the term for natural distortions in the earth's energy field — caused by underground water streams, geological faults, and the Hartmann and Curry grid lines that cross the ground. These zones are not confined to the basement. They rise through a building up to roughly 1,000 ft, and along their lines people report weaker concentration and slower decisions.</p>
+    <p>So the mapping comes first — before space planning, not after. Stress lines, water veins, and fault zones are identified and documented, and the work that needs the clearest heads — leadership, finance — is positioned off those lines. Vastu alignment is read on the same map.</p>
+    <p>The correction is made once, during fitout, before the walls close. It is seamless, permanent, and needs zero structural rework afterward. Quiet engineering, applied to where people sit.</p>
+    <dl class="modal-spec">
+      <div><dt>Vertical reach of stress zones</dt><dd>~1,000 ft</dd></div>
+      <div><dt>Sources mapped</dt><dd>water streams · fault lines · Hartmann/Curry grids</dd></div>
+      <div><dt>Correction</dt><dd>at fitout, once · zero structural rework</dd></div>
+    </dl>
+  </template>
+
+<script>
+(function(){
+  'use strict';
+  var content    = document.getElementById('content');
+  var hero       = document.getElementById('hero');
+  var heroVis    = document.getElementById('heroVis');
+  var heroBlue   = document.getElementById('heroBlue');
+  var heroTags   = document.getElementById('heroTags');
+  var heroCopy   = document.getElementById('heroCopy');
+  var bar        = document.getElementById('progress');
+  var cue        = document.getElementById('cue');
+  var sceneEls   = Array.prototype.slice.call(document.querySelectorAll('#scenes button'));
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var coarse = window.matchMedia('(pointer: coarse)').matches;
+
+  // eased virtual scroll: fine pointers get the cinematic ease,
+  // coarse pointers / reduced-motion track native scroll 1:1.
+  var EASE_SCROLL  = (reduce || coarse) ? 1 : 0.075;
+  var HERO_SCREENS = 2.5;               // hero runway length, in viewport heights
+
+  var targetY = 0, smoothY = 0, maxScroll = 1, heroRun = 1, vh = window.innerHeight;
+  var cueHidden = false;
+  var modalLock = false;   // modal open: the engine ignores scroll, holds its frame
+  var photoCover = 0, phShown = false;   // is a full-bleed photo stage under the chrome?
+
+  /* ---- engine contract (Task 10 reads this; refreshed in measure() + every rAF tick) ---- */
+  window.__scrollState = {
+    smoothY: 0,
+    heroP: 0,     // 0..1 progress through the hero runway
+    pageP: 0,     // 0..1 whole-page progress (smoothY / maxScroll)
+    chapters: []  // [{el, top, height}] one per [data-chapter] panel, rebuilt in measure()
+  };
+
+  function clamp01(v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
+  function absTop(el){
+    var t = 0;
+    while(el && el !== content){ t += el.offsetTop; el = el.offsetParent; }
+    return t;
+  }
+
+  /* ---------- proof stage: full-bleed render -> as-built reveal beats ----------
+     The bed mechanism from the featured-work plates, with one interactive twist:
+     the drafting line is scroll-driven until the visitor drags it (pointer or
+     keyboard), after which that beat is theirs. ---------- */
+  var proof = null;
+  function setPF(b, v){
+    v = v < 0 ? 0 : (v > 100 ? 100 : v);
+    b.pos = v;
+    b.el.style.setProperty('--pos', v.toFixed(2) + '%');
+    var r = Math.round(v);
+    b.handle.setAttribute('aria-valuenow', String(r));
+    b.handle.setAttribute('aria-valuetext', r + '% render');
+  }
+  function wirePF(b){
+    var el = b.el;
+    function fromX(x){
+      if(!b.rect) b.rect = el.getBoundingClientRect();
+      setPF(b, (x - b.rect.left) / Math.max(1, b.rect.width) * 100);
+    }
+    function engage(e){
+      b.user = true; b.dragging = true;
+      try{ el.setPointerCapture(e.pointerId); }catch(_){}
+      fromX(e.clientX);
+    }
+    el.addEventListener('pointerdown', function(e){
+      if(e.pointerType === 'mouse' && e.button !== 0) return;
+      b.rect = el.getBoundingClientRect();
+      // touch: wait for a horizontal intent so vertical page-scroll still works
+      if(e.pointerType === 'touch'){ b.maybe = { x:e.clientX, y:e.clientY, id:e.pointerId }; return; }
+      e.preventDefault();
+      engage(e);
+    });
+    el.addEventListener('pointermove', function(e){
+      if(b.dragging){ fromX(e.clientX); return; }
+      if(b.maybe && e.pointerId === b.maybe.id){
+        var dx = Math.abs(e.clientX - b.maybe.x), dy = Math.abs(e.clientY - b.maybe.y);
+        if(dx > 8 && dx > dy){ b.maybe = null; engage(e); }
+        else if(dy > 12 && dy > dx){ b.maybe = null; }
+      }
+    });
+    function release(){ b.dragging = false; b.maybe = null; b.rect = null; }
+    el.addEventListener('pointerup', release);
+    el.addEventListener('pointercancel', release);
+    // keyboard: the handle is a real slider
+    b.handle.addEventListener('keydown', function(e){
+      var v = b.pos, k = e.key;
+      if(k === 'ArrowLeft'  || k === 'ArrowDown') v -= 3;
+      else if(k === 'ArrowRight' || k === 'ArrowUp') v += 3;
+      else if(k === 'PageDown') v -= 10;
+      else if(k === 'PageUp')   v += 10;
+      else if(k === 'Home') v = 0;
+      else if(k === 'End')  v = 100;
+      else return;
+      e.preventDefault();
+      b.user = true;
+      setPF(b, v);
+    });
+    setPF(b, 88);
+    b.handle.tabIndex = -1;        // released to the tab order when its beat is live
+  }
+  function initProof(){
+    var stage = document.getElementById('proofStage');
+    var run = content.querySelector('[data-chapter="proof"]');
+    if(!stage || !run) return;
+    var beats = Array.prototype.map.call(stage.querySelectorAll('.pf-beat'), function(el, i){
+      var w = (el.getAttribute('data-w') || '0,1').split(',');
+      var b = { el: el, a: parseFloat(w[0]), b: parseFloat(w[1]), first: i === 0, on: false,
+                cmp: el.classList.contains('pf-cmp'), pos: 88, user: false, hot: false,
+                handle: el.querySelector('.pf-handle'), dragging: false, maybe: null, rect: null };
+      if(b.cmp) wirePF(b);
+      return b;
+    });
+    proof = { stage: stage, run: run, beats: beats, top: 0, h: 1, shown: false };
+  }
+  function tickProof(){
+    if(!proof) return;
+    var p = clamp01((smoothY - (proof.top - vh)) / Math.max(1, proof.h + vh));
+    var vis = p > 0.001 && p < 0.999;
+    if(vis !== proof.shown){
+      proof.shown = vis;
+      proof.stage.style.visibility = vis ? 'visible' : 'hidden';
+      if(!vis) proof.stage.style.opacity = '0';
+    }
+    if(!vis) return;
+    var so = sstep(0, 0.08, p) * (1 - sstep(0.92, 1, p));
+    proof.stage.style.opacity = so.toFixed(3);
+    // chrome photo-cover: the comparison beats are photographs (the first cmp
+    // beat fades in across p 0.215..0.272); the entry beat is paper
+    var pc = so * sstep(0.215, 0.272, p);
+    if(pc > photoCover) photoCover = pc;
+    for(var i = 0; i < proof.beats.length; i++){
+      var b = proof.beats[i];
+      if(!b.first){ b.el.style.opacity = sstep(b.a - 0.045, b.a + 0.012, p).toFixed(3); }
+      var on = p >= b.a + (b.first ? 0.008 : 0.02) && p < b.b + 0.04;
+      if(on !== b.on){ b.on = on; b.el.classList.toggle('on', on); }
+      if(b.cmp){
+        var hot = p >= b.a && p < b.b;
+        if(hot !== b.hot){
+          b.hot = hot;
+          b.el.style.pointerEvents = hot ? 'auto' : 'none';
+          b.handle.tabIndex = hot ? 0 : -1;   // only the live beat's handle is tabbable
+          // ... and only the live beat's slider is exposed to assistive tech,
+          // so browse-mode users never meet a second, stale-valued slider
+          if(hot) b.handle.removeAttribute('aria-hidden');
+          else b.handle.setAttribute('aria-hidden', 'true');
+        }
+        if(hot && !b.user && !b.dragging){
+          // scroll-driven sweep: the line crosses right -> left, revealing the photo
+          var lp = clamp01((p - b.a) / Math.max(0.0001, b.b - b.a));
+          setPF(b, 88 - 78 * sstep(0.10, 0.86, lp));
+        }
+      }
+    }
+  }
+
+  /* ---------- featured-work plates: fixed beds + scroll parallax + annotation gating.
+       Driven by the chapter progress of each plate's transparent runway section,
+       so the plates are identical in both modes (the engine runs everywhere). ---------- */
+  var plates = [];
+  function sstep(a, b, x){ var t = clamp01((x - a) / (b - a)); return t * t * (3 - 2 * t); }
+  function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+  function initPlates(){
+    Array.prototype.forEach.call(document.querySelectorAll('.plate[data-plate-for]'), function(el){
+      var run = content.querySelector('[data-chapter="' + el.getAttribute('data-plate-for') + '"]');
+      if(!run) return;
+      var leaves = Array.prototype.map.call(el.querySelectorAll('.leaf'), function(lf, i){
+        var w = (lf.getAttribute('data-w') || '0,1').split(',');
+        return { el: lf, img: lf.querySelector('.plate-bed img'),
+                 a: parseFloat(w[0]), b: parseFloat(w[1]), first: i === 0, on: false };
+      });
+      plates.push({ el: el, run: run, leaves: leaves,
+                    push: parseFloat(el.getAttribute('data-push') || '1.06') - 1,
+                    top: 0, h: 1, shown: false });
+    });
+  }
+  function tickPlates(){
+    for(var i = 0; i < plates.length; i++){
+      var pl = plates[i];
+      var p = clamp01((smoothY - (pl.top - vh)) / Math.max(1, pl.h + vh));
+      var vis = p > 0.001 && p < 0.999;
+      if(vis !== pl.shown){
+        pl.shown = vis;
+        pl.el.style.visibility = vis ? 'visible' : 'hidden';
+        if(!vis) pl.el.style.opacity = '0';
+      }
+      if(!vis) continue;
+      var po = sstep(0, 0.10, p) * (1 - sstep(0.90, 1, p));
+      pl.el.style.opacity = po.toFixed(3);
+      if(po > photoCover) photoCover = po;
+      for(var j = 0; j < pl.leaves.length; j++){
+        var lf = pl.leaves[j];
+        var lp = clamp01((p - lf.a) / Math.max(0.0001, lf.b - lf.a));
+        if(!lf.first){ lf.el.style.opacity = sstep(lf.a - 0.05, lf.a + 0.015, p).toFixed(3); }
+        if(!reduce && lf.img){
+          // per-leaf depth push: each leaf enters at rest and is studied closer
+          var s = 1 + pl.push * easeOutCubic(lp);
+          lf.img.style.transform = 'scale(' + s.toFixed(4) + ') translate3d(0,' + ((lp - 0.5) * -2.4).toFixed(2) + '%,0)';
+        }
+        // annotation + furniture gate: the image settles, then the instrument annotates it
+        var on = p >= lf.a + (lf.first ? 0.012 : 0.02) && p < lf.b + 0.04;
+        if(on !== lf.on){ lf.on = on; lf.el.classList.toggle('lf-on', on); }
+      }
+    }
+  }
+
+  /* ---------- backdrop parallax (2D only): the accent photographs drift slowly ---------- */
+  var bdrops = [];
+  function initBackdrops(){
+    Array.prototype.forEach.call(document.querySelectorAll('.panel .backdrop img'), function(img){
+      var sec = img.closest ? img.closest('[data-chapter]') : null;
+      if(sec) bdrops.push({ img: img, sec: sec, top: 0, h: 1 });
+    });
+  }
+  function tickBackdrops(){
+    if(reduce || document.documentElement.classList.contains('mode-3d')) return;
+    for(var i = 0; i < bdrops.length; i++){
+      var bd = bdrops[i];
+      var p = clamp01((smoothY - (bd.top - vh)) / Math.max(1, bd.h + vh));
+      if(p <= 0 || p >= 1) continue;
+      bd.img.style.transform = 'translate3d(0,' + ((p - 0.5) * 8).toFixed(2) + '%,0) scale(1.12)';
+    }
+  }
+
+  function measure(){
+    vh = window.innerHeight;
+    hero.style.height = (HERO_SCREENS * vh) + 'px';
+    var h = content.offsetHeight;
+    document.body.style.height = h + 'px';
+    maxScroll = Math.max(1, h - vh);
+    heroRun   = Math.max(1, hero.offsetHeight - vh);
+
+    var els = content.querySelectorAll('[data-chapter]');
+    var chapters = [];
+    for(var i = 0; i < els.length; i++){
+      chapters.push({ el: els[i], top: absTop(els[i]), height: els[i].offsetHeight });
+    }
+    window.__scrollState.chapters = chapters;
+
+    if(proof){
+      proof.top = absTop(proof.run);
+      proof.h   = proof.run.offsetHeight;
+    }
+    for(var k = 0; k < plates.length; k++){
+      plates[k].top = absTop(plates[k].run);
+      plates[k].h   = plates[k].run.offsetHeight;
+    }
+    for(var n = 0; n < bdrops.length; n++){
+      bdrops[n].top = absTop(bdrops[n].sec);
+      bdrops[n].h   = bdrops[n].sec.offsetHeight;
+    }
+  }
+
+  function onScroll(){
+    if(modalLock) return;            // frozen while a dialog holds the page
+    targetY = window.scrollY || window.pageYOffset || 0;
+    if(!cueHidden && targetY > 40){ cue.style.opacity = '0'; cueHidden = true; }
+  }
+
+  function tick(){
+    // 1) eased page scroll (or 1:1 on touch / reduced-motion)
+    smoothY += (targetY - smoothY) * EASE_SCROLL;
+    if(Math.abs(targetY - smoothY) < 0.06) smoothY = targetY;
+    content.style.transform = 'translate3d(0,' + (-smoothY) + 'px,0)';
+
+    var heroP = clamp01(smoothY / heroRun);
+    var pageP = clamp01(smoothY / maxScroll);
+    var S = window.__scrollState;
+    S.smoothY = smoothY; S.heroP = heroP; S.pageP = pageP;
+
+    // 2) hero, single resolve: the blueprint becomes the night render, slowly
+    var s1 = clamp01((heroP - 0.12) / 0.62);
+    heroBlue.style.opacity = (1 - s1).toFixed(3);
+    var stIx = s1 < 0.5 ? '0' : '1';
+    if(heroTags.getAttribute('data-stage') !== stIx) heroTags.setAttribute('data-stage', stIx);
+    heroTags.style.opacity = (1 - clamp01((smoothY - heroRun * 0.9) / (vh * 0.45))).toFixed(3);
+    heroVis.style.visibility = (smoothY > heroRun + vh + 80) ? 'hidden' : 'visible';
+    heroCopy.style.opacity = Math.max(0, 1 - heroP * 2.6).toFixed(3);
+
+    // 3) whole-page progress bar
+    bar.style.transform = 'scaleX(' + pageP + ')';
+
+    // 4) active chapter tick
+    var probe = smoothY + vh * 0.55, idx = 0, ch = S.chapters;
+    for(var i = 0; i < ch.length; i++){ if(probe >= ch[i].top) idx = i; }
+    for(var k = 0; k < sceneEls.length; k++){ sceneEls[k].classList.toggle('on', k === idx); }
+
+    // 5) proof stage: beats, drafting-line sweep (until the user takes over)
+    photoCover = 0;
+    tickProof();
+
+    // 6) featured-work plates + backdrop drift
+    tickPlates();
+    tickBackdrops();
+
+    // 7) chrome photo-cover: while a full-bleed photo stage rides under the
+    //    fixed chrome, light theme flips the chrome to photo furniture (html.ph)
+    if(smoothY <= heroRun + vh + 80 &&
+       !document.documentElement.classList.contains('mode-3d')) photoCover = 1;  // 2D hero photo
+    var ph = photoCover > 0.5;
+    if(ph !== phShown){ phShown = ph; document.documentElement.classList.toggle('ph', ph); }
+
+    requestAnimationFrame(tick);
+  }
+
+  /* ---------- count-up stats (first reveal; skipped under reduced motion) ---------- */
+  (function(){
+    if(reduce || !('IntersectionObserver' in window)) return;
+    function arm(root, cnts, threshold){
+      if(!root) return;
+      cnts = cnts || Array.prototype.slice.call(root.querySelectorAll('.cnt'));
+      if(!cnts.length) return;
+      cnts.forEach(function(c){
+        c.textContent = (0).toFixed(parseInt(c.getAttribute('data-dec') || '0', 10));
+      });
+      var fired = false;
+      var io = new IntersectionObserver(function(entries){
+        for(var i = 0; i < entries.length; i++){
+          if(entries[i].isIntersecting && !fired){
+            fired = true; io.disconnect();
+            cnts.forEach(run);
+          }
+        }
+      }, { threshold: threshold == null ? 0.35 : threshold });
+      io.observe(root);
+    }
+    arm(document.getElementById('stats'));
+    // proof entry beat: the huge 95% counts up as the chapter arrives.
+    // (the markup ships "95", so reduced-motion / no-IO stays static)
+    var pfc = document.getElementById('pfCount');
+    if(pfc) arm(document.getElementById('runProof'), [pfc], 0);
+    function run(c){
+      var target = parseFloat(c.getAttribute('data-count'));
+      var dec = parseInt(c.getAttribute('data-dec') || '0', 10);
+      var t0 = null, dur = 1600;
+      function fr(t){
+        if(t0 === null) t0 = t;
+        var p = Math.min(1, (t - t0) / dur);
+        p = 1 - Math.pow(1 - p, 3);
+        c.textContent = (target * p).toFixed(dec);
+        if(p < 1) requestAnimationFrame(fr);
+      }
+      requestAnimationFrame(fr);
+    }
+  })();
+
+  /* ---------- soft reveals (.rv) + the principals' sketch draw-wipe ---------- */
+  (function(){
+    var els = document.querySelectorAll('.rv, .pp-sketch');
+    if(reduce || !('IntersectionObserver' in window)){
+      Array.prototype.forEach.call(els, function(el){ el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+    Array.prototype.forEach.call(els, function(el){ io.observe(el); });
+  })();
+
+  var rt;
+  function onResize(){ clearTimeout(rt); rt = setTimeout(measure, 120); }
+
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onResize);
+  if(window.visualViewport){ window.visualViewport.addEventListener('resize', onResize); }
+  window.addEventListener('orientationchange', function(){ setTimeout(measure, 250); });
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ measure(); }); }
+  window.addEventListener('load', measure);
+
+  /* ---------- clickable chapter ticks: fast-glide jump navigation ----------
+     ticks map 1:1 to __scrollState.chapters (same positional mapping the
+     active-tick sync uses); targets resolve at click time, so resize/font
+     reflows are already baked in via measure(). */
+  var GLIDE_CAP_VH = 6;   // max eased flight distance, in viewport heights (~1s at 0.075)
+  function jumpTo(top){
+    if(typeof top !== 'number' || isNaN(top)) return;
+    top = Math.max(0, Math.min(top, maxScroll));
+    if(reduce){ window.scrollTo({ top: top, behavior: 'auto' }); return; }
+    if(coarse){ window.scrollTo({ top: top, behavior: 'smooth' }); return; }
+    // fine pointer: instant native jump — the 0.075 ease turns it into a glide.
+    // cap the flight: pre-seed smoothY so long jumps still land in ~1s.
+    var cap = GLIDE_CAP_VH * vh;
+    if(Math.abs(top - smoothY) > cap){
+      smoothY = Math.max(0, top > smoothY ? top - cap : top + cap);
+    }
+    targetY = top;                 // avoid one frame of easing toward the stale target
+    window.scrollTo(0, top);
+  }
+  window.__scrollState.jumpTo = jumpTo;   // exported hook — outsiders never touch engine internals
+  sceneEls.forEach(function(btn, i){
+    btn.addEventListener('click', function(){
+      var ch = window.__scrollState.chapters;
+      if(!ch || !ch[i]) return;    // pre-measure safety: no chapters, no jump
+      jumpTo(ch[i].top);
+    });
+  });
+
+  /* ---------- method modals: one dialog, three contents ----------
+     Scroll lock x virtual scroll: the engine reads window scroll into targetY and
+     moves #content by transform — locking is therefore two-sided. (1) html gets
+     overflow:hidden, so the browser stops scrolling at the source (wheel, touch,
+     keys, scrollbar). (2) modalLock makes onScroll ignore any stray scroll event
+     (the scrollbar-removal reflow, browser restorations), so targetY never moves,
+     smoothY converges and the rAF tick idles stable underneath the dialog. On
+     close the saved offset is re-asserted BEFORE the engine listens again, so
+     there is no jump in either browser behavior. */
+  (function(){
+    var modal = document.getElementById('modal');
+    if(!modal) return;
+    var panel = modal.querySelector('.modal-panel');
+    var title = document.getElementById('modalTitle');
+    var body  = document.getElementById('modalBody');
+    var xBtn  = document.getElementById('modalX');
+    var ov    = document.getElementById('modalOv');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.cards .card[data-modal]'));
+    var lastFocus = null, savedY = 0, openIdx = -1;
+
+    /* 3D morph hook — the module script lerps toward this each frame.
+       0 = resting grid, 1..3 = that pillar's story. Never set under reduced
+       motion (3D is also hard-gated off there). */
+    window.__morphTarget = 0;
+    var finePointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+    function setMorph(n){ if(!reduce) window.__morphTarget = n; }
+    function hoverMorph(){           // after close: restore whatever is hovered/focused
+      var n = 0;
+      for(var i = 0; i < cards.length; i++){
+        try{ if(cards[i].matches(':hover') || cards[i] === document.activeElement) n = i + 1; }catch(_){}
+      }
+      setMorph(n);
+    }
+
+    function lock(){
+      savedY = window.scrollY || window.pageYOffset || 0;
+      modalLock = true;
+      document.documentElement.classList.add('modal-open');
+    }
+    function unlock(){
+      document.documentElement.classList.remove('modal-open');
+      window.scrollTo(0, savedY);
+      targetY = savedY;
+      modalLock = false;
+    }
+
+    function focusables(){
+      return Array.prototype.filter.call(
+        panel.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])'),
+        function(el){ return el.offsetParent !== null; });
+    }
+    function onKey(e){
+      if(e.key === 'Escape'){ e.preventDefault(); close(); return; }
+      if(e.key !== 'Tab') return;
+      var f = focusables();
+      if(!f.length){ e.preventDefault(); return; }
+      var first = f[0], last = f[f.length - 1];
+      // focus starts on the panel itself (tabindex=-1, outside the cycle):
+      // route the first Tab in either direction into the cycle, never out of it
+      if(f.indexOf(document.activeElement) === -1){
+        e.preventDefault(); (e.shiftKey ? last : first).focus(); return;
+      }
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+    function open(idx){
+      var tpl = document.getElementById('tplModal' + idx);
+      if(!tpl || !('content' in tpl)) return;
+      openIdx = idx;
+      title.textContent = tpl.getAttribute('data-title') || '';
+      body.innerHTML = '';
+      body.appendChild(tpl.content.cloneNode(true));
+      lastFocus = document.activeElement;
+      lock();
+      modal.hidden = false;
+      void modal.offsetWidth;        // commit display before the entrance transition
+      modal.classList.add('open');
+      document.addEventListener('keydown', onKey, true);
+      setMorph(idx + 1);             // touch / no-hover path: the story plays while open
+      panel.focus();                 // the panel scrolls — focusing it keeps arrow keys
+                                     // working when the spec body overflows max-height
+    }
+    function close(){
+      if(modal.hidden) return;
+      modal.classList.remove('open');
+      modal.hidden = true;
+      document.removeEventListener('keydown', onKey, true);
+      unlock();
+      openIdx = -1;
+      if(lastFocus && lastFocus.focus) lastFocus.focus();
+      lastFocus = null;
+      hoverMorph();
+    }
+    ov.addEventListener('click', close);
+    xBtn.addEventListener('click', close);
+    cards.forEach(function(card, i){
+      card.addEventListener('click', function(){ open(i); });
+      // 3D hover morphs: fine-pointer hover + keyboard focus tell each pillar's story
+      if(finePointer){
+        card.addEventListener('mouseenter', function(){ if(openIdx < 0) setMorph(i + 1); });
+        card.addEventListener('mouseleave', function(){ if(openIdx < 0) setMorph(0); });
+      }
+      card.addEventListener('focus', function(){ if(openIdx < 0) setMorph(i + 1); });
+      card.addEventListener('blur',  function(){ if(openIdx < 0) setMorph(0); });
+    });
+  })();
+
+  /* ---------- theme switch: dark <-> "gallery print" light ----------
+     The head gate already painted the right theme; this only handles the
+     hand-off — attribute flip, meta sync, 3D re-tint, persistence. */
+  (function(){
+    var btn = document.getElementById('themeBtn');
+    if(!btn) return;
+    var word = btn.querySelector('.tt-word');
+    var root = document.documentElement;
+    function current(){ return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
+    function reflect(t){
+      btn.setAttribute('aria-label', 'Switch to ' + (t === 'dark' ? 'light' : 'dark') + ' theme');
+      if(word) word.textContent = t === 'dark' ? 'Dark' : 'Light';
+    }
+    function apply(t){
+      root.setAttribute('data-theme', t);
+      if(window.__syncThemeMeta) window.__syncThemeMeta(t);   // <meta theme-color> + color-scheme
+      if(window.__setTheme3D) window.__setTheme3D(t);         // no-op until the module boots
+      reflect(t);
+    }
+    reflect(current());
+    btn.addEventListener('click', function(){
+      var t = current() === 'light' ? 'dark' : 'light';
+      apply(t);
+      try{ localStorage.setItem('bh-theme', t); }catch(e){}   // private mode: theme still applies
+    });
+    // no stored choice yet: keep following the OS until the visitor picks a side
+    try{
+      var mq = window.matchMedia('(prefers-color-scheme: light)');
+      var follow = function(ev){
+        var stored = null;
+        try{ stored = localStorage.getItem('bh-theme'); }catch(e){}
+        if(stored !== 'dark' && stored !== 'light') apply(ev.matches ? 'light' : 'dark');
+      };
+      if(mq.addEventListener) mq.addEventListener('change', follow);
+      else if(mq.addListener) mq.addListener(follow);
+    }catch(e){}
+  })();
+
+  initProof();
+  initPlates();
+  initBackdrops();
+  measure();
+  onScroll();
+  requestAnimationFrame(tick);
+})();
+</script>
+
+<script type="module">
+/* ============ BuildHive 3D experience (Task 10) ============
+   Capability-gated: nothing here runs unless the pre-module gate in <head>
+   set window.__use3d. three.js resolves via the import map (dynamic import,
+   so the CDN is never even fetched in mode-2d). The scene is a single
+   continuous camera dolly through depth, driven by window.__scrollState
+   from the scroll engine above. */
+
+function fallback2d(){
+  document.documentElement.classList.remove('mode-3d');
+  document.documentElement.classList.add('mode-2d');
+  window.__use3d = false;
+}
+
+async function boot3d(){
+  let THREE;
+  try { THREE = await import('three'); }
+  catch (err) { fallback2d(); return; }
+
+  const glWrap = document.getElementById('gl');
+  const canvas = glWrap.querySelector('canvas');
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+  } catch (err) { fallback2d(); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x0c0e10, 0);          // page background shows through
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x0c0e10, 16, 46);  // matches --bg; softer falloff for the quieted emissives
+
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / Math.max(1, window.innerHeight), 0.1, 120);
+  camera.position.set(0, 0.15, 8.2);
+
+  const ambient = new THREE.AmbientLight(0x9ad6ef, 0.6);
+  scene.add(ambient);
+  const sun = new THREE.DirectionalLight(0xbfe6f7, 1.1);
+  sun.position.set(3, 6, 4);
+  scene.add(sun);
+
+  /* theme-scaled per-frame opacities: additive glows that sing on dark are
+     re-blended + quieted on paper (set by setTheme3D below) */
+  const TH = { light: false, glowMul: 1, scanMul: 1, backMul: 1 };
+
+  /* ---------- helpers ---------- */
+  const clamp01   = v => v < 0 ? 0 : (v > 1 ? 1 : v);
+  const easeInOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const MAX_ANISO = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+  const texLoader = new THREE.TextureLoader();
+  function loadTex(url, onReady){
+    const t = texLoader.load(url, () => { renderer.initTexture(t); if (onReady) onReady(t); });
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = MAX_ANISO;
+    return t;
+  }
+  const UNIT_PLANE = new THREE.PlaneGeometry(1, 1);
+  const UNIT_EDGES = new THREE.EdgesGeometry(UNIT_PLANE);
+  const _m = new THREE.Matrix4(), _q = new THREE.Quaternion();
+  const _v = new THREE.Vector3(), _s = new THREE.Vector3();
+
+  /* ---------- hero shader plane (the blueprint -> render resolve) ---------- */
+  const XFADE_VERT = `
+    varying vec2 vUv;
+    #include <fog_pars_vertex>
+    void main(){
+      vUv = uv;
+      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+      gl_Position = projectionMatrix * mvPosition;
+      #include <fog_vertex>
+    }`;
+
+  /* hero only: a single resolve — the procedural blueprint of the night render
+     becomes the render itself. uStage 0..1 sweeps a scan-line down the plate. */
+  const HERO_FRAG = `
+    uniform sampler2D tA;        /* the urna night render */
+    uniform float uStage;        /* 0..1 */
+    uniform float uOpacity;
+    uniform float uTheme;        /* 0 dark / 1 light: blueprint bed goes paper */
+    varying vec2 vUv;
+    #include <fog_pars_fragment>
+    float lum(vec3 c){ return dot(c, vec3(0.299, 0.587, 0.114)); }
+    void main(){
+      vec4 ren = texture2D(tA, vUv);
+      /* procedural blueprint of the render: edge-boost + desaturate + brand-blue tint */
+      vec2 px = vec2(0.0016);
+      float l0 = lum(ren.rgb);
+      float lx = lum(texture2D(tA, vUv + vec2(px.x, 0.0)).rgb);
+      float ly = lum(texture2D(tA, vUv + vec2(0.0, px.y)).rgb);
+      float edgeMag = clamp((abs(lx - l0) + abs(ly - l0)) * 6.0, 0.0, 1.0);
+      vec2 g = abs(fract(vUv * 24.0) - 0.5);                 /* drafting grid */
+      float grid = 1.0 - smoothstep(0.0, 0.05, min(g.x, g.y));
+      float inkAmt = edgeMag * 0.85 + l0 * 0.12 + grid * 0.045;
+      /* dark: glow-on-dark blueprint. light: blue ink pressed into pale paper. */
+      vec3 bpDark  = vec3(0.016, 0.045, 0.062) + vec3(0.43, 0.76, 0.89) * inkAmt;
+      vec3 bpLight = vec3(0.93, 0.91, 0.87) - vec3(0.66, 0.38, 0.16) * inkAmt;
+      vec3 bp = mix(bpDark, bpLight, uTheme);
+      /* the scan-line sweep resolves blueprint into the full-color render */
+      float s1 = clamp(uStage, 0.0, 1.0);
+      float m1 = -0.15 + 1.3 * s1;
+      float e1 = smoothstep(m1 - 0.10, m1 + 0.10, vUv.y);
+      vec4 c = mix(ren, vec4(bp, ren.a), e1);
+      float scan = (1.0 - smoothstep(0.0, 0.016, abs(vUv.y - m1)))
+                 * step(0.001, s1) * step(s1, 0.999);
+      /* the scan line glows additively on dark, draws as ink on paper */
+      vec3 scanCol = mix(vec3(0.43, 0.76, 0.89), vec3(-0.55, -0.25, -0.06), uTheme);
+      c.rgb += scanCol * scan * 0.35;
+      gl_FragColor = vec4(c.rgb, c.a * uOpacity);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+      #include <fog_fragment>
+    }`;
+
+  function makeShaderPlane(urlA, width, x, y, z, rotY, frag, extraUniforms){
+    const mat = new THREE.ShaderMaterial({
+      uniforms: THREE.UniformsUtils.merge([
+        THREE.UniformsLib.fog,
+        { tA: { value: null }, uOpacity: { value: 0 } },
+        extraUniforms
+      ]),
+      vertexShader: XFADE_VERT, fragmentShader: frag,
+      transparent: true, depthWrite: false, fog: true
+    });
+    const mesh = new THREE.Mesh(UNIT_PLANE, mat);
+    mesh.position.set(x, y, z);
+    mesh.rotation.y = rotY;
+    mesh.scale.set(width, width / 1.5, 1);
+    mesh.visible = false;                                // shown once the texture resolves
+    const frameMat = new THREE.LineBasicMaterial({ color: 0x3196CC, transparent: true, opacity: 0 });
+    const frame = new THREE.LineSegments(UNIT_EDGES, frameMat);
+    frame.scale.set(1.012, 1.012, 1);
+    mesh.add(frame);
+    scene.add(mesh);
+    const st = { mesh, mat, frameMat, baseY: y, phase: Math.random() * Math.PI * 2,
+                 ready: false, fade: 0 };
+    mat.uniforms.tA.value = loadTex(urlA, t => {
+      const img = t.image;
+      if (img && img.width) mesh.scale.set(width, width * img.height / img.width, 1);
+      st.ready = true;
+    });
+    return st;
+  }
+
+  const heroPlane = makeShaderPlane('img/mittal-tower-night.webp', 8.5, 0, 0.05, 0, 0,
+                                    HERO_FRAG, { uStage: { value: 0 }, uTheme: { value: 0 } });
+
+  function applyHero(st, stage, win, dt, t){
+    if (st.ready && st.fade < 1) st.fade = Math.min(1, st.fade + dt * 1.8);
+    const o = st.fade * win;
+    st.mesh.visible = o > 0.002;
+    if (!st.mesh.visible) return;
+    st.mesh.position.y = st.baseY + Math.sin(t * 0.40 + st.phase) * 0.015;   // idle float, quieted
+    st.mat.uniforms.uStage.value = stage;
+    st.mat.uniforms.uOpacity.value = o;
+    st.frameMat.opacity = o * 0.55;
+  }
+
+  /* ---------- modular assembly (method): 48 scattered blocks -> 8x6 floorplate ---------- */
+  const BOX_N = 48, BCOLS = 8, BROWS = 6;
+  const stratGroup = new THREE.Group();
+  stratGroup.visible = false;
+  scene.add(stratGroup);
+  const boxGeo = new THREE.BoxGeometry(0.6, 0.25, 0.4);
+  const boxMat = new THREE.MeshStandardMaterial({
+    color: 0x11161b, emissive: 0x16323f, emissiveIntensity: 0.35,
+    metalness: 0.2, roughness: 0.7, transparent: true, opacity: 0
+  });
+  const boxes = new THREE.InstancedMesh(boxGeo, boxMat, BOX_N);
+  boxes.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  boxes.frustumCulled = false;
+  stratGroup.add(boxes);
+  const edgeGeo = new THREE.EdgesGeometry(boxGeo);
+  const edgeMat = new THREE.LineBasicMaterial({ color: 0x6EC1E4, transparent: true, opacity: 0 });
+  const boxEdges = [], boxData = [];
+  const GRID_C = new THREE.Vector3(0, -0.9, -14);
+  for (let i = 0; i < BOX_N; i++){
+    const col = i % BCOLS, row = (i / BCOLS) | 0;
+    const end = new THREE.Vector3(
+      GRID_C.x + (col - (BCOLS - 1) / 2) * 0.78,
+      GRID_C.y,
+      GRID_C.z + (row - (BROWS - 1) / 2) * 0.58
+    );
+    const start = new THREE.Vector3(
+      end.x + (Math.random() * 2 - 1) * 5,
+      end.y + 1.5 + Math.random() * 4,
+      end.z + (Math.random() * 2 - 1) * 4
+    );
+    const sq = new THREE.Quaternion().setFromEuler(new THREE.Euler(
+      Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI));
+    boxData.push({ start, end, sq, eq: new THREE.Quaternion(), off: (i % 13) * 0.012 });
+    const ls = new THREE.LineSegments(edgeGeo, edgeMat);
+    ls.matrixAutoUpdate = false;
+    stratGroup.add(ls);
+    boxEdges.push(ls);
+  }
+  /* ---------- method morphs: each pillar tells its story through the assembly.
+       window.__morphTarget (0 rest, 1..3 = card) is set by the 2D layer — card
+       hover/focus on fine pointers, modal-open everywhere. Weights lerp per frame
+       (~600ms either way); all geometry is prebuilt here; the per-frame cost is
+       lerps only. Reduced motion never reaches this code (3D is gated off). */
+  const morphState = { w: [0, 0, 0] };
+
+  /* morph 1 — Modular Intelligence: the grid regroups into one readable floor
+     module (two desk rows, a corridor gap, a third row, one larger meeting
+     block), then the module replicates 2x2 across the plate with a copy ripple. */
+  const M1_LOCAL = [];                               // 12 slots: 11 desks + 1 meeting block
+  {
+    const DESK_S = [0.6, 0.8, 0.7];
+    const rows = [[-0.55, 4], [-0.18, 4], [0.45, 3]];   // the gap before z 0.45 is the corridor
+    for (const [rz, n] of rows)
+      for (let j = 0; j < n; j++)
+        M1_LOCAL.push({ x: -0.72 + j * 0.48, z: rz, s: DESK_S });
+    M1_LOCAL.push({ x: 0.85, z: 0.45, s: [1.4, 2.0, 1.3] });   // the meeting block
+  }
+  const M1_COPIES = [[-1.225, 0.95], [1.225, 0.95], [-1.225, -0.95], [1.225, -0.95]];
+  const m1Pos = [], m1Scale = [], m1Copy = [];
+  for (let i = 0; i < BOX_N; i++){
+    const copy = Math.min((i / 12) | 0, 3), L = M1_LOCAL[i % 12], c = M1_COPIES[copy];
+    m1Pos.push(new THREE.Vector3(GRID_C.x + c[0] + L.x, GRID_C.y, GRID_C.z + c[1] + L.z));
+    m1Scale.push(new THREE.Vector3(L.s[0], L.s[1], L.s[2]));
+    m1Copy.push(copy);
+  }
+
+  /* morph 2 — BIM + AI: edge emphasis ramps and one thin coordination-scan
+     plane sweeps the assembly on a loop while the story is up. */
+  const scanGeo = new THREE.PlaneGeometry(3.6, 1.7);
+  const scanMat = new THREE.MeshBasicMaterial({ color: 0x6EC1E4, transparent: true, opacity: 0,
+    blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide });
+  const scan = new THREE.Mesh(scanGeo, scanMat);
+  scan.rotation.y = Math.PI / 2;
+  scan.position.set(GRID_C.x, GRID_C.y + 0.5, GRID_C.z);
+  scan.visible = false;
+  scan.frustumCulled = false;
+  stratGroup.add(scan);
+  const scanEdgeMat = new THREE.LineBasicMaterial({ color: 0x9ad6ef, transparent: true, opacity: 0 });
+  const scanEdge = new THREE.LineSegments(new THREE.EdgesGeometry(scanGeo), scanEdgeMat);
+  scanEdge.frustumCulled = false;
+  scan.add(scanEdge);
+
+  /* morph 3 — Geopathic + Vastu: a faint Hartmann-style line grid beneath the
+     plate, three glowing intersection nodes, and the three boxes that sat on
+     them step one cell off — the avoidance story, told in motion. */
+  const HG_Y = GRID_C.y - 0.16;
+  const hGrid = (() => {
+    const ext = 0.55, pts = [];
+    for (let c = 0; c < BCOLS; c++){
+      const x = GRID_C.x + (c - (BCOLS - 1) / 2) * 0.78;
+      pts.push(x, HG_Y, GRID_C.z - (BROWS - 1) / 2 * 0.58 - ext,
+               x, HG_Y, GRID_C.z + (BROWS - 1) / 2 * 0.58 + ext);
+    }
+    for (let r = 0; r < BROWS; r++){
+      const z = GRID_C.z + (r - (BROWS - 1) / 2) * 0.58;
+      pts.push(GRID_C.x - (BCOLS - 1) / 2 * 0.78 - ext, HG_Y, z,
+               GRID_C.x + (BCOLS - 1) / 2 * 0.78 + ext, HG_Y, z);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+    const ls = new THREE.LineSegments(g,
+      new THREE.LineBasicMaterial({ color: 0x3196CC, transparent: true, opacity: 0 }));
+    ls.visible = false;
+    ls.frustumCulled = false;
+    stratGroup.add(ls);
+    return ls;
+  })();
+  const glowTex = (() => {
+    const c = document.createElement('canvas'); c.width = c.height = 64;
+    const ctx = c.getContext('2d');
+    const g = ctx.createRadialGradient(32, 32, 2, 32, 32, 30);
+    g.addColorStop(0, 'rgba(154,214,239,1)');
+    g.addColorStop(0.35, 'rgba(110,193,228,.55)');
+    g.addColorStop(1, 'rgba(110,193,228,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 64, 64);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  })();
+  /* edge-slot boxes so the one-cell step lands off the plate, never on a neighbour */
+  const M3_NODES = [
+    { box: 2,  off: new THREE.Vector3(0, 0, -0.58) },   // back row -> steps further back
+    { box: 23, off: new THREE.Vector3(0.78, 0, 0) },    // right edge -> steps right
+    { box: 42, off: new THREE.Vector3(0, 0, 0.58) }     // front row -> steps forward
+  ];
+  const m3Off = new Array(BOX_N).fill(null);
+  const m3Sprites = [];
+  for (const nd of M3_NODES){
+    m3Off[nd.box] = nd.off;
+    const sm = new THREE.SpriteMaterial({ map: glowTex, transparent: true, opacity: 0,
+      depthWrite: false, blending: THREE.AdditiveBlending });
+    const sp = new THREE.Sprite(sm);
+    const at = boxData[nd.box].end;
+    sp.position.set(at.x, HG_Y + 0.02, at.z);
+    sp.scale.set(0.34, 0.34, 1);
+    sp.visible = false;
+    stratGroup.add(sp);
+    m3Sprites.push({ sp, sm });
+  }
+
+  function updateBoxes(p){
+    const w1 = morphState.w[0], w3 = morphState.w[2];
+    for (let i = 0; i < BOX_N; i++){
+      const d = boxData[i];
+      const k = easeInOut(clamp01((p - d.off) / 0.84));
+      _v.lerpVectors(d.start, d.end, k);
+      _q.slerpQuaternions(d.sq, d.eq, k);
+      _s.setScalar(1);
+      if (w1 > 0.001){
+        // copy ripple: module 0 forms first, then replicates across the plate
+        const kk = easeInOut(clamp01(w1 * 1.66 - m1Copy[i] * 0.22));
+        _v.lerp(m1Pos[i], kk);
+        _s.lerp(m1Scale[i], kk);
+      }
+      if (w3 > 0.001 && m3Off[i]) _v.addScaledVector(m3Off[i], easeInOut(w3));
+      _m.compose(_v, _q, _s);
+      boxes.setMatrixAt(i, _m);
+      boxEdges[i].matrix.copy(_m);
+      boxEdges[i].matrixWorldNeedsUpdate = true;
+    }
+    boxes.instanceMatrix.needsUpdate = true;
+  }
+
+  /* ---------- crisp text labels: canvas -> sprite (gates), DOM overlay (districts) ----------
+     each label keeps its canvas + a paint(color) closure so a theme switch
+     repaints in place (tex.needsUpdate) — no new textures, nothing to dispose */
+  const spriteLabels = [];
+  function makeLabelTex(text){
+    const c = document.createElement('canvas');
+    let ctx = c.getContext('2d');
+    const FONT = '500 26px Tahoma, Verdana, sans-serif', LS = 8;   // 2x for crispness; editorial tracking
+    ctx.font = FONT;
+    c.width  = Math.ceil(ctx.measureText(text).width + text.length * LS) + 24;
+    c.height = 48;
+    function paint(color){
+      const cx = c.getContext('2d');                // sizing reset the context state
+      cx.clearRect(0, 0, c.width, c.height);
+      cx.font = FONT;
+      cx.textBaseline = 'middle';
+      cx.fillStyle = color;
+      let x = 12;
+      for (const ch of text){ cx.fillText(ch, x, 24); x += cx.measureText(ch).width + LS; }
+      cx.globalAlpha = 0.4;                         // drafting underline — folio annotation, not HUD chip
+      cx.fillRect(12, 42, c.width - 24, 1);
+      cx.globalAlpha = 1;
+    }
+    paint('#6EC1E4');
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.minFilter = THREE.LinearFilter;
+    tex.generateMipmaps = false;
+    tex.anisotropy = MAX_ANISO;
+    spriteLabels.push({ paint, tex });
+    return { tex, aspect: c.width / c.height };
+  }
+  function makeSpriteLabel(text, h){
+    const { tex, aspect } = makeLabelTex(text);
+    const sm = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0, depthWrite: false });
+    const sp = new THREE.Sprite(sm);
+    sp.scale.set(h * aspect, h, 1);
+    return sp;
+  }
+  function makeDomLabel(text){
+    const el = document.createElement('div');
+    el.className = 'glab';
+    el.textContent = text;
+    glWrap.appendChild(el);
+    return el;
+  }
+  const _lv = new THREE.Vector3();
+  function syncDomLabel(el, x, y, z, op){
+    _lv.set(x, y, z).project(camera);
+    const ok = op > 0.002 && _lv.z < 1 && Math.abs(_lv.x) < 1.15 && Math.abs(_lv.y) < 1.15;
+    el.style.opacity = ok ? Math.min(1, op).toFixed(3) : '0';
+    if (!ok) return;
+    el.style.transform = 'translate(' + ((_lv.x * 0.5 + 0.5) * window.innerWidth).toFixed(1) + 'px,'
+                       + ((-_lv.y * 0.5 + 0.5) * window.innerHeight).toFixed(1) + 'px) translate(-50%,-120%)';
+  }
+
+  /* ---------- massing city (scale): the districts assemble from REPLICATING
+       4-CELL CLUSTERS — the BuildHive mark, extruded (logo-cell-geometry.md).
+       One rounded-plan cell geometry (Shape + quadraticCurveTo corners,
+       ExtrudeGeometry with bevel OFF) is shared by every instance; the
+       asymmetric corner pattern (outer corners broad r=.26, inner corner tight
+       r=.10) is aimed at each cluster's center by per-instance Y rotation, so
+       every 2x2 plan keeps the logo's crisp "+" gap. Heights vary per cell;
+       footprints never do. District split stays 359 : 167 : 50.6. ---------- */
+  function roundedCellShape(w, d, r){              // r = [tl, tr, br, bl]
+    const s = new THREE.Shape();
+    const x = -w / 2, y = -d / 2;
+    s.moveTo(x + r[0], y);
+    s.lineTo(x + w - r[1], y);
+    s.quadraticCurveTo(x + w, y, x + w, y + r[1]);
+    s.lineTo(x + w, y + d - r[2]);
+    s.quadraticCurveTo(x + w, y + d, x + w - r[2], y + d);
+    s.lineTo(x + r[3], y + d);
+    s.quadraticCurveTo(x, y + d, x, y + d - r[3]);
+    s.lineTo(x, y + r[0]);
+    s.quadraticCurveTo(x, y, x + r[0], y);
+    return s;
+  }
+  const CELL = 1.0, GAP = 0.12, RO = 0.26 * CELL, RI = 0.10 * CELL;
+  /* base cell: tight (inner) corner at shape-br, which lands at world (+x,-z) */
+  const cityGeo = new THREE.ExtrudeGeometry(
+    roundedCellShape(CELL, CELL, [RO, RO, RI, RO]),
+    { depth: 1, bevelEnabled: false, steps: 1, curveSegments: 6 });
+  cityGeo.rotateX(-Math.PI / 2);                   // lay flat; extrusion rises +Y from 0
+  /* cell offsets within a cluster + the rotation that points the tight corner inward */
+  const CELL_OFF = [
+    { x: -(CELL + GAP) / 2, z:  (CELL + GAP) / 2, ry: 0 },              // TL
+    { x:  (CELL + GAP) / 2, z:  (CELL + GAP) / 2, ry: Math.PI / 2 },    // TR
+    { x: -(CELL + GAP) / 2, z: -(CELL + GAP) / 2, ry: -Math.PI / 2 },   // BL
+    { x:  (CELL + GAP) / 2, z: -(CELL + GAP) / 2, ry: Math.PI }         // BR
+  ];
+  const CELL_Q = CELL_OFF.map(c => new THREE.Quaternion().setFromEuler(new THREE.Euler(0, c.ry, 0)));
+  /* district cluster grids (in cluster-pitch units). The 359 : 167 : 50.6 split
+     is encoded twice and both readings sit inside the ±10% band: district
+     heights 1.50/0.70/0.21 give A/I 2.14, I/R 3.33 (targets 2.15 / 3.30), and
+     cluster counts 14/7/2 give A/I 2.0 (−7%), I/R 3.5 (+6%). */
+  const DISTRICTS = [
+    { cx: -1.85, cz: -10.8, h: 1.50, label: 'ARCHITECTURE — 359K SQFT',
+      grid: [[-1.5, -1.5], [-0.5, -1.5], [0.5, -1.5], [1.5, -1.5],
+             [-1.5, -0.5], [-0.5, -0.5], [0.5, -0.5], [1.5, -0.5],
+             [-1, 0.5], [0, 0.5], [1, 0.5],
+             [-1, 1.5], [0, 1.5], [1, 1.5]] },
+    { cx:  0.8, cz: -11.5, h: 0.70, label: 'INTERIORS — 167K SQFT',
+      grid: [[-0.5, -1], [0.5, -1], [-1, 0], [0, 0], [1, 0], [-0.5, 1], [0.5, 1]] },
+    { cx:  2.55, cz: -10.3, h: 0.21, label: 'RESIDENTIAL — 50.6K SQFT',
+      grid: [[-0.5, 0], [0.5, 0]] }
+  ];
+  const CITY_S = 0.26;                                       // world scale of one cell
+  const PITCH  = (2 * CELL + GAP + 0.8) * CITY_S;            // cluster pitch: footprint + breathing gap
+  const CITY_N = DISTRICTS.reduce((a, d) => a + d.grid.length * 4, 0);
+  const CITY_Y = -1.05;
+  const cityGroup = new THREE.Group();
+  cityGroup.visible = false;
+  scene.add(cityGroup);
+  const cityMat = new THREE.MeshStandardMaterial({
+    color: 0x11161b, emissive: 0x16323f, emissiveIntensity: 0.32,
+    metalness: 0.2, roughness: 0.7, transparent: true, opacity: 0
+  });
+  const city = new THREE.InstancedMesh(cityGeo, cityMat, CITY_N);
+  city.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  city.frustumCulled = false;
+  cityGroup.add(city);
+  /* edges at thresholdAngle 30: keeps only the rounded top/base outlines
+     (wall<->cap is 90deg), drops the curved-corner wall seams -> no line noise */
+  const cityEdgeGeo = new THREE.EdgesGeometry(cityGeo, 30);
+  const cityEdgeMat = new THREE.LineBasicMaterial({ color: 0x6EC1E4, transparent: true, opacity: 0 });
+  const cityData = [], cityEdges = [], cityLabels = [];
+  {
+    let ci = 0;
+    for (const d of DISTRICTS){
+      for (const g of d.grid){
+        const ccx = d.cx + g[0] * PITCH, ccz = d.cz + g[1] * PITCH * 0.85;
+        for (let c = 0; c < 4; c++){
+          cityData.push({
+            x: ccx + CELL_OFF[c].x * CITY_S,
+            z: ccz + CELL_OFF[c].z * CITY_S,
+            q: c,
+            h: d.h * (0.55 + Math.random() * 0.9),
+            off: ci * 0.018 + c * 0.012        // cluster-by-cluster, cells of four near-together
+                                               // (0.018: 23 clusters must finish inside p=1)
+          });
+          const ls = new THREE.LineSegments(cityEdgeGeo, cityEdgeMat);
+          ls.matrixAutoUpdate = false;
+          ls.frustumCulled = false;
+          cityGroup.add(ls);
+          cityEdges.push(ls);
+        }
+        ci++;
+      }
+      cityLabels.push({ el: makeDomLabel(d.label), x: d.cx, y: CITY_Y + d.h * 1.5 + 0.32, z: d.cz });
+    }
+  }
+  function updateCity(p){
+    for (let i = 0; i < CITY_N; i++){
+      const d = cityData[i];
+      const k = easeInOut(clamp01((p - d.off) / 0.5));     // soft rise, no pop
+      _v.set(d.x, CITY_Y, d.z);
+      _s.set(CITY_S, Math.max(0.012, d.h * k), CITY_S);
+      _m.compose(_v, CELL_Q[d.q], _s);
+      city.setMatrixAt(i, _m);
+      cityEdges[i].matrix.copy(_m);
+      cityEdges[i].matrixWorldNeedsUpdate = true;
+    }
+    city.instanceMatrix.needsUpdate = true;
+  }
+
+  /* ---------- day gates (method, delivery half): nine stage frames spaced along
+       the flight path. Phase 1 as weeks (W1, W2–3, W4, W5), Phase 2 as day ranges.
+       z range sits inside the method->proof camera leg (method z -9.4 -> proof z -15.4,
+       dipping to ~-17.7 by the end of method's runway), so every frame is flown
+       through while the timeline DOM is on screen. ---------- */
+  const GATE_LABELS = ['W1', 'W2–3', 'W4', 'W5', '7–10D', '30–35D', '30–40D', '18–30D', '5–15D'];
+  const gateGroup = new THREE.Group();
+  gateGroup.visible = false;
+  scene.add(gateGroup);
+  const gates = [];
+  GATE_LABELS.forEach((txt, i) => {
+    const mat = new THREE.LineBasicMaterial({ color: 0x6EC1E4, transparent: true, opacity: 0 });
+    const frame = new THREE.LineSegments(UNIT_EDGES, mat);
+    frame.frustumCulled = false;
+    frame.position.set((i % 2 === 0 ? -1 : 1) * 0.22, 0.25, -13.4 - i * 0.5);
+    frame.scale.set(2.6, 1.7, 1);
+    gateGroup.add(frame);
+    const lab = makeSpriteLabel(txt, 0.12);
+    lab.position.set(frame.position.x - 0.92, frame.position.y + 1.06, frame.position.z);
+    gateGroup.add(lab);
+    gates.push({ mat, lab, z: frame.position.z });
+  });
+
+  /* ---------- atmosphere: two darkened distant backdrops + sparse dust ---------- */
+  function makeBackdrop(url, x, y, z, w, target){
+    const mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, color: 0x42525c, depthWrite: false });
+    const mesh = new THREE.Mesh(UNIT_PLANE, mat);
+    mesh.position.set(x, y, z);
+    mesh.scale.set(w, w * 0.6, 1);
+    mesh.visible = false;
+    const st = { mesh, mat, target, ready: false, fade: 0 };
+    mat.map = loadTex(url, t => {
+      const img = t.image;
+      if (img && img.width) mesh.scale.set(w, w * img.height / img.width, 1);
+      st.ready = true;
+    });
+    scene.add(mesh);
+    return st;
+  }
+  const backdrops = [
+    makeBackdrop('img/novatr-tower-aerial.webp',        1.5, 0.4, -7.5, 16, 0.16),
+    makeBackdrop('img/novatr-tower-dusk-overhead.webp', 0,   1.2, -37,  18, 0.2)   // closes the journey behind contact
+  ];
+
+  const PT_N = 300;
+  const ptPos = new Float32Array(PT_N * 3);
+  for (let i = 0; i < PT_N; i++){
+    ptPos[i * 3]     = (Math.random() * 2 - 1) * 9;
+    ptPos[i * 3 + 1] = (Math.random() * 2 - 1) * 4.5;
+    ptPos[i * 3 + 2] = 4 - Math.random() * 46;          // z 4 .. -42
+  }
+  const ptGeo = new THREE.BufferGeometry();
+  ptGeo.setAttribute('position', new THREE.BufferAttribute(ptPos, 3));
+  const points = new THREE.Points(ptGeo, new THREE.PointsMaterial({
+    color: 0x6EC1E4, size: 0.028, sizeAttenuation: true,
+    transparent: true, opacity: 0.22, depthWrite: false, blending: THREE.AdditiveBlending
+  }));
+  scene.add(points);
+
+  /* ---------- camera journey: poses keyed to REAL chapter offsets ----------
+     urna / amodaa carry NO pose — they are DOM plates; the Catmull spline
+     drifts the camera through them while the canvas sits dimmed behind. */
+  const POSES = {
+    hero:       { p: [0, 0.15, 8.2],      l: [0, 0.05, 0] },
+    studio:     { p: [0.6, 0.30, 3.0],    l: [-0.3, 0.1, -4.5] },
+    scale:      { p: [-0.8, 0.5, -4.6],   l: [0.2, 0.2, -10.5] },
+    method:     { p: [0.7, 1.6, -9.4],    l: [0, -0.5, -14] },
+    /* proof is a DOM bed: no dip toward set pieces — a straight quiet drift
+       that still carries the camera through the last day gates */
+    proof:      { p: [0, 0.4, -16.2],     l: [0, 0.05, -20.6] },
+    index:      { p: [0, 0.20, -27.5],    l: [0, 0.05, -31] },
+    principals: { p: [-0.4, 0.55, -30],   l: [0.2, 0.4, -33.5] },
+    contact:    { p: [0, 0.9, -33],       l: [0, 1.8, -37] }
+  };
+  const END_POSE = { p: [0, 1.9, -34.5], l: [0, 4.6, -39] };   // gentle upward tilt out
+
+  let chRef = null, posCurve = null, lookCurve = null, segKeys = null, segCount = 0, pathOK = false;
+  let chIndex = {};
+
+  function rebuildPath(){
+    const S = window.__scrollState;
+    const ch = S && S.chapters;
+    chRef = ch || null;
+    if (!ch || ch.length < 2) return false;
+    chIndex = {};
+    const vh = Math.max(1, window.innerHeight);
+    const keys = [], posPts = [], lookPts = [];
+    let prevKey = -1;
+    for (let i = 0; i < ch.length; i++){
+      const name = ch[i].el.getAttribute('data-chapter');
+      chIndex[name] = ch[i];
+      const pose = POSES[name];
+      if (!pose) continue;
+      const k = Math.max(prevKey + 1, ch[i].top - vh * 0.6);    // prefix-sum: real offsets, real heights
+      prevKey = k;
+      keys.push(k);
+      posPts.push(new THREE.Vector3().fromArray(pose.p));
+      lookPts.push(new THREE.Vector3().fromArray(pose.l));
+    }
+    if (posPts.length < 2) return false;
+    const last = ch[ch.length - 1];
+    keys.push(Math.max(prevKey + 1, last.top + last.height - vh));   // page end
+    posPts.push(new THREE.Vector3().fromArray(END_POSE.p));
+    lookPts.push(new THREE.Vector3().fromArray(END_POSE.l));
+    posCurve  = new THREE.CatmullRomCurve3(posPts, false, 'centripetal');
+    lookCurve = new THREE.CatmullRomCurve3(lookPts, false, 'centripetal');
+    segKeys = keys;
+    segCount = keys.length - 1;
+    return true;
+  }
+
+  function pathT(y){
+    const k = segKeys;
+    if (y <= k[0]) return 0;
+    if (y >= k[segCount]) return 1;
+    let i = 0;
+    while (i < segCount - 1 && y >= k[i + 1]) i++;
+    const span = Math.max(1, k[i + 1] - k[i]);
+    return (i + clamp01((y - k[i]) / span)) / segCount;
+  }
+
+  function chapterP(name){
+    const c = chIndex[name];
+    if (!c) return 0;
+    const vh = window.innerHeight;
+    return clamp01((window.__scrollState.smoothY - (c.top - vh)) / Math.max(1, c.height + vh));
+  }
+
+  /* ---------- per-frame tick ---------- */
+  const clock = new THREE.Clock();
+  const _pos = new THREE.Vector3(), _look = new THREE.Vector3();
+
+  function tick(){
+    requestAnimationFrame(tick);
+    const dt = Math.min(0.05, clock.getDelta());
+    const t  = clock.elapsedTime;
+    const S  = window.__scrollState || { smoothY: 0, heroP: 0, pageP: 0, chapters: [] };
+    const vh = Math.max(1, window.innerHeight);
+
+    if (S.chapters !== chRef) pathOK = rebuildPath();
+    /* DOM-bed chapters (plates + the proof stage): sub-perceptual breathing so
+       the dimmed dust layer behind the beds never reads as a frozen canvas */
+    const pp = chapterP('proof');
+    const breathe = Math.max(chapterP('urna'), chapterP('amodaa'), pp);
+    if (pathOK){
+      const u = pathT(S.smoothY);                       // clamped to [0,1]
+      posCurve.getPoint(u, _pos);
+      lookCurve.getPoint(u, _look);
+      camera.position.copy(_pos);
+      if (breathe > 0.001){
+        camera.position.x += Math.sin(t * 0.18) * 0.10 * breathe;
+        camera.position.y += Math.sin(t * 0.13 + 1.7) * 0.06 * breathe;
+      }
+      camera.lookAt(_look);
+    }
+
+    /* hero, single resolve: the blueprint becomes the render across the full
+       runway; plane fades out before the camera dollies through it */
+    const hc = chIndex['hero'];
+    const heroRun = hc ? Math.max(1, hc.height - vh) : vh * 2;
+    const heroStage = clamp01((S.heroP - 0.12) / 0.62);
+    const heroWin = 1 - clamp01((S.smoothY - heroRun * 0.92) / (vh * 0.55));
+    applyHero(heroPlane, heroStage, heroWin, dt, t);
+
+    /* massing city scrubbed by scale progress, releases entering method */
+    const scp = chapterP('scale');
+    const stp = chapterP('method');
+    const cityWin = clamp01((scp - 0.03) / 0.12) * (1 - clamp01((stp - 0.18) / 0.28));
+    cityGroup.visible = cityWin > 0.002;
+    if (cityGroup.visible){
+      cityMat.opacity     = cityWin * 0.85;
+      cityEdgeMat.opacity = cityWin * 0.6;
+      updateCity(clamp01((scp - 0.06) / 0.62));
+    }
+    for (let i = 0; i < cityLabels.length; i++){
+      const L = cityLabels[i];
+      syncDomLabel(L.el, L.x, L.y, L.z, cityWin * 0.7);
+    }
+
+    /* morph weights chase the 2D card layer's target (~600ms ease, both ways) */
+    {
+      const mt = (window.__morphTarget | 0) || 0;
+      for (let i = 0; i < 3; i++){
+        const goal = (mt === i + 1) ? 1 : 0;
+        let w = morphState.w[i];
+        w += (goal - w) * Math.min(1, dt * 5);
+        morphState.w[i] = (w === w) ? (w < 0.0005 ? 0 : (w > 0.9995 ? 1 : w)) : goal;   // NaN-safe
+      }
+    }
+
+    /* modular assembly scrubbed by method progress */
+    const boxWin = clamp01((stp - 0.04) / 0.12) * (1 - clamp01((pp - 0.25) / 0.3));
+    stratGroup.visible = boxWin > 0.002;
+    if (stratGroup.visible){
+      const w2 = morphState.w[1], w3 = morphState.w[2];
+      boxMat.opacity  = boxWin * (0.95 - 0.4 * w2);          // BIM story: toward wireframe
+      edgeMat.opacity = boxWin * (0.6 + 0.35 * w2);          // ... as edges ramp up
+      updateBoxes(clamp01((stp - 0.12) / 0.78));
+      /* coordination scan: one thin plane sweeping on a loop */
+      scan.visible = w2 > 0.002;
+      if (scan.visible){
+        scan.position.x = GRID_C.x - 3.1 + ((t % 3.2) / 3.2) * 6.2;
+        scanMat.opacity     = boxWin * w2 * 0.10 * TH.scanMul;
+        scanEdgeMat.opacity = boxWin * w2 * 0.45;
+      }
+      /* Hartmann grid + node glow (the avoidance shift runs in updateBoxes) */
+      hGrid.visible = w3 > 0.002;
+      if (hGrid.visible) hGrid.material.opacity = boxWin * w3 * (TH.light ? 0.3 : 0.12);
+      for (let i = 0; i < m3Sprites.length; i++){
+        const nd = m3Sprites[i];
+        nd.sp.visible = w3 > 0.002;
+        if (nd.sp.visible) nd.sm.opacity = boxWin * w3 * (0.55 + 0.18 * Math.sin(t * 1.6 + i * 2.1)) * TH.glowMul;
+      }
+    } else {
+      scan.visible = false;
+      hGrid.visible = false;
+      for (const nd of m3Sprites) nd.sp.visible = false;
+    }
+
+    /* day gates ride the delivery half of method (the timeline's window):
+       they brighten as the camera approaches, fade once passed */
+    const gateWin = clamp01((stp - 0.55) / 0.08) * (1 - clamp01((pp - 0.12) / 0.2));
+    gateGroup.visible = gateWin > 0.002;
+    if (gateGroup.visible){
+      for (let i = 0; i < gates.length; i++){
+        const gt = gates[i];
+        const dz = camera.position.z - gt.z;                    // > 0 while approaching
+        const prox = clamp01(1.1 - Math.abs(dz - 2.2) / 6);
+        const o = gateWin * (dz < 0.4 ? clamp01((dz + 0.6) / 1.0) : 1) * (0.18 + 0.62 * prox);
+        gt.mat.opacity = o;
+        gt.lab.material.opacity = o;
+      }
+    }
+
+    /* atmosphere fade-ins once textures resolve (theme-scaled every frame so a
+       toggle mid-flight or post-fade always lands) */
+    for (let i = 0; i < backdrops.length; i++){
+      const st = backdrops[i];
+      if (st.ready){
+        if (st.fade < 1){ st.fade = Math.min(1, st.fade + dt); st.mesh.visible = true; }
+        st.mat.opacity = st.target * st.fade * TH.backMul;
+      }
+    }
+
+    /* single canvas-opacity write: dim behind the DOM plates, fade at contact */
+    const plateDim = 1 - 0.7 * easeInOut(clamp01((breathe - 0.12) / 0.3))
+                       * (1 - clamp01((breathe - 0.85) / 0.15));
+    let contactFade = 1;
+    const cc = chIndex['contact'];
+    if (cc){
+      const cp = clamp01((S.smoothY - (cc.top - vh)) / Math.max(1, cc.height));
+      contactFade = 1 - 0.65 * easeInOut(clamp01((cp - 0.3) / 0.6));
+    }
+    glWrap.style.opacity = Math.min(contactFade, plateDim).toFixed(3);
+
+    renderer.render(scene, camera);
+  }
+
+  /* resize: engine debounces measure() at 120ms; re-sync after it */
+  let rzT;
+  function onResize(){
+    clearTimeout(rzT);
+    rzT = setTimeout(() => {
+      camera.aspect = window.innerWidth / Math.max(1, window.innerHeight);
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      pathOK = rebuildPath();
+    }, 200);
+  }
+  window.addEventListener('resize', onResize);
+  window.addEventListener('orientationchange', () => setTimeout(onResize, 320));
+
+  /* ---------- theme re-tint: the instruments follow the page ----------
+     dark: sky-blue lines + additive glows on near-black.
+     light: deep drafting blue on gallery paper; additive passes re-blend to
+     normal (additive is invisible over white) and quiet down. Sprite label
+     canvases repaint in place — no texture churn. */
+  const LINE_DK = 0x6EC1E4, LINE_LT = 0x20689a,
+        DEEP_DK = 0x3196CC, DEEP_LT = 0x17567c;
+  function setTheme3D(theme){
+    const light = theme === 'light';
+    TH.light   = light;
+    TH.glowMul = light ? 0.55 : 1;
+    TH.scanMul = light ? 0.5  : 1;
+    TH.backMul = light ? 0.6  : 1;
+    const LINE = light ? LINE_LT : LINE_DK;
+
+    scene.fog.color.set(light ? 0xf2efe9 : 0x0c0e10);   // matches --bg
+    ambient.intensity = light ? 0.85 : 0.6;
+
+    /* hero blueprint: dark underlay -> pale paper, ink scan line */
+    if (heroPlane && heroPlane.mat){
+      heroPlane.mat.uniforms.uTheme.value = light ? 1 : 0;
+      heroPlane.frameMat.color.set(light ? DEEP_LT : DEEP_DK);
+    }
+
+    /* line + edge instruments */
+    edgeMat.color.set(LINE);
+    cityEdgeMat.color.set(LINE);
+    hGrid.material.color.set(light ? DEEP_LT : DEEP_DK);
+    for (const gt of gates) gt.mat.color.set(LINE);
+
+    /* massing solids: near-black volumes on dark, pale card stock on paper */
+    for (const m of [boxMat, cityMat]){
+      m.color.set(light ? 0xe2ddd3 : 0x11161b);
+      m.emissive.set(light ? 0x8fa6b2 : 0x16323f);
+    }
+    boxMat.emissiveIntensity  = light ? 0.18 : 0.35;
+    cityMat.emissiveIntensity = light ? 0.18 : 0.32;
+
+    /* additive passes: dust, node glows, coordination scan */
+    points.material.color.set(light ? LINE_LT : LINE_DK);
+    points.material.blending = light ? THREE.NormalBlending : THREE.AdditiveBlending;
+    points.material.opacity  = light ? 0.15 : 0.22;
+    scanMat.color.set(light ? DEEP_LT : LINE_DK);
+    scanMat.blending = light ? THREE.NormalBlending : THREE.AdditiveBlending;
+    scanEdgeMat.color.set(light ? LINE_LT : 0x9ad6ef);
+    for (const nd of m3Sprites){
+      nd.sm.color.set(light ? LINE_LT : 0xffffff);
+      nd.sm.blending = light ? THREE.NormalBlending : THREE.AdditiveBlending;
+    }
+
+    /* distant photo backdrops: dimmed plates on dark, ghosted prints on paper */
+    for (const st of backdrops){
+      st.mat.color.set(light ? 0x707a82 : 0x42525c);
+      st.mat.opacity = st.target * st.fade * TH.backMul;
+    }
+
+    /* day-gate sprite labels: repaint the SAME canvases, flag the textures */
+    const labCol = light ? '#20689a' : '#6EC1E4';
+    for (const L of spriteLabels){ L.paint(labCol); L.tex.needsUpdate = true; }
+  }
+  window.__setTheme3D = setTheme3D;
+  /* the head gate set data-theme before any script ran — apply it to the scene */
+  setTheme3D(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+
+  tick();
+}
+
+if (window.__use3d) boot3d();
+</script>
+</body>
+</html>
