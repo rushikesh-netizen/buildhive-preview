@@ -50,6 +50,7 @@
     --faint:#6d7680;                       /* decorative separators only */
     --blue:#6EC1E4;                        /* sky blue — the drafting line */
     --blue-deep:#3196CC;                   /* deep brand blue — fills */
+    --brand-cyan:#46C7EF;                  /* the logo mark's vivid cyan — MARK ONLY (sampled from the client lockup) */
     --blue-display:#6EC1E4;                /* large serif display accents only */
     --blue-hover:#9ad6ef;                  /* hover lift on links / scrollbar */
     --line:rgba(238,243,246,.12);
@@ -91,6 +92,7 @@
     /* featured-work plate system */
     --plate-run:500vh;                              /* multi-leaf plate runway (urna) */
     --plate-run-1:300vh;                            /* single plate runway (AMODAA) */
+    --plate-run-cad:380vh;                          /* two-leaf plate runway (Cadence) */
     --anno:#6EC1E4;                                 /* alias of --blue for SVG clarity */
 
     /* motion grammar — paper is heavy, the instrument is light */
@@ -180,6 +182,7 @@
   .plate-run{ position:relative; }
   .plate-run--I{ height:var(--plate-run); }
   .plate-run--II{ height:var(--plate-run-1); }
+  .plate-run--cad{ height:var(--plate-run-cad); }
   /* proof runway: entry beat ~100vh + two comparison beats ~170vh each */
   .plate-run--proof{ height:440vh; }
 
@@ -195,6 +198,10 @@
     filter:saturate(.92) contrast(1.03) brightness(.96);
     transform-origin:50% 42%; will-change:transform; }
   .plate--amodaa .plate-bed img{ object-position:center 38%; }
+  /* portrait-source beds (urna podium/street, Cadence heroes): cover-fit, no stretch,
+     centered on the tower spine so the full vertical massing reads in a landscape frame */
+  .leaf--portrait .plate-bed img{ object-position:center 42%; }
+  .plate--cadence .leaf--portrait .plate-bed img{ object-position:center 50%; }
   /* AMODAA inset plate: above 1600px the bed becomes a tipped-in illustration */
   @media(min-width:1601px){
     .plate--amodaa .leaf{ left:50%; transform:translateX(-50%); width:1600px; right:auto;
@@ -281,9 +288,12 @@
   #chrome{ position:fixed; inset:0; z-index:3; pointer-events:none; }
   .brand{ position:absolute; top:calc(var(--edge) + var(--safe-t)); left:calc(var(--edge) + var(--safe-l));
     display:flex; align-items:flex-start; gap:11px; }
-  .brand svg{ width:19px; height:19px; flex:none; margin-top:1px; color:var(--chrome-blue); }
+  /* the 4-cell mark is the client's brand cyan in BOTH themes — it is a logo, not chrome */
+  .brand svg{ width:20px; height:20px; flex:none; margin-top:1px; color:var(--brand-cyan); }
   .brand .bw{ font-size:13px; letter-spacing:.4em; text-transform:uppercase; color:var(--chrome-ink); }
-  .brand .bw small{ display:block; font-size:9px; letter-spacing:.3em; color:var(--chrome-muted); margin-top:6px; }
+  .brand .bw small{ display:block; font-size:8.5px; letter-spacing:.22em; color:var(--chrome-muted); margin-top:6px; }
+  /* tagline line — hidden on narrow viewports so the lockup stays one tidy unit */
+  @media(max-width:700px){ .brand .bw small{ display:none; } }
   .topright{ position:absolute; top:calc(var(--edge) + var(--safe-t)); right:calc(var(--edge) + var(--safe-r));
     font-size:10px; letter-spacing:.32em; text-transform:uppercase; color:var(--chrome-muted); text-align:right; line-height:1.7; }
 
@@ -343,7 +353,7 @@
   .panel[data-chapter="studio"]{ min-height:140vh; }
   .panel[data-chapter="scale"]{ min-height:240vh; }
   .panel[data-chapter="method"]{ min-height:420vh; }   /* cards + the merged two-phase timeline */
-  .panel[data-chapter="index"]{ min-height:200vh; }
+  .panel[data-chapter="works"]{ min-height:200vh; }
   .panel[data-chapter="principals"]{ min-height:150vh; }
   .panel[data-chapter="contact"]{ min-height:120vh; }
 
@@ -622,6 +632,145 @@
     .ix-fact{ grid-column:2; }
   }
 
+  /* ---------- WORKS: categorized gallery (V5) ----------
+     Three category bands; each project is a card (cover + meta) that opens a
+     lightbox carousel. Theme-aware DOM in both modes (no 3D dependency). */
+  .gal-stats{ display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:clamp(34px, 5vh, 56px); }
+  .gal-stat{ display:inline-flex; align-items:center; gap:11px;
+    border:1px dotted var(--bline); background:var(--bg-2); padding:13px 18px; }
+  .gal-stat .hive-mark{ width:13px; height:13px; flex:none; color:var(--blue-deep); }
+  .gal-stat .gs-num{ font-family:var(--serif); font-size:clamp(18px, 1vw + 12px, 24px); color:var(--ink);
+    font-variant-numeric:tabular-nums; }
+  .gal-stat .gs-num .unit{ font-size:.62em; color:var(--blue); letter-spacing:.04em; margin-left:3px; }
+  .gal-stat .gs-lab{ font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); }
+  .mode-3d .gal-stat{ background:rgba(var(--bg2-rgb),.55); -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px); }
+
+  .gal-cat{ margin-top:clamp(46px, 7vh, 84px); }
+  .gal-cat-head{ display:flex; align-items:baseline; gap:18px; }
+  .gal-cat-head::after{ content:""; flex:1; height:1px; background:var(--bline-2); }
+  .gal-cat-k{ margin:0; font-size:10.5px; font-weight:600; letter-spacing:.34em; text-transform:uppercase; color:var(--blue); }
+  .gal-cat-n{ font-family:var(--serif); font-style:italic; font-size:clamp(15px, .7vw + 11px, 19px); color:var(--muted); }
+
+  .gal-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+    gap:clamp(16px, 2vw, 28px); margin-top:clamp(22px, 3vh, 34px); }
+  .gal-card{ appearance:none; -webkit-appearance:none; display:block; width:100%; text-align:left;
+    font:inherit; color:var(--ink); border:1px solid var(--line); background:var(--bg-2);
+    padding:0; cursor:pointer; overflow:hidden;
+    transition:border-color .3s ease, background-color .3s ease, transform .4s var(--ease-page); }
+  .gal-card:hover{ border-color:var(--bline-strong); }
+  @media(hover:hover){ .gal-card:hover .gc-cover img{ transform:scale(1.045); } }
+  .mode-3d .gal-card{ background:rgba(var(--bg2-rgb),.55); -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px); }
+  .gc-cover{ position:relative; display:block; aspect-ratio:3 / 2; overflow:hidden; background:#0c0e10; }
+  .gc-cover img{ width:100%; height:100%; object-fit:cover; display:block;
+    filter:saturate(.96) contrast(1.02); transition:transform .6s var(--ease-page); }
+  .gc-cover::after{ content:""; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(to top, rgba(9,11,13,.34) 0%, rgba(9,11,13,0) 42%); }
+  /* concept honesty tag — pinned top-left on the cover, white-on-photo in both themes */
+  .gc-tag{ position:absolute; top:12px; left:12px; z-index:2;
+    font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:var(--p-ink);
+    padding:6px 10px; background:rgba(12,14,16,.6); border:1px solid var(--p-bline);
+    -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); }
+  .gc-count{ position:absolute; bottom:12px; right:12px; z-index:2;
+    font-size:10px; letter-spacing:.1em; color:var(--p-muted);
+    padding:5px 9px; background:rgba(12,14,16,.5); border:1px solid var(--p-line); }
+  .gc-count .hive-mark{ width:9px; height:9px; vertical-align:-1px; margin-right:6px; color:var(--p-blue); }
+  .gc-body{ padding:clamp(16px, 1.8vw, 24px); }
+  .gc-name{ display:block; font-family:var(--serif); font-weight:400; font-size:var(--t-h3);
+    line-height:1.12; color:var(--ink); }
+  .gc-meta{ display:block; margin-top:11px; font-size:10.5px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--muted); line-height:1.7; }
+  .gc-fact{ display:block; margin-top:13px; padding-top:12px; border-top:1px dotted var(--bline);
+    font-family:var(--serif); font-style:italic; font-size:14.5px; color:var(--body-c);
+    font-variant-numeric:tabular-nums; }
+  .gc-open{ display:block; margin-top:14px; font-size:10px; letter-spacing:.26em;
+    text-transform:uppercase; color:var(--blue); opacity:0; transform:translateY(3px);
+    transition:opacity .35s ease, transform .35s ease; }
+  .gc-open::before{ content:""; display:inline-block; width:14px; height:1px;
+    background:var(--blue); vertical-align:middle; margin:-2px 9px 0 0; }
+  .gal-card:hover .gc-open, .gal-card:focus-visible .gc-open{ opacity:1; transform:none; }
+  @media(hover:none){ .gc-open{ opacity:.8; transform:none; } }
+
+  /* cross-reference chips — the featured towers shown above */
+  .gal-xref{ display:flex; flex-wrap:wrap; gap:10px 12px; margin-top:clamp(20px, 3vh, 30px); }
+  .gal-xref .xr-lab{ font-size:10px; letter-spacing:.28em; text-transform:uppercase;
+    color:var(--muted); align-self:center; margin-right:4px; }
+  .xr-link{ appearance:none; -webkit-appearance:none; font:inherit; cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px; padding:8px 13px;
+    border:1px dotted var(--bline); background:transparent; color:var(--body-c);
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    transition:color .25s ease, border-color .25s ease; }
+  .xr-link:hover{ color:var(--blue); border-color:var(--bline-strong); }
+  .xr-link::before{ content:""; display:inline-block; width:13px; height:1px; background:var(--blue); }
+
+  /* ---------- LIGHTBOX — a second accessible dialog (reuses the modal a11y pattern) ----------
+     role=dialog + aria-modal, focus trap, ESC/overlay/× close, and the SAME
+     two-sided scroll-lock the method modal uses (html.modal-open + modalLock),
+     so it never fights the virtual-scroll engine. Theme-aware, both modes. */
+  .lb{ position:fixed; inset:0; z-index:7; display:flex; align-items:center; justify-content:center;
+    padding:clamp(12px, 2.5vw, 40px); }
+  .lb[hidden]{ display:none; }
+  .lb-ov{ position:absolute; inset:0; background:rgba(6,8,10,.86);
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); opacity:0;
+    transition:opacity .35s ease; }
+  [data-theme="light"] .lb-ov{ background:rgba(21,24,27,.74); }
+  .lb-panel{ position:relative; width:100%; max-width:min(1180px, 100%); max-height:92vh;
+    display:flex; flex-direction:column; background:var(--panel-bg);
+    border:1px solid var(--line); border-top:1px solid var(--bline);
+    opacity:0; transform:translateY(14px);
+    transition:opacity .45s var(--ease-page), transform .45s var(--ease-page); }
+  .lb.open .lb-ov{ opacity:1; }
+  .lb.open .lb-panel{ opacity:1; transform:none; }
+  .lb-head{ display:flex; align-items:center; gap:14px; flex:none;
+    padding:clamp(16px, 2vw, 22px) clamp(18px, 2.4vw, 28px);
+    border-bottom:1px solid var(--bline-2); }
+  .lb-head .hive-mark{ flex:none; width:20px; height:20px; color:var(--brand-cyan); }
+  .lb-title{ font-family:var(--serif); font-weight:400; font-size:var(--t-h3); line-height:1.1; margin-right:auto; }
+  .lb-sub{ display:block; margin-top:5px; font-size:10px; letter-spacing:.24em;
+    text-transform:uppercase; color:var(--muted); }
+  .lb-x{ appearance:none; -webkit-appearance:none; flex:none; width:38px; height:38px;
+    background:none; border:1px solid var(--line); color:var(--muted);
+    font-size:19px; line-height:1; cursor:pointer; transition:color .25s ease, border-color .25s ease; }
+  .lb-x:hover{ color:var(--blue); border-color:var(--bline); }
+  /* the stage: one image at a time, prev/next arrows flanking */
+  .lb-stage{ position:relative; flex:1 1 auto; min-height:0; background:#0c0e10;
+    display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .lb-fig{ margin:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+  .lb-fig img{ max-width:100%; max-height:62vh; width:auto; height:auto; object-fit:contain; display:block; }
+  .lb-arrow{ appearance:none; -webkit-appearance:none; position:absolute; top:50%; transform:translateY(-50%);
+    z-index:3; width:46px; height:46px; border-radius:50%; cursor:pointer;
+    background:rgba(12,14,16,.62); border:1px solid var(--p-bline); color:var(--p-ink);
+    -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);
+    display:flex; align-items:center; justify-content:center; font-size:20px; line-height:1;
+    transition:background-color .25s ease, border-color .25s ease, color .25s ease; }
+  .lb-arrow:hover{ color:#fff; border-color:var(--p-blue); background:rgba(12,14,16,.82); }
+  .lb-prev{ left:clamp(10px, 1.6vw, 20px); }
+  .lb-next{ right:clamp(10px, 1.6vw, 20px); }
+  .lb-arrow:disabled{ opacity:.3; cursor:default; }
+  /* foot: caption + counter + dot indicators */
+  .lb-foot{ flex:none; display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    padding:clamp(14px, 1.8vw, 20px) clamp(18px, 2.4vw, 28px); border-top:1px solid var(--bline-2); }
+  .lb-cap{ flex:1 1 240px; min-width:0; font-family:var(--serif); font-style:italic;
+    font-size:15px; line-height:1.5; color:var(--body-c); }
+  .lb-counter{ flex:none; font-size:11px; letter-spacing:.14em; color:var(--muted);
+    font-variant-numeric:tabular-nums; }
+  .lb-dots{ display:flex; gap:8px; flex:none; }
+  .lb-dot{ appearance:none; -webkit-appearance:none; width:9px; height:9px; padding:0; cursor:pointer;
+    border:1px solid var(--bline); background:transparent; border-radius:50%;
+    transition:background-color .25s ease, border-color .25s ease; }
+  .lb-dot[aria-current="true"]{ background:var(--blue); border-color:var(--blue); }
+  .lb-dot:hover{ border-color:var(--bline-strong); }
+  @media(max-width:620px){
+    .lb{ padding:0; }
+    .lb-panel{ max-width:none; height:100%; max-height:none; }
+    .lb-fig img{ max-height:48vh; }
+    .lb-arrow{ width:40px; height:40px; }
+  }
+  @media(prefers-reduced-motion:reduce){
+    .lb-ov, .lb-panel{ opacity:1; transform:none; transition:none; }
+    .gc-cover img, .gal-card{ transition:none; }
+    .gc-open{ opacity:.8; transform:none; transition:none; }
+  }
+
   /* principals */
   .pp-grid{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px, 4vw, 56px); margin-top:clamp(44px, 7vh, 84px); }
   .pp{ border-top:1px solid var(--bline); padding-top:24px; position:relative; }
@@ -754,7 +903,7 @@
   .mode-3d .stats .cell{ background:rgba(var(--bg-rgb),.5); }
   .mode-3d .card{ background:rgba(var(--bg2-rgb),.55); -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px); }
   /* the Works index is a typeset spread — opaque paper in both modes */
-  .mode-3d .panel[data-chapter="index"]{ background:var(--bg); }
+  .mode-3d .panel[data-chapter="works"]{ background:var(--bg); }
   .mode-3d .panel[data-chapter="principals"],
   .mode-3d .panel[data-chapter="contact"]{ background:rgba(var(--bg-rgb),.8); }
 
@@ -842,29 +991,29 @@
   <!-- fixed WebGL layer placeholder — Task 10 mounts Three.js here (z below content) -->
   <div id="gl" aria-hidden="true"><canvas></canvas></div>
 
-  <!-- fixed hero visual: the urna night render, drawn first as its own blueprint -->
+  <!-- fixed hero visual: the urna golden-hour render, drawn first as its own blueprint -->
   <div id="heroVis">
     <picture class="hv">
-      <source srcset="img/mittal-tower-night.webp" type="image/webp">
-      <img src="img/mittal-tower-night.jpg" loading="eager" fetchpriority="high"
-           alt="Night render of the urna twin residential towers glowing over Versova, Mumbai — design-stage visualization by BuildHive Architects" />
+      <source srcset="img/urna-real-01.webp" type="image/webp">
+      <img src="img/urna-real-01.jpg" loading="eager" fetchpriority="high"
+           alt="Golden-hour render of the urna tower rising over parkland in Versova, Mumbai — design-stage visualization by BuildHive Architects" />
     </picture>
     <picture class="hv" id="heroBlue" aria-hidden="true">
-      <source srcset="img/mittal-tower-night.webp" type="image/webp">
-      <img src="img/mittal-tower-night.jpg" loading="eager" alt="" />
+      <source srcset="img/urna-real-01.webp" type="image/webp">
+      <img src="img/urna-real-01.jpg" loading="eager" alt="" />
     </picture>
     <div class="hv-scrim" aria-hidden="true"></div>
   </div>
 
-  <!-- ============ FEATURED WORK — urna (fixed full-bleed plate, four leaves) ============ -->
+  <!-- ============ FEATURED WORK — urna (fixed full-bleed plate, three real-render leaves) ============ -->
   <div class="plate plate--urna" id="plateUrna" data-plate-for="urna" data-push="1.06">
 
-    <!-- leaf 1 · the tower at night -->
-    <div class="leaf" data-w="0,0.30">
+    <!-- leaf 1 · golden-hour establishing render (landscape hero) -->
+    <div class="leaf" data-w="0,0.42">
       <div class="plate-bed"><picture>
-        <source srcset="img/mittal-tower-night.webp" type="image/webp">
-        <img src="img/mittal-tower-night.jpg" loading="lazy"
-             alt="Night render of the urna twin residential towers glowing over Versova, Mumbai — design-stage visualization" />
+        <source srcset="img/urna-real-01.webp" type="image/webp">
+        <img src="img/urna-real-01.jpg" loading="lazy"
+             alt="Golden-hour render of the urna tower in parkland at Versova, Mumbai — design-stage visualization" />
       </picture></div>
       <div class="plate-scrim" aria-hidden="true"></div>
       <svg class="plate-anno" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -876,11 +1025,11 @@
           <line class="tk anno-f" x1="899" y1="820" x2="911" y2="820" style="--d:960ms"/>
           <text class="anno-f" transform="rotate(-90 905 555)" x="905" y="559" text-anchor="middle" style="--d:960ms">UP TO 18 STOREYS · FSI 5.4</text>
           <text class="anno-f t-sm" transform="rotate(-90 925 555)" x="925" y="559" text-anchor="middle" style="--d:1180ms">THE DENSEST MUMBAI PERMITS</text>
-          <!-- data callout: the towers -->
+          <!-- data callout: the tower -->
           <circle class="dt anno-f" cx="600" cy="330" r="3" style="--d:240ms"/>
           <line class="ld anno-f" x1="600" y1="330" x2="690" y2="225" style="--d:360ms"/>
           <line class="anno-d" pathLength="1" x1="690" y1="225" x2="975" y2="225" style="--d:480ms"/>
-          <text class="anno-f" x="692" y="211" style="--d:1100ms">TWIN TOWERS · VERSOVA, MUMBAI</text>
+          <text class="anno-f" x="692" y="211" style="--d:1100ms">RESIDENTIAL TOWER · VERSOVA, MUMBAI</text>
           <!-- status callout — the honesty line -->
           <circle class="dt anno-f" cx="518" cy="555" r="3" style="--d:600ms"/>
           <line class="ld anno-f" x1="518" y1="555" x2="590" y2="480" style="--d:700ms"/>
@@ -899,84 +1048,106 @@
       <div class="plate-mark" aria-hidden="true"><span class="pm-word">Featured Work</span><span class="pm-name">urna</span></div>
       <div class="plate-foot">
         <p class="plate-title"><span class="line"><span class="line-inner">urna</span></span><span class="line"><span class="line-inner"><em>by Sanjay Mittal.</em></span></span></p>
-        <p class="plate-caption">Twin residential towers rising over Versova, Mumbai — a zero-discharge, parametric Art-Deco landmark of roughly 97,000 built-up square feet across twin towers rising to eighteen storeys.
-          <span class="pc-tag">urna by Sanjay Mittal · The Residences — currently in design development</span>
+        <p class="plate-caption">A residential tower rising over Versova, Mumbai — a zero-discharge, parametric Art-Deco landmark of roughly 97,000 built-up square feet, rising to eighteen storeys at an FSI of 5.4.
+          <span class="pc-tag">urna by Sanjay Mittal — Concept · in design development</span>
         </p>
       </div>
     </div>
 
-    <!-- leaf 2 · the roofscape -->
-    <div class="leaf" data-w="0.30,0.55">
+    <!-- leaf 2 · the podium meeting the green-clad tower (portrait) -->
+    <div class="leaf leaf--portrait" data-w="0.42,0.71">
       <div class="plate-bed"><picture>
-        <source srcset="img/mittal-aerial-terraces.webp" type="image/webp">
-        <img src="img/mittal-aerial-terraces.jpg" loading="lazy"
-             alt="Drone aerial render of urna's curved parametric green-roof terraces crowning the twin towers" />
+        <source srcset="img/urna-real-02.webp" type="image/webp">
+        <img src="img/urna-real-02.jpg" loading="lazy"
+             alt="Upward render of urna — the perforated brick podium meeting the green-clad tower against blue sky" />
       </picture></div>
       <div class="plate-scrim" aria-hidden="true"></div>
       <svg class="plate-anno" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <g>
-          <!-- plot dimension string — right half; lower-left is furniture-only -->
-          <line class="anno-d" pathLength="1" x1="540" y1="625" x2="660" y2="625" style="--d:0ms"/>
-          <line class="anno-d" pathLength="1" x1="850" y1="625" x2="960" y2="625" style="--d:0ms"/>
-          <line class="tk anno-f" x1="540" y1="619" x2="540" y2="631" style="--d:960ms"/>
-          <line class="tk anno-f" x1="960" y1="619" x2="960" y2="631" style="--d:960ms"/>
-          <text class="anno-f" x="755" y="630" text-anchor="middle" style="--d:960ms">≈ 18,000 SQFT PLOT</text>
-          <!-- terrace callout -->
-          <circle class="dt anno-f" cx="430" cy="390" r="3" style="--d:240ms"/>
-          <line class="ld anno-f" x1="430" y1="390" x2="382" y2="280" style="--d:360ms"/>
-          <line class="anno-d" pathLength="1" x1="160" y1="278" x2="380" y2="278" style="--d:480ms"/>
-          <text class="anno-f" style="--d:1100ms"><tspan x="162" y="246">PARAMETRIC GREEN ROOF</tspan><tspan x="162" y="264">ZERO-DISCHARGE</tspan></text>
-          <!-- built-up callout -->
-          <circle class="dt anno-f" cx="585" cy="470" r="3" style="--d:600ms"/>
-          <line class="ld anno-f" x1="585" y1="470" x2="700" y2="415" style="--d:700ms"/>
-          <line class="anno-d" pathLength="1" x1="700" y1="418" x2="905" y2="418" style="--d:800ms"/>
-          <text class="anno-f" x="702" y="404" style="--d:1300ms">~97,000 SQFT BUILT-UP</text>
-          <!-- north arrow -->
-          <circle class="anno-d" pathLength="1" cx="880" cy="798" r="34" style="--d:240ms"/>
-          <line class="anno-d" pathLength="1" x1="880" y1="820" x2="880" y2="776" style="--d:400ms"/>
-          <polyline class="anno-f" points="872,786 880,772 888,786" style="--d:1040ms"/>
-          <text class="anno-f" x="880" y="746" text-anchor="middle" style="--d:1040ms">N</text>
+          <circle class="dt anno-f" cx="470" cy="430" r="3" style="--d:0ms"/>
+          <line class="ld anno-f" x1="470" y1="430" x2="600" y2="300" style="--d:120ms"/>
+          <line class="anno-d" pathLength="1" x1="600" y1="300" x2="900" y2="300" style="--d:240ms"/>
+          <text class="anno-f" x="602" y="286" style="--d:900ms">PARAMETRIC GREEN-CLAD FACADE</text>
         </g>
       </svg>
-      <p class="leaf-tag">The roofscape</p>
+      <p class="leaf-tag">The podium</p>
     </div>
 
-    <!-- leaf 3 · the arrival -->
-    <div class="leaf" data-w="0.55,0.78">
+    <!-- leaf 3 · street-context dusk (portrait) -->
+    <div class="leaf leaf--portrait" data-w="0.71,1">
       <div class="plate-bed"><picture>
-        <source srcset="img/mittal-porte-cochere.webp" type="image/webp">
-        <img src="img/mittal-porte-cochere.jpg" loading="lazy"
-             alt="urna porte-cochère render at night — a car waiting under the lit arrival canopy on wet marble" />
+        <source srcset="img/urna-real-03.webp" type="image/webp">
+        <img src="img/urna-real-03.jpg" loading="lazy"
+             alt="Street-context dusk render of the urna tower over its green podium, city edge behind" />
       </picture></div>
       <div class="plate-scrim" aria-hidden="true"></div>
       <svg class="plate-anno" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <g>
-          <circle class="dt anno-f" cx="520" cy="430" r="3" style="--d:0ms"/>
-          <line class="ld anno-f" x1="520" y1="430" x2="660" y2="300" style="--d:120ms"/>
-          <line class="anno-d" pathLength="1" x1="660" y1="300" x2="790" y2="300" style="--d:240ms"/>
-          <text class="anno-f" x="662" y="286" style="--d:900ms">THE ARRIVAL</text>
+          <circle class="dt anno-f" cx="510" cy="520" r="3" style="--d:0ms"/>
+          <line class="ld anno-f" x1="510" y1="520" x2="640" y2="360" style="--d:120ms"/>
+          <line class="anno-d" pathLength="1" x1="640" y1="360" x2="900" y2="360" style="--d:240ms"/>
+          <text class="anno-f" x="642" y="346" style="--d:900ms">ZERO-DISCHARGE · GREEN PODIUM</text>
         </g>
       </svg>
-      <p class="leaf-tag">The arrival</p>
+      <p class="leaf-tag">In its street</p>
     </div>
 
-    <!-- leaf 4 · the lobby -->
-    <div class="leaf" data-w="0.78,1">
+    <span class="plate-corner pc-tl" aria-hidden="true"></span>
+    <span class="plate-corner pc-tr" aria-hidden="true"></span>
+    <span class="plate-corner pc-bl" aria-hidden="true"></span>
+    <span class="plate-corner pc-br" aria-hidden="true"></span>
+  </div>
+
+  <!-- ============ FEATURED WORK — Cadence (NEW, fixed full-bleed plate, portrait heroes) ============ -->
+  <div class="plate plate--cadence" id="plateCadence" data-plate-for="cadence" data-push="1.05">
+
+    <!-- leaf 1 · the twisted tower, overcast / wet street (portrait hero) -->
+    <div class="leaf leaf--portrait" data-w="0,0.55">
       <div class="plate-bed"><picture>
-        <source srcset="img/mittal-lobby.webp" type="image/webp">
-        <img src="img/mittal-lobby.jpg" loading="lazy"
-             alt="urna lobby lounge render — gold sculpture against a parametric wood wave wall" />
+        <source srcset="img/proj-cadence-01.webp" type="image/webp">
+        <img src="img/proj-cadence-01.jpg" loading="lazy"
+             alt="Concept render of Cadence — a twisted faceted-glass office tower under an overcast sky, wet street and taxis below" />
       </picture></div>
       <div class="plate-scrim" aria-hidden="true"></div>
       <svg class="plate-anno" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <g>
-          <circle class="dt anno-f" cx="610" cy="400" r="3" style="--d:0ms"/>
-          <line class="ld anno-f" x1="610" y1="400" x2="720" y2="278" style="--d:120ms"/>
-          <line class="anno-d" pathLength="1" x1="720" y1="278" x2="975" y2="278" style="--d:240ms"/>
-          <text class="anno-f" x="722" y="264" style="--d:900ms">PARAMETRIC WOOD WAVE WALL</text>
+          <!-- a single neutral concept-visualization note (no invented facts) -->
+          <circle class="dt anno-f" cx="520" cy="360" r="3" style="--d:240ms"/>
+          <line class="ld anno-f" x1="520" y1="360" x2="650" y2="250" style="--d:360ms"/>
+          <line class="anno-d" pathLength="1" x1="650" y1="250" x2="905" y2="250" style="--d:480ms"/>
+          <text class="anno-f" x="652" y="236" style="--d:1100ms">CONCEPT VISUALIZATION</text>
+          <circle class="dt anno-f" cx="500" cy="560" r="3" style="--d:600ms"/>
+          <line class="ld anno-f" x1="500" y1="560" x2="600" y2="470" style="--d:700ms"/>
+          <line class="anno-d" pathLength="1" x1="600" y1="470" x2="860" y2="470" style="--d:800ms"/>
+          <text class="anno-f" x="602" y="456" style="--d:1300ms">FACETED / TWISTED GLASS</text>
         </g>
       </svg>
-      <p class="leaf-tag">The lobby</p>
+      <div class="plate-mark" aria-hidden="true"><span class="pm-word">Featured Work — Cadence</span><span class="pm-name">Cadence</span></div>
+      <div class="plate-foot">
+        <p class="plate-title"><span class="line"><span class="line-inner">Cadence.</span></span><span class="line"><span class="line-inner"><em>A tower with a turn in it.</em></span></span></p>
+        <p class="plate-caption">A faceted, twisted glass office tower — its glazed planes shifting storey by storey so the skyline reads it differently from every street.
+          <span class="pc-tag">Cadence — Concept · in design development</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- leaf 2 · twilight, glowing base + cabs (portrait) -->
+    <div class="leaf leaf--portrait" data-w="0.55,1">
+      <div class="plate-bed"><picture>
+        <source srcset="img/proj-cadence-02.webp" type="image/webp">
+        <img src="img/proj-cadence-02.jpg" loading="lazy"
+             alt="Concept render of Cadence at twilight — purple sky, a glowing lobby at the base and yellow cabs at the kerb" />
+      </picture></div>
+      <div class="plate-scrim" aria-hidden="true"></div>
+      <svg class="plate-anno" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g>
+          <circle class="dt anno-f" cx="500" cy="640" r="3" style="--d:0ms"/>
+          <line class="ld anno-f" x1="500" y1="640" x2="630" y2="500" style="--d:120ms"/>
+          <line class="anno-d" pathLength="1" x1="630" y1="500" x2="900" y2="500" style="--d:240ms"/>
+          <text class="anno-f" x="632" y="486" style="--d:900ms">GLAZED LOBBY · STREET LEVEL</text>
+        </g>
+      </svg>
+      <p class="leaf-tag">At dusk</p>
     </div>
 
     <span class="plate-corner pc-tl" aria-hidden="true"></span>
@@ -989,9 +1160,9 @@
   <div class="plate plate--amodaa" id="plateAmodaa" data-plate-for="amodaa" data-push="1.05">
     <div class="leaf" data-w="0,1">
       <div class="plate-bed"><picture>
-        <source srcset="img/arch-lonavala-bungalow.webp" type="image/webp">
-        <img src="img/arch-lonavala-bungalow.jpg" loading="lazy"
-             alt="AMODAA bungalow at Lonavala at dusk — lit perforated-metal feature screen over the entrance" />
+        <source srcset="img/proj-amoda-01.webp" type="image/webp">
+        <img src="img/proj-amoda-01.jpg" loading="lazy"
+             alt="AMODAA bungalow at dusk — a lit three-storey facade behind a perforated-metal feature screen, palms in the foreground" />
       </picture></div>
       <div class="plate-scrim" aria-hidden="true"></div>
       <svg class="plate-anno" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -1033,13 +1204,13 @@
     <div class="brand">
       <svg viewBox="0 0 64 64" aria-hidden="true">
         <g fill="currentColor">
-          <path d="M20 12 H25 A8 8 0 0 1 33 20 V27.5 A2.5 2.5 0 0 1 30.5 30 H20 A8 8 0 0 1 12 22 V20 A8 8 0 0 1 20 12 Z"/>
-          <path d="M43 12 H45 A7 7 0 0 1 52 19 V23 A7 7 0 0 1 45 30 H38.5 A2.5 2.5 0 0 1 36 27.5 V19 A7 7 0 0 1 43 12 Z"/>
-          <path d="M20 34 H30.5 A2.5 2.5 0 0 1 33 36.5 V44 A8 8 0 0 1 25 52 H20 A8 8 0 0 1 12 44 V42 A8 8 0 0 1 20 34 Z"/>
-          <path d="M38.5 34 H45 A7 7 0 0 1 52 41 V45 A7 7 0 0 1 45 52 H43 A7 7 0 0 1 36 45 V36.5 A2.5 2.5 0 0 1 38.5 34 Z"/>
+          <rect x="13" y="13" width="17.5" height="17.5" rx="5"/>
+          <rect x="33.5" y="13" width="17.5" height="17.5" rx="5"/>
+          <rect x="13" y="33.5" width="17.5" height="17.5" rx="5"/>
+          <rect x="33.5" y="33.5" width="17.5" height="17.5" rx="5"/>
         </g>
       </svg>
-      <span class="bw">Buildhive<small>Architects · Mumbai</small></span>
+      <span class="bw">Buildhive<small>Masterplanners · Architects · Interior Designers</small></span>
     </div>
     <div class="topright">Company Profile · 2026</div>
     <div class="cue" id="cue"><div class="word">Scroll</div><div class="track"></div></div>
@@ -1058,6 +1229,7 @@
   <nav id="scenes" aria-label="Chapters">
     <button type="button" aria-label="Go to Intro">Intro</button>
     <button type="button" aria-label="Go to urna">urna</button>
+    <button type="button" aria-label="Go to Cadence">Cadence</button>
     <button type="button" aria-label="Go to AMODAA">AMODAA</button>
     <button type="button" aria-label="Go to Studio">Studio</button>
     <button type="button" aria-label="Go to Scale">Scale</button>
@@ -1083,7 +1255,12 @@
 
     <!-- FEATURED WORK — urna: transparent runway over the fixed plate -->
     <section class="plate-run plate-run--I" data-chapter="urna" id="runUrna">
-      <h2 class="sr-only">Featured work — urna by Sanjay Mittal. Twin residential towers, Versova, Mumbai — currently in design development.</h2>
+      <h2 class="sr-only">Featured work — urna by Sanjay Mittal. A residential tower, Versova, Mumbai — a concept in design development.</h2>
+    </section>
+
+    <!-- FEATURED WORK — Cadence: transparent runway over the fixed plate -->
+    <section class="plate-run plate-run--cad" data-chapter="cadence" id="runCadence">
+      <h2 class="sr-only">Featured work — Cadence. A faceted, twisted glass office tower — a concept in design development.</h2>
     </section>
 
     <!-- FEATURED WORK — AMODAA: transparent runway over the fixed plate -->
@@ -1218,70 +1395,175 @@
       <h2 class="sr-only">The proof — a 95% match between the render approved and the space photographed as built. Open office and board room, render versus as-built photograph.</h2>
     </section>
 
-    <!-- 05 — WORKS -->
-    <section class="panel" data-chapter="index">
+    <!-- 05 — WORKS: categorized gallery -->
+    <section class="panel" data-chapter="works">
       <div class="wrap">
         <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>05 — Works</p></div>
         <h2 class="lede rv"><span class="line"><span class="line-inner">From masterplan</span></span><span class="line"><span class="line-inner"><em>to door handle.</em></span></span></h2>
-        <ol class="index">
-          <li class="rv" style="--i:0">
-            <span class="ix-name">urna by Sanjay Mittal</span>
-            <span class="ix-type">Residential towers</span>
-            <span class="ix-place">Versova, Mumbai</span>
-            <span class="ix-fact">In design development</span>
-          </li>
-          <li class="rv" style="--i:1">
-            <span class="ix-name">AMODAA bungalow</span>
-            <span class="ix-type">Architecture</span>
-            <span class="ix-place">Lonavala</span>
-            <span class="ix-fact">Built work</span>
-          </li>
-          <li class="rv" style="--i:2">
-            <span class="ix-name">Villa township masterplan</span>
-            <span class="ix-type">Masterplanning</span>
-            <span class="ix-place">Mira Bhayandar</span>
-            <span class="ix-fact">100 plots</span>
-          </li>
-          <li class="rv" style="--i:3">
-            <span class="ix-name">Hotel + retail</span>
-            <span class="ix-type">Architecture</span>
-            <span class="ix-place">Daman</span>
-            <span class="ix-fact">50,000 sqft · design to permit</span>
-          </li>
-          <li class="rv" style="--i:4">
-            <span class="ix-name">Shanmukhananda Hall facelift</span>
-            <span class="ix-type">Cultural</span>
-            <span class="ix-place">Matunga, Mumbai</span>
-            <span class="ix-fact">Civic landmark</span>
-          </li>
-          <li class="rv" style="--i:5">
-            <span class="ix-name">Senvion</span>
-            <span class="ix-type">Workplace</span>
-            <span class="ix-place">Mumbai</span>
-            <span class="ix-fact">15,000 sqft · 90 days · 2024</span>
-          </li>
-          <li class="rv" style="--i:6">
-            <span class="ix-name">ACG</span>
-            <span class="ix-type">Workplace</span>
-            <span class="ix-place">Kandivali</span>
-            <span class="ix-fact">8,500 sqft · 90 days · 2025</span>
-          </li>
-          <li class="rv" style="--i:7">
-            <span class="ix-name">AstaGuru</span>
-            <span class="ix-type">Workplace</span>
-            <span class="ix-place">Fort, Mumbai</span>
-            <span class="ix-fact">9,000 sqft · 90 days · 2025</span>
-          </li>
-          <li class="rv" style="--i:8">
-            <span class="ix-name">BSM</span>
-            <span class="ix-type">Workplace</span>
-            <span class="ix-place">Olympia, Powai</span>
-            <span class="ix-fact">20,000 sqft · 90 days · 2022</span>
-          </li>
-        </ol>
-        <p class="ix-note rv">The index spans BuildHive and DBC — sister concerns, shared principals, one team.</p>
+
+        <!-- headline stats from the client's two project collages -->
+        <div class="gal-stats rv">
+          <span class="gal-stat">
+            <svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>
+            <span class="gs-num">167,000<span class="unit">sqft</span></span><span class="gs-lab">Commercial interiors</span>
+          </span>
+          <span class="gal-stat">
+            <svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>
+            <span class="gs-num">50,667<span class="unit">sqft</span></span><span class="gs-lab">Residential interiors</span>
+          </span>
+        </div>
+
+        <!-- Architecture -->
+        <div class="gal-cat rv">
+          <div class="gal-cat-head"><h3 class="gal-cat-k">Architecture</h3><span class="gal-cat-n">masterplan &amp; building</span></div>
+          <div class="gal-xref">
+            <span class="xr-lab">Featured above — view all angles</span>
+            <button type="button" class="xr-link" data-gallery="urna" aria-haspopup="dialog">urna</button>
+            <button type="button" class="xr-link" data-gallery="cadence" aria-haspopup="dialog">Cadence</button>
+            <button type="button" class="xr-link" data-gallery="amodaa" aria-haspopup="dialog">AMODAA</button>
+          </div>
+          <div class="gal-grid">
+            <button type="button" class="gal-card" data-gallery="mpavilion" aria-haspopup="dialog">
+              <span class="gc-cover">
+                <span class="gc-tag">Concept · in design development</span>
+                <span class="gc-count"><svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>3</span>
+                <picture><source srcset="img/proj-mpavilion-01.webp" type="image/webp">
+                <img src="img/proj-mpavilion-01.jpg" loading="lazy" decoding="async"
+                     alt="Top-down view of M Pavilion — a parametric lattice pavilion beside an autumn tree" /></picture>
+              </span>
+              <span class="gc-body">
+                <span class="gc-name">M Pavilion</span>
+                <span class="gc-meta">Parametric pavilion</span>
+                <span class="gc-fact">Concept visualization</span>
+                <span class="gc-open">View gallery</span>
+              </span>
+            </button>
+            <button type="button" class="gal-card" data-gallery="ubp" aria-haspopup="dialog">
+              <span class="gc-cover">
+                <span class="gc-tag">Concept · in design development</span>
+                <picture><source srcset="img/proj-ubp-01.webp" type="image/webp">
+                <img src="img/proj-ubp-01.jpg" loading="lazy" decoding="async"
+                     alt="Dusk view of UBP — a terraced glass office tower with stepped cantilevers and a lit lobby" /></picture>
+              </span>
+              <span class="gc-body">
+                <span class="gc-name">UBP</span>
+                <span class="gc-meta">Office tower</span>
+                <span class="gc-fact">Concept visualization</span>
+                <span class="gc-open">View gallery</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Commercial Interiors -->
+        <div class="gal-cat rv">
+          <div class="gal-cat-head"><h3 class="gal-cat-k">Commercial Interiors</h3><span class="gal-cat-n">workplaces, delivered</span></div>
+          <div class="gal-grid">
+            <button type="button" class="gal-card" data-gallery="acg" aria-haspopup="dialog">
+              <span class="gc-cover">
+                <span class="gc-count"><svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>4</span>
+                <picture><source srcset="img/proj-acg-kandivali-01.webp" type="image/webp">
+                <img src="img/proj-acg-kandivali-01.jpg" loading="lazy" decoding="async"
+                     alt="ACG Kandivali — a symmetric open office under a hexagonal ceiling feature" /></picture>
+              </span>
+              <span class="gc-body">
+                <span class="gc-name">ACG</span>
+                <span class="gc-meta">Workplace · Kandivali</span>
+                <span class="gc-fact">8,500 sqft · 90 days · 2025</span>
+                <span class="gc-open">View gallery</span>
+              </span>
+            </button>
+            <button type="button" class="gal-card" data-gallery="astaguru" aria-haspopup="dialog">
+              <span class="gc-cover">
+                <span class="gc-count"><svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>4</span>
+                <picture><source srcset="img/proj-astaguru-fort-01.webp" type="image/webp">
+                <img src="img/proj-astaguru-fort-01.jpg" loading="lazy" decoding="async"
+                     alt="AstaGuru Fort — a double-height open office with a circular ceiling feature, mezzanine and stair" /></picture>
+              </span>
+              <span class="gc-body">
+                <span class="gc-name">AstaGuru</span>
+                <span class="gc-meta">Workplace · Fort, Mumbai</span>
+                <span class="gc-fact">9,000 sqft · 90 days · 2025</span>
+                <span class="gc-open">View gallery</span>
+              </span>
+            </button>
+            <button type="button" class="gal-card" data-gallery="bsm" aria-haspopup="dialog">
+              <span class="gc-cover">
+                <span class="gc-count"><svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>3</span>
+                <picture><source srcset="img/proj-bsm-olympia-01.webp" type="image/webp">
+                <img src="img/proj-bsm-olympia-01.jpg" loading="lazy" decoding="async"
+                     alt="BSM Olympia — a training room with symmetric geometric wood-panel feature walls" /></picture>
+              </span>
+              <span class="gc-body">
+                <span class="gc-name">BSM</span>
+                <span class="gc-meta">Workplace · Olympia, Powai</span>
+                <span class="gc-fact">20,000 sqft · 90 days · 2022</span>
+                <span class="gc-open">View gallery</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Residential Interiors -->
+        <div class="gal-cat rv">
+          <div class="gal-cat-head"><h3 class="gal-cat-k">Residential Interiors</h3><span class="gal-cat-n">homes, delivered</span></div>
+          <div class="gal-grid">
+            <button type="button" class="gal-card" data-gallery="odyssey" aria-haspopup="dialog">
+              <span class="gc-cover">
+                <span class="gc-count"><svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>3</span>
+                <picture><source srcset="img/proj-odyssey-01.webp" type="image/webp">
+                <img src="img/proj-odyssey-01.jpg" loading="lazy" decoding="async"
+                     alt="Odyssey — a luxe living room with a chandelier, marble floor and a mountain view" /></picture>
+              </span>
+              <span class="gc-body">
+                <span class="gc-name">Odyssey</span>
+                <span class="gc-meta">Residence</span>
+                <span class="gc-fact">Built work</span>
+                <span class="gc-open">View gallery</span>
+              </span>
+            </button>
+            <button type="button" class="gal-card" data-gallery="clifton" aria-haspopup="dialog">
+              <span class="gc-cover">
+                <span class="gc-count"><svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>3</span>
+                <picture><source srcset="img/proj-clifton-01.webp" type="image/webp">
+                <img src="img/proj-clifton-01.jpg" loading="lazy" decoding="async"
+                     alt="Clifton — a living room with mustard sofas, a green glass partition and a slatted TV wall" /></picture>
+              </span>
+              <span class="gc-body">
+                <span class="gc-name">Clifton</span>
+                <span class="gc-meta">Residence</span>
+                <span class="gc-fact">Built work</span>
+                <span class="gc-open">View gallery</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <p class="ix-note rv">Works span BuildHive and DBC — sister concerns, shared principals, one team.</p>
       </div>
     </section>
+
+    <!-- ============ LIGHTBOX — carousel dialog (reuses the method-modal a11y pattern) ============ -->
+    <div class="lb" id="lightbox" hidden>
+      <div class="lb-ov" id="lbOv"></div>
+      <div class="lb-panel" role="dialog" aria-modal="true" aria-labelledby="lbTitle" tabindex="-1">
+        <div class="lb-head">
+          <svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>
+          <h3 class="lb-title" id="lbTitle"><span id="lbName"></span><span class="lb-sub" id="lbSub"></span></h3>
+          <button type="button" class="lb-x" id="lbX" aria-label="Close gallery">×</button>
+        </div>
+        <div class="lb-stage">
+          <button type="button" class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous image">‹</button>
+          <figure class="lb-fig"><picture><source id="lbSrc" type="image/webp"><img id="lbImg" alt="" /></picture></figure>
+          <button type="button" class="lb-arrow lb-next" id="lbNext" aria-label="Next image">›</button>
+        </div>
+        <div class="lb-foot">
+          <p class="lb-cap" id="lbCap" aria-live="polite"></p>
+          <span class="lb-counter" id="lbCounter"></span>
+          <div class="lb-dots" id="lbDots" role="group" aria-label="Gallery images"></div>
+        </div>
+      </div>
+    </div>
 
     <!-- 06 — THE PRINCIPALS -->
     <section class="panel" data-chapter="principals">
@@ -1483,7 +1765,7 @@
     <p>Before a single workstation is placed, we map the floor.</p>
     <p>Geopathic stress is the term for natural distortions in the earth's energy field — caused by underground water streams, geological faults, and the Hartmann and Curry grid lines that cross the ground. These zones are not confined to the basement. They rise through a building up to roughly 1,000 ft, and along their lines people report weaker concentration and slower decisions.</p>
     <p>So the mapping comes first — before space planning, not after. Stress lines, water veins, and fault zones are identified and documented, and the work that needs the clearest heads — leadership, finance — is positioned off those lines. Vastu alignment is read on the same map.</p>
-    <p>The correction is made once, during fitout, before the walls close. It is seamless, permanent, and needs zero structural rework afterward. Quiet engineering, applied to where people sit.</p>
+    <p>The correction is made once, during fitout, before the walls close. Done once, it is permanent and needs no structural rework afterward. Quiet engineering, applied to where people sit.</p>
     <dl class="modal-spec">
       <div><dt>Vertical reach of stress zones</dt><dd>~1,000 ft</dd></div>
       <div><dt>Sources mapped</dt><dd>water streams · fault lines · Hartmann/Curry grids</dd></div>
@@ -1958,6 +2240,10 @@
     function open(idx){
       var tpl = document.getElementById('tplModal' + idx);
       if(!tpl || !('content' in tpl)) return;
+      // symmetric guard (mirrors the lightbox's `if(!lb.hidden) return`): never
+      // open over a dialog already holding the shared scroll-lock, so the two
+      // never both clear modalLock / html.modal-open out from under each other.
+      if(document.documentElement.classList.contains('modal-open')) return;
       openIdx = idx;
       title.textContent = tpl.getAttribute('data-title') || '';
       body.innerHTML = '';
@@ -1994,6 +2280,191 @@
       }
       card.addEventListener('focus', function(){ if(openIdx < 0) setMorph(i + 1); });
       card.addEventListener('blur',  function(){ if(openIdx < 0) setMorph(0); });
+    });
+  })();
+
+  /* ---------- gallery lightbox: a SECOND accessible dialog ----------
+     Carousel over each project's images. It REUSES the method modal's a11y
+     contract verbatim: role=dialog aria-modal, focus trap routed through the
+     panel (tabindex=-1) so the first Tab lands inside, ESC + overlay + × close,
+     focus restore to the opener, and the SAME two-sided scroll-lock the method
+     modal uses — html.modal-open (stops the browser) + the engine's shared
+     modalLock flag (onScroll ignores stray events, smoothY idles stable).
+     Only one dialog is ever open: the method modal opens from cards in the
+     method chapter, the lightbox from cards in the works chapter, and each
+     restores its own saved offset on close, so the two never collide. */
+  (function(){
+    var lb = document.getElementById('lightbox');
+    if(!lb) return;
+    var panel  = lb.querySelector('.lb-panel');
+    var ovEl   = document.getElementById('lbOv');
+    var xBtn   = document.getElementById('lbX');
+    var prevB  = document.getElementById('lbPrev');
+    var nextB  = document.getElementById('lbNext');
+    var imgEl  = document.getElementById('lbImg');
+    var srcEl  = document.getElementById('lbSrc');
+    var nameEl = document.getElementById('lbName');
+    var subEl  = document.getElementById('lbSub');
+    var capEl  = document.getElementById('lbCap');
+    var countEl= document.getElementById('lbCounter');
+    var dotsEl = document.getElementById('lbDots');
+    var cards  = Array.prototype.slice.call(document.querySelectorAll('[data-gallery]'));
+    if(!cards.length) return;
+
+    /* captions trimmed from v5-image-manifest.md; concept projects carry their
+       honesty tag in the project sub-line (never imply built). */
+    var GALLERY = {
+      urna: { name:'urna', sub:'by Sanjay Mittal · Residential tower, Versova · Concept · in design development', imgs:[
+        { s:'urna-real-01', cap:'Golden-hour establishing render — the full tower in parkland.' },
+        { s:'urna-real-02', cap:'Upward view — the perforated brick podium meeting the green-clad tower.' },
+        { s:'urna-real-03', cap:'Street-context at dusk — the tower over its green podium, city edge behind.' } ] },
+      cadence: { name:'Cadence', sub:'Faceted glass office tower · Concept · in design development', imgs:[
+        { s:'proj-cadence-01', cap:'The twisted glass tower under an overcast sky, wet street below.' },
+        { s:'proj-cadence-02', cap:'Twilight — a glowing lobby at the base, yellow cabs at the kerb.' },
+        { s:'proj-cadence-03', cap:'Aerial — the tower at the centre of a public plaza.' },
+        { s:'proj-cadence-04', cap:'Rainy night — lit windows, a long-exposure street.' },
+        { s:'proj-cadence-05', cap:'Upward atrium glow — faceted glass converging over a warm-lit interior.' },
+        { s:'proj-cadence-06', cap:'The hourglass base and glazed entrance by day.' } ] },
+      amodaa: { name:'AMODAA', sub:'Bungalow · Lonavala · Built work', imgs:[
+        { s:'proj-amoda-01', cap:'Dusk exterior — the lit three-storey facade behind a perforated-metal screen.' },
+        { s:'proj-amoda-02', cap:'Double-height living room, tan leather seating.' },
+        { s:'proj-amoda-03', cap:'The same living room seen vertically — the full double-height sweep.' },
+        { s:'proj-amoda-04', cap:'Rooftop terrace at sunset, the city and hills beyond.' } ] },
+      mpavilion: { name:'M Pavilion', sub:'Parametric pavilion · Concept · in design development', imgs:[
+        { s:'proj-mpavilion-01', cap:'Top-down view of the parametric lattice pavilion beside an autumn tree.' },
+        { s:'proj-mpavilion-02', cap:'Golden-hour, eye-level — people walking through the lattice.' },
+        { s:'proj-mpavilion-03', cap:'Night — the illuminated lattice glowing against the skyline.' } ] },
+      ubp: { name:'UBP', sub:'Office tower · Concept · in design development', imgs:[
+        { s:'proj-ubp-01', cap:'Dusk — a terraced glass office tower with stepped cantilevers and a lit lobby.' } ] },
+      acg: { name:'ACG', sub:'Workplace · Kandivali · 8,500 sqft · 90 days · 2025', imgs:[
+        { s:'proj-acg-kandivali-01', cap:'Hexagonal-ceiling open office, symmetric.' },
+        { s:'proj-acg-kandivali-02', cap:'Reception — a curved desk, marble floor and an accent chair.' },
+        { s:'proj-acg-kandivali-03', cap:'Breakout lounge — colourful carpet tiles and an autumn mural.' },
+        { s:'proj-acg-kandivali-04', cap:'Open office, wide angle, glass partitions.' } ] },
+      astaguru: { name:'AstaGuru', sub:'Workplace · Fort, Mumbai · 9,000 sqft · 90 days · 2025', imgs:[
+        { s:'proj-astaguru-fort-01', cap:'Double-height open office — a circular ceiling feature over a mezzanine and stair.' },
+        { s:'proj-astaguru-fort-02', cap:'Branded reception — herringbone floor and lounge chairs.' },
+        { s:'proj-astaguru-fort-03', cap:'The wider lobby and cabin corridor.' },
+        { s:'proj-astaguru-fort-04', cap:'Boardroom — circular ceiling pendants and a line-art wall.' } ] },
+      bsm: { name:'BSM', sub:'Workplace · Olympia, Powai · 20,000 sqft · 90 days · 2022', imgs:[
+        { s:'proj-bsm-olympia-01', cap:'Training room — symmetric geometric wood-panel feature walls.' },
+        { s:'proj-bsm-olympia-02', cap:'Branded open office with a gold-trim glass railing.' },
+        { s:'proj-bsm-olympia-03', cap:'A bright, glass-walled meeting room.' } ] },
+      odyssey: { name:'Odyssey', sub:'Residence · Built work', imgs:[
+        { s:'proj-odyssey-01', cap:'Luxe living room — a chandelier, marble floor and a mountain view.' },
+        { s:'proj-odyssey-02', cap:'Formal dining under a statement chandelier.' },
+        { s:'proj-odyssey-03', cap:'Kitchen — a marble waterfall island with a city view.' } ] },
+      clifton: { name:'Clifton', sub:'Residence · Built work', imgs:[
+        { s:'proj-clifton-01', cap:'Living room — mustard sofas, a green glass partition and a slatted TV wall.' },
+        { s:'proj-clifton-02', cap:'Bedroom — a bold floral feature wall, mirrored wardrobe and balcony view.' },
+        { s:'proj-clifton-03', cap:'A dark-grey modular kitchen with copper pendants.' } ] }
+    };
+
+    var cur = null, idx = 0, lastFocus = null, savedY = 0, dots = [], keyBound = false;
+
+    function lock(){
+      savedY = window.scrollY || window.pageYOffset || 0;
+      modalLock = true;
+      document.documentElement.classList.add('modal-open');
+    }
+    function unlock(){
+      document.documentElement.classList.remove('modal-open');
+      window.scrollTo(0, savedY);
+      targetY = savedY;
+      modalLock = false;
+    }
+    function focusables(){
+      return Array.prototype.filter.call(
+        panel.querySelectorAll('button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'),
+        function(el){ return el.offsetParent !== null; });
+    }
+    function onKey(e){
+      if(e.key === 'Escape'){ e.preventDefault(); close(); return; }
+      if(e.key === 'ArrowLeft'){ e.preventDefault(); go(idx - 1); return; }
+      if(e.key === 'ArrowRight'){ e.preventDefault(); go(idx + 1); return; }
+      if(e.key !== 'Tab') return;
+      var f = focusables();
+      if(!f.length){ e.preventDefault(); return; }
+      var first = f[0], last = f[f.length - 1];
+      if(f.indexOf(document.activeElement) === -1){
+        e.preventDefault(); (e.shiftKey ? last : first).focus(); return;
+      }
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+    function render(){
+      var im = cur.imgs[idx];
+      // <picture> swap: webp-first with a jpg fallback, matching every other bed
+      // on the site. Set the <source> before the <img> src so the browser picks
+      // the webp when supported (~30-45% lighter) and falls back to jpg otherwise.
+      srcEl.srcset = 'img/' + im.s + '.webp';
+      imgEl.src = 'img/' + im.s + '.jpg';
+      imgEl.alt = cur.name + ' — ' + im.cap;
+      capEl.textContent = im.cap;
+      countEl.textContent = (idx + 1) + ' / ' + cur.imgs.length;
+      for(var i = 0; i < dots.length; i++){
+        dots[i].setAttribute('aria-current', i === idx ? 'true' : 'false');
+      }
+      var multi = cur.imgs.length > 1;
+      prevB.disabled = !multi;
+      nextB.disabled = !multi;
+    }
+    function go(n){
+      var len = cur.imgs.length;
+      idx = ((n % len) + len) % len;     // wrap both directions
+      render();
+    }
+    function buildDots(){
+      dotsEl.innerHTML = '';
+      dots = [];
+      if(cur.imgs.length < 2) return;
+      cur.imgs.forEach(function(im, i){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'lb-dot';
+        // plain native buttons in a role="group" (no role="tab"): there are no
+        // tabpanels, so aria-current marks the active image — honest to behaviour.
+        b.setAttribute('aria-label', 'Image ' + (i + 1) + ' of ' + cur.imgs.length);
+        b.addEventListener('click', function(){ go(i); });
+        dotsEl.appendChild(b);
+        dots.push(b);
+      });
+    }
+    function open(key, opener){
+      var data = GALLERY[key];
+      if(!data) return;
+      if(!lb.hidden) return;            // a dialog is already mine and open
+      cur = data; idx = 0;
+      nameEl.textContent = data.name;
+      subEl.textContent = data.sub;
+      buildDots();
+      render();
+      lastFocus = opener || document.activeElement;
+      lock();
+      lb.hidden = false;
+      void lb.offsetWidth;
+      lb.classList.add('open');
+      if(!keyBound){ document.addEventListener('keydown', onKey, true); keyBound = true; }
+      panel.focus();
+    }
+    function close(){
+      if(lb.hidden) return;
+      lb.classList.remove('open');
+      lb.hidden = true;
+      if(keyBound){ document.removeEventListener('keydown', onKey, true); keyBound = false; }
+      unlock();
+      imgEl.removeAttribute('src');     // drop the decoded image
+      srcEl.removeAttribute('srcset');  // and its webp source
+      cur = null;
+      if(lastFocus && lastFocus.focus) lastFocus.focus();
+      lastFocus = null;
+    }
+    ovEl.addEventListener('click', close);
+    xBtn.addEventListener('click', close);
+    prevB.addEventListener('click', function(){ go(idx - 1); });
+    nextB.addEventListener('click', function(){ go(idx + 1); });
+    cards.forEach(function(card){
+      card.addEventListener('click', function(){ open(card.getAttribute('data-gallery'), card); });
     });
   })();
 
@@ -2187,7 +2658,7 @@ async function boot3d(){
     return st;
   }
 
-  const heroPlane = makeShaderPlane('img/mittal-tower-night.webp', 8.5, 0, 0.05, 0, 0,
+  const heroPlane = makeShaderPlane('img/urna-real-01.webp', 8.5, 0, 0.05, 0, 0,
                                     HERO_FRAG, { uStage: { value: 0 }, uTheme: { value: 0 } });
 
   function applyHero(st, stage, win, dt, t){
@@ -2590,8 +3061,8 @@ async function boot3d(){
   scene.add(points);
 
   /* ---------- camera journey: poses keyed to REAL chapter offsets ----------
-     urna / amodaa carry NO pose — they are DOM plates; the Catmull spline
-     drifts the camera through them while the canvas sits dimmed behind. */
+     urna / cadence / amodaa carry NO pose — they are DOM plates; the Catmull
+     spline drifts the camera through them while the canvas sits dimmed behind. */
   const POSES = {
     hero:       { p: [0, 0.15, 8.2],      l: [0, 0.05, 0] },
     studio:     { p: [0.6, 0.30, 3.0],    l: [-0.3, 0.1, -4.5] },
@@ -2673,7 +3144,7 @@ async function boot3d(){
     /* DOM-bed chapters (plates + the proof stage): sub-perceptual breathing so
        the dimmed dust layer behind the beds never reads as a frozen canvas */
     const pp = chapterP('proof');
-    const breathe = Math.max(chapterP('urna'), chapterP('amodaa'), pp);
+    const breathe = Math.max(chapterP('urna'), chapterP('cadence'), chapterP('amodaa'), pp);
     if (pathOK){
       const u = pathT(S.smoothY);                       // clamped to [0,1]
       posCurve.getPoint(u, _pos);

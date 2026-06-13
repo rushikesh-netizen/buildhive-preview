@@ -1,14 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- BuildHive monogram — four rounded hive-cell blocks echoing the BB mark -->
+  <!-- BuildHive mark — 2x2 grid of rounded-square cyan cells; the gap forms a "+" -->
   <rect width="64" height="64" rx="14" fill="#0c0e10"/>
-  <g fill="#6EC1E4">
-    <!-- top-left block: rounded outer corners, near-square corner facing the cell -->
-    <path d="M20 12 H25 A8 8 0 0 1 33 20 V27.5 A2.5 2.5 0 0 1 30.5 30 H20 A8 8 0 0 1 12 22 V20 A8 8 0 0 1 20 12 Z"/>
-    <!-- top-right block -->
-    <path d="M43 12 H45 A7 7 0 0 1 52 19 V23 A7 7 0 0 1 45 30 H38.5 A2.5 2.5 0 0 1 36 27.5 V19 A7 7 0 0 1 43 12 Z"/>
-    <!-- bottom-left block -->
-    <path d="M20 34 H30.5 A2.5 2.5 0 0 1 33 36.5 V44 A8 8 0 0 1 25 52 H20 A8 8 0 0 1 12 44 V42 A8 8 0 0 1 20 34 Z"/>
-    <!-- bottom-right block -->
-    <path d="M38.5 34 H45 A7 7 0 0 1 52 41 V45 A7 7 0 0 1 45 52 H43 A7 7 0 0 1 36 45 V36.5 A2.5 2.5 0 0 1 38.5 34 Z"/>
+  <g fill="#46C7EF">
+    <rect x="13" y="13" width="17.5" height="17.5" rx="5"/>
+    <rect x="33.5" y="13" width="17.5" height="17.5" rx="5"/>
+    <rect x="13" y="33.5" width="17.5" height="17.5" rx="5"/>
+    <rect x="33.5" y="33.5" width="17.5" height="17.5" rx="5"/>
   </g>
 </svg>
