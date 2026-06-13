@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0c0e10" />
-<meta name="color-scheme" content="dark" />
+<meta name="theme-color" content="#f2efe9" />
+<meta name="color-scheme" content="light" />
 <meta name="description" content="BuildHive Architects — a large-scale design-build practice in Mumbai. Masterplanners, architects and interior designers working at every scale, from a city block to a corner office — over 0.6M sqft designed and delivered, with a 95%+ match between the render you approve and the keys you receive." />
 <title>BuildHive Architects · Mumbai — A Large-Scale Design-Build Practice</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -13,17 +13,13 @@
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <script>
 /* theme gate — runs BEFORE the stylesheet so the first paint is already the
-   right theme (no flash). User choice persists in localStorage('bh-theme');
-   default follows prefers-color-scheme, dark where unsupported. */
+   right theme (no flash). User choice persists in localStorage('bh-theme').
+   V7: light is the PRIMARY experience — with no saved choice the default is
+   light/white (prefers-color-scheme is intentionally ignored for the default). */
 (function(){
   var t = null;
   try { t = localStorage.getItem('bh-theme'); } catch(e){}
-  if (t !== 'dark' && t !== 'light'){
-    t = 'dark';
-    try {
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) t = 'light';
-    } catch(e){}
-  }
+  if (t !== 'dark' && t !== 'light') t = 'light';
   document.documentElement.setAttribute('data-theme', t);
   function syncMeta(theme){
     var tc = document.querySelector('meta[name="theme-color"]');
@@ -76,13 +72,15 @@
     --serif:'EB Garamond', Georgia, 'Times New Roman', serif;
     --sans:Tahoma, Geneva, Verdana, system-ui, sans-serif;
 
-    /* fluid type scale */
+    /* fluid type scale — V7: display maxima pulled DOWN so the largest serif
+       headings never exceed the viewport at 390 / 1024 / 1440 (the floors are
+       tuned for 390px: 36px display, 28px h2 both clear a long single word) */
     --t-kicker:clamp(10px, .5vw + 8px, 12px);
     --t-body:clamp(15px, .45vw + 13px, 17px);
-    --t-h3:clamp(21px, 1.6vw + 14px, 32px);
-    --t-h2:clamp(30px, 3.6vw + 10px, 60px);
-    --t-display:clamp(40px, 7vw + 8px, 104px);   /* plate titles want more weight */
-    --t-num:clamp(36px, 3.4vw + 18px, 64px);
+    --t-h3:clamp(20px, 1.5vw + 13px, 30px);
+    --t-h2:clamp(28px, 3.2vw + 10px, 52px);
+    --t-display:clamp(36px, 5.6vw + 8px, 80px);   /* plate titles want weight, not overflow */
+    --t-num:clamp(34px, 3vw + 16px, 58px);
 
     /* spacing scale */
     --edge:clamp(18px, 3.2vw, 46px);          /* fixed-chrome inset */
@@ -185,6 +183,8 @@
   .plate-run--cad{ height:var(--plate-run-cad); }
   /* proof runway: entry beat ~100vh + two comparison beats ~170vh each */
   .plate-run--proof{ height:440vh; }
+  /* handover: a single emotional dwell — one held frame, one line */
+  .plate-run--handover{ height:280vh; }
 
   .plate{ position:fixed; inset:0; z-index:1; background:#0c0e10;
     opacity:0; visibility:hidden; pointer-events:none; }
@@ -211,6 +211,24 @@
     background:
       linear-gradient(105deg, rgba(9,11,13,.82) 0%, rgba(9,11,13,.40) 40%, rgba(9,11,13,.04) 72%),
       linear-gradient(to top, rgba(9,11,13,.78) 0%, rgba(9,11,13,.10) 40%, rgba(9,11,13,0) 64%); }
+  /* The Handover: a warmer, more lived-in scrim — the room reads through, the line
+     sits over the darker lower-left. Theme-aware (the bed is photo furniture, the
+     scrim deepens a touch more in light so the white title clears the bright glass). */
+  .plate--handover .plate-bed img{ filter:saturate(.98) contrast(1.02) brightness(.97); object-position:center 46%; }
+  .plate--handover .plate-scrim{
+    background:
+      linear-gradient(105deg, rgba(10,9,7,.80) 0%, rgba(10,9,7,.42) 42%, rgba(10,9,7,.06) 74%),
+      linear-gradient(to top, rgba(10,9,7,.82) 0%, rgba(10,9,7,.16) 44%, rgba(10,9,7,0) 66%); }
+  [data-theme="light"] .plate--handover .plate-scrim{
+    background:
+      linear-gradient(105deg, rgba(10,9,7,.86) 0%, rgba(10,9,7,.50) 42%, rgba(10,9,7,.10) 74%),
+      linear-gradient(to top, rgba(10,9,7,.88) 0%, rgba(10,9,7,.22) 46%, rgba(10,9,7,0) 66%); }
+  .plate--handover .plate-title{ font-size:clamp(30px, 4.4vw + 8px, 64px); line-height:1.04; max-width:18ch; }
+  /* the handover line is four masked lines — stagger every one (the base rule only
+     delays the 2nd), so the sentence rises in sequence */
+  .plate--handover .plate-title .line:nth-child(2) .line-inner{ transition-delay:90ms; }
+  .plate--handover .plate-title .line:nth-child(3) .line-inner{ transition-delay:180ms; }
+  .plate--handover .plate-title .line:nth-child(4) .line-inner{ transition-delay:270ms; }
 
   /* featured-work mark — engraved kicker + project name */
   .plate-mark{ position:absolute; top:calc(var(--edge) + var(--safe-t) + 40px);
@@ -286,10 +304,36 @@
 
   /* ---------- fixed chrome ---------- */
   #chrome{ position:fixed; inset:0; z-index:3; pointer-events:none; }
-  .brand{ position:absolute; top:calc(var(--edge) + var(--safe-t)); left:calc(var(--edge) + var(--safe-l));
-    display:flex; align-items:flex-start; gap:11px; }
-  /* the 4-cell mark is the client's brand cyan in BOTH themes — it is a logo, not chrome */
-  .brand svg{ width:20px; height:20px; flex:none; margin-top:1px; color:var(--brand-cyan); }
+  /* the brand lives OUTSIDE the aria-hidden chrome (so the home link reaches AT);
+     it is fixed into the same top-left chrome slot and rides above the band */
+  .brand{ position:fixed; top:calc(var(--edge) + var(--safe-t)); left:calc(var(--edge) + var(--safe-l));
+    z-index:5; display:flex; align-items:flex-start; gap:11px; pointer-events:auto; text-decoration:none; }
+  .brand:focus-visible{ outline:2px solid var(--chrome-blue); outline-offset:4px; }
+  /* V7 logo swap — light/default: the real full-colour lockup PNG. Its source has
+     a solid-white background; multiply drops that white onto the warm gallery paper
+     (white × paper = paper) so no faint box edge shows, while the cyan mark + dark
+     wordmark print through. */
+  .brand .brand-lockup{ display:block; width:clamp(140px, 13vw, 178px); height:auto;
+    mix-blend-mode:multiply; }
+  /* over a full-bleed dark plate (html.ph, light theme) the multiply would crush the
+     lockup into the dark photo — but in light theme the chrome only flips to photo
+     furniture over plates, where the DARK logo path is the right read anyway; so when
+     a photo stage is under the chrome in light theme, show the transparent-mark path */
+  html.ph[data-theme="light"] .brand .brand-lockup{ display:none; }
+  html.ph[data-theme="light"] .brand .brand-dark{ display:flex; }
+  /* dark: the white-bg lockup would be a white box, so we show the transparent
+     cyan 4-cell mark + BUILDHIVE wordmark + tagline as light themed text */
+  .brand .brand-dark{ display:none; align-items:flex-start; gap:11px; }
+  /* crop brand-logo.png to just its 4-cell mark (the source canvas carries dead
+     space below/right of the mark): a fixed window with overflow hidden and the
+     image scaled up + shifted so only the mark region (≈x115-345, y18-185 of the
+     456x285 source) shows — ~30x22px, the transparent cyan mark on dark */
+  .brand .brand-mark{ display:block; width:30px; height:22px; flex:none; margin-top:1px;
+    overflow:hidden; position:relative; }
+  .brand .brand-mark img{ position:absolute; width:60px; height:auto; left:-15px; top:-2.4px;
+    -webkit-user-drag:none; }
+  [data-theme="dark"] .brand .brand-lockup{ display:none; }
+  [data-theme="dark"] .brand .brand-dark{ display:flex; }
   .brand .bw{ font-size:13px; letter-spacing:.4em; text-transform:uppercase; color:var(--chrome-ink); }
   .brand .bw small{ display:block; font-size:8.5px; letter-spacing:.22em; color:var(--chrome-muted); margin-top:6px; }
   /* tagline line — hidden on narrow viewports so the lockup stays one tidy unit */
@@ -350,11 +394,12 @@
   .panel .wrap{ position:relative; z-index:1; width:100%; max-width:1180px; margin:0 auto;
     padding:var(--section) calc(var(--gutter) + var(--safe-r)) var(--section) calc(var(--gutter) + var(--safe-l)); }
   /* chapter runway budgets — plates keep their dwell, prose reads brisk */
-  .panel[data-chapter="studio"]{ min-height:140vh; }
-  .panel[data-chapter="scale"]{ min-height:240vh; }
-  .panel[data-chapter="method"]{ min-height:420vh; }   /* cards + the merged two-phase timeline */
-  .panel[data-chapter="works"]{ min-height:200vh; }
-  .panel[data-chapter="principals"]{ min-height:150vh; }
+  /* V7 chapter runway budgets — About merges Studio+Scale+Principals (long, so the
+     massing-city instrument has dwell + the numbers/principals read), Engage merges
+     Method (cards + the two-phase timeline + day gates). */
+  .panel[data-chapter="about"]{ min-height:340vh; }
+  .panel[data-chapter="engage"]{ min-height:420vh; }   /* cards + the merged two-phase timeline */
+  .panel[data-chapter="testimonials"]{ min-height:170vh; }
   .panel[data-chapter="contact"]{ min-height:120vh; }
 
   /* subtle photographic backdrop accents */
@@ -378,9 +423,15 @@
   .ticks.rv.in{ clip-path:inset(0 0 0 0); }
 
   .lede{ font-family:var(--serif); font-weight:400; line-height:1.06;
-    font-size:var(--t-h2); letter-spacing:.002em; margin:26px 0 0; }
+    font-size:var(--t-h2); letter-spacing:.002em; margin:26px 0 0;
+    overflow-wrap:break-word; max-width:100%; }
   .lede-xl{ font-size:var(--t-display); line-height:1.03; margin-top:22px; }
   .lede em{ font-style:italic; color:var(--blue-display); }
+  /* V7 heading-overflow guard: every large serif display line breaks rather than
+     pushing the page width (the engine relies on overflow-x:hidden holding) */
+  .lede, .lede-xl, .plate-title, .bignum, .bignum .bn-fig, .pf-num,
+  .modal-title, .ph-head .ph-h, .meth-split{ overflow-wrap:break-word; max-width:100%; }
+  .bignum .bn-fig, .pf-num{ flex-wrap:wrap; }
   .sub{ max-width:62ch; margin-top:24px; color:var(--body-c); font-size:var(--t-body); line-height:1.8; }
 
   /* studio facts */
@@ -401,7 +452,7 @@
   /* the headline magnitude — one figure carried at display scale, breadth read beneath */
   .bignum{ margin-top:clamp(40px, 6vh, 78px); }
   .bignum .bn-fig{ font-family:var(--serif); font-weight:400; line-height:.9; color:var(--ink);
-    font-variant-numeric:tabular-nums; font-size:clamp(64px, 12vw + 10px, 200px); letter-spacing:-.01em;
+    font-variant-numeric:tabular-nums; font-size:clamp(58px, 10vw + 10px, 168px); letter-spacing:-.01em;
     display:flex; align-items:baseline; gap:.04em; }
   .bignum .bn-fig .unit{ font-size:.32em; color:var(--blue-display); letter-spacing:.02em; }
   .bignum .bn-lab{ display:block; margin-top:6px; font-size:clamp(12px, .6vw + 9px, 15px);
@@ -537,7 +588,8 @@
     text-align:center; background:var(--bg);
     padding:0 calc(var(--gutter) + var(--safe-r)) 0 calc(var(--gutter) + var(--safe-l)); }
   .pf-num{ margin-top:22px; font-family:var(--serif); font-weight:400; line-height:1;
-    font-size:calc(var(--t-display) * 1.6); color:var(--ink); font-variant-numeric:tabular-nums; }
+    font-size:calc(var(--t-display) * 1.5); color:var(--ink); font-variant-numeric:tabular-nums;
+    display:inline-flex; align-items:baseline; justify-content:center; }
   .pf-num .pf-pct{ font-size:.42em; color:var(--blue-display); margin-left:.04em; }
   .pf-tagline{ margin-top:30px; font-family:var(--serif); font-style:italic;
     font-size:clamp(17px, 1.1vw + 12px, 26px); color:var(--body-c); max-width:36ch; line-height:1.55; }
@@ -653,140 +705,9 @@
     .ix-fact{ grid-column:2; }
   }
 
-  /* ---------- WORKS: fluidic projects grid (V6) ----------
-     An asymmetric multi-scale tile field. Each tile is a button that opens the
-     existing lightbox carousel. Theme-aware DOM in both modes (no 3D dependency).
-     The wall flows: tiles' images parallax at slightly different scroll rates
-     (rAF, transform only, IO-gated). Hover springs the tile larger while
-     neighbours ease aside (liquid displacement). prefers-reduced-motion -> a
-     static masonry, no parallax, no spring. */
-  .gal-stats{ display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:clamp(34px, 5vh, 56px); }
-  .gal-stat{ display:inline-flex; align-items:center; gap:11px;
-    border:1px dotted var(--bline); background:var(--bg-2); padding:13px 18px; }
-  .gal-stat .hive-mark{ width:13px; height:13px; flex:none; color:var(--blue-deep); }
-  .gal-stat .gs-num{ font-family:var(--serif); font-size:clamp(18px, 1vw + 12px, 24px); color:var(--ink);
-    font-variant-numeric:tabular-nums; }
-  .gal-stat .gs-num .unit{ font-size:.62em; color:var(--blue); letter-spacing:.04em; margin-left:3px; }
-  .gal-stat .gs-lab{ font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); }
-  .mode-3d .gal-stat{ background:rgba(var(--bg2-rgb),.55); -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px); }
-
-  /* the all-projects pointer — a prominent link beside the section head */
-  .gal-all{ display:flex; align-items:baseline; flex-wrap:wrap; gap:14px 20px;
-    margin-top:clamp(30px, 4vh, 48px); }
-  .gal-all .ga-link{ appearance:none; -webkit-appearance:none; font:inherit; cursor:pointer;
-    display:inline-flex; align-items:center; gap:11px; padding:11px 18px;
-    border:1px solid var(--bline); background:transparent; color:var(--ink); text-decoration:none;
-    font-size:11px; letter-spacing:.22em; text-transform:uppercase;
-    transition:color .25s ease, border-color .25s ease, background-color .25s ease; }
-  .gal-all .ga-link:hover{ color:var(--blue); border-color:var(--bline-strong); }
-  .gal-all .ga-link .arr{ transition:transform .35s var(--ease-page); }
-  .gal-all .ga-link:hover .arr{ transform:translateX(5px); }
-  .gal-all .ga-note{ font-family:var(--serif); font-style:italic; font-size:14px;
-    letter-spacing:.04em; color:var(--muted); }
-  .mode-3d .gal-all .ga-link{ background:rgba(var(--bg2-rgb),.45); -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px); }
-
-  /* ---- the fluidic tile field ----
-     A dense 12-column grid; tiles claim column/row spans for an asymmetric,
-     multi-scale wall. col/row spans + aspect-ratios are set per scale class.
-     --fx (parallax px, written by rAF) + --dx/--dy (liquid displacement, written
-     by the hover spring) compose into one transform; --lift/--sc carry the
-     hovered tile's own spring. The tile NEVER animates layout — only transform. */
-  .flux{ display:grid; grid-template-columns:repeat(12, 1fr);
-    grid-auto-rows:clamp(78px, 9.5vw, 132px); gap:clamp(10px, 1.3vw, 20px);
-    margin-top:clamp(30px, 4.5vh, 60px); }
-  .flux-tile{ appearance:none; -webkit-appearance:none; position:relative; display:block;
-    margin:0; padding:0; border:0; background:#0c0e10; color:var(--ink); cursor:pointer;
-    overflow:hidden; text-align:left; font:inherit; min-width:0;
-    --fx:0px; --dx:0px; --dy:0px; --sc:1; --lift:0px;
-    transform:translate3d(var(--dx), calc(var(--dy) + var(--lift)), 0) scale(var(--sc));
-    transition:transform .62s var(--ease-page), box-shadow .45s var(--ease-page);
-    box-shadow:inset 0 0 0 1px var(--p-line-2); z-index:1; }
-  /* scale classes: span columns/rows so the wall is asymmetric and multi-scale */
-  .flux-tile.fx-hero{ grid-column:span 7; grid-row:span 4; }
-  .flux-tile.fx-tall{ grid-column:span 5; grid-row:span 4; }
-  .flux-tile.fx-wide{ grid-column:span 6; grid-row:span 3; }
-  .flux-tile.fx-box { grid-column:span 4; grid-row:span 3; }
-  .flux-tile.fx-band{ grid-column:span 8; grid-row:span 2; }
-  .flux-tile.fx-sm  { grid-column:span 4; grid-row:span 2; }
-  @media(max-width:860px){
-    .flux{ grid-template-columns:repeat(6, 1fr); grid-auto-rows:clamp(70px, 15vw, 120px); }
-    .flux-tile.fx-hero,.flux-tile.fx-tall{ grid-column:span 6; grid-row:span 4; }
-    .flux-tile.fx-wide,.flux-tile.fx-band{ grid-column:span 6; grid-row:span 3; }
-    .flux-tile.fx-box,.flux-tile.fx-sm{ grid-column:span 3; grid-row:span 3; }
-  }
-  @media(max-width:520px){
-    .flux{ grid-template-columns:repeat(2, 1fr); grid-auto-rows:clamp(96px, 30vw, 150px); }
-    .flux-tile.fx-hero,.flux-tile.fx-tall,.flux-tile.fx-wide,.flux-tile.fx-band{ grid-column:span 2; grid-row:span 3; }
-    .flux-tile.fx-box,.flux-tile.fx-sm{ grid-column:span 1; grid-row:span 2; }
-  }
-  /* the image bed — oversized top/bottom so the parallax push never bares an edge */
-  .flux-img{ position:absolute; inset:-11% -2%; }
-  .flux-img img{ width:100%; height:100%; object-fit:cover; display:block;
-    filter:saturate(.96) contrast(1.03);
-    transform:translate3d(0, var(--fx), 0) scale(var(--iz));
-    transition:transform .6s var(--ease-page); --iz:1.04; }
-  /* will-change only while the grid is live in the viewport (IO toggles .is-live),
-     so the compositor hint is not paid for off-screen */
-  .flux.is-live .flux-tile{ will-change:transform; }
-  .flux.is-live .flux-img img{ will-change:transform; }
-  /* while the rAF engine drives --fx/--dx/--dy/--sc/--lift every frame, the JS lerp
-     IS the easing — let it own the transform so the CSS transition does not re-ease
-     on top of it (which made the wall trail behind scroll/cursor). Keep box-shadow
-     transition for the hover hairline. The non-live state keeps the transform
-     transition above so the cheap hover furniture still animates before rAF arms. */
-  .flux.is-live .flux-tile{ transition:box-shadow .45s var(--ease-page); }
-  .flux.is-live .flux-img img{ transition:none; }
-  .flux-tile::after{ content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
-    background:linear-gradient(to top, rgba(9,11,13,.74) 0%, rgba(9,11,13,.12) 44%, rgba(9,11,13,0) 70%); }
-  /* cyan hairline — drawn on hover/focus */
-  .flux-tile::before{ content:""; position:absolute; inset:0; z-index:3; pointer-events:none;
-    box-shadow:inset 0 0 0 1px var(--p-blue); opacity:0; transition:opacity .4s var(--ease-page); }
-  /* honesty tag, top-left (concept projects) — white-on-photo in both themes */
-  .flux-tag{ position:absolute; top:11px; left:11px; z-index:3;
-    font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--p-ink);
-    padding:5px 9px; background:rgba(12,14,16,.6); border:1px solid var(--p-bline);
-    -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); }
-  /* the label block, bottom-left — name always; meta + open-cue slide in on hover */
-  .flux-cap{ position:absolute; left:0; right:0; bottom:0; z-index:3; pointer-events:none;
-    padding:clamp(13px, 1.4vw, 22px); }
-  .flux-name{ display:block; font-family:var(--serif); font-weight:400; line-height:1.06;
-    font-size:clamp(17px, .9vw + 12px, 26px); color:var(--p-ink); }
-  .fx-hero .flux-name,.fx-tall .flux-name{ font-size:clamp(22px, 1.5vw + 14px, 38px); }
-  .flux-meta{ display:block; margin-top:8px; font-size:10px; letter-spacing:.2em;
-    text-transform:uppercase; color:var(--p-muted); line-height:1.6;
-    opacity:0; transform:translateY(7px);
-    transition:opacity .45s var(--ease-page), transform .45s var(--ease-page); }
-  .flux-open{ display:inline-block; margin-top:11px; font-size:9.5px; letter-spacing:.26em;
-    text-transform:uppercase; color:var(--p-blue);
-    opacity:0; transform:translateY(7px);
-    transition:opacity .45s var(--ease-page) .05s, transform .45s var(--ease-page) .05s; }
-  .flux-open::before{ content:""; display:inline-block; width:14px; height:1px;
-    background:var(--p-blue); vertical-align:middle; margin:-2px 9px 0 0; }
-  /* hover / focus / keyboard-active: spring up, draw the hairline, slide the label,
-     zoom the image. (The lift + scale springs are applied by JS via --sc/--lift;
-     CSS handles the cheap furniture so it works even before the rAF arms.) */
-  @media(hover:hover){
-    .flux-tile:hover{ z-index:4; box-shadow:0 24px 60px rgba(6,8,10,.5); }
-    .flux-tile:hover::before{ opacity:1; }
-    .flux-tile:hover .flux-img img{ --iz:1.11; }
-    .flux-tile:hover .flux-meta,
-    .flux-tile:hover .flux-open{ opacity:1; transform:none; }
-  }
-  .flux-tile:focus-visible{ outline:none; z-index:4; box-shadow:0 24px 60px rgba(6,8,10,.5); }
-  .flux-tile:focus-visible::before{ opacity:1; box-shadow:inset 0 0 0 2px var(--p-blue); }
-  .flux-tile:focus-visible .flux-meta,
-  .flux-tile:focus-visible .flux-open{ opacity:1; transform:none; }
-  @media(hover:none){
-    .flux-meta,.flux-open{ opacity:.92; transform:none; }
-    .flux-tile::before{ opacity:0; }
-  }
-  /* reduced motion: a calm static masonry — no parallax, no spring, no zoom */
-  @media(prefers-reduced-motion:reduce){
-    .flux-tile{ transform:none !important; transition:none; }
-    .flux-img img{ transform:none !important; transition:none; }
-    .flux-tile::before{ transition:none; }
-    .flux-meta,.flux-open{ opacity:.92; transform:none; transition:none; }
-  }
+  /* WORKS fluidic projects grid (V6) — REMOVED in V7: the all-projects
+     catalogue moved to projects.html; the homepage's projects are the three
+     Select Projects beds. (The lightbox below is preserved per the engine contract.) */
 
   /* ---------- LIGHTBOX — a second accessible dialog (reuses the modal a11y pattern) ----------
      role=dialog + aria-modal, focus trap, ESC/overlay/× close, and the SAME
@@ -883,6 +804,63 @@
   .pp-strap .lab{ font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); }
   .partners{ margin-top:30px; color:var(--body-c); font-size:14px; line-height:1.9; letter-spacing:.03em; }
   .partners .c-lab{ margin-right:16px; }
+
+  /* ---------- V7 About: internal sub-section heads ----------
+     the merged About chapter (Studio → numbers → Principals) uses one serif
+     sub-head per beat, on a folio rule, to keep the long chapter legible */
+  .about-sub{ display:flex; align-items:center; gap:16px;
+    margin-top:clamp(64px, 10vh, 120px); padding-top:clamp(22px, 3vh, 36px);
+    border-top:1px solid var(--bline-2);
+    font-family:var(--serif); font-weight:400; font-style:italic;
+    font-size:var(--t-h3); line-height:1.2; color:var(--ink); }
+  .about-sub .pm-rule{ flex:none; margin:0; }
+
+  /* ---------- V7 Select Projects: the "See all projects" pointer ----------
+     rides the foot of the AMODAA runway, over the dimmed plate; photo furniture
+     in both themes so it reads white over the dark bed */
+  .select-all{ position:absolute; left:calc(var(--gutter) + var(--safe-l));
+    right:calc(var(--gutter) + var(--safe-r));
+    bottom:calc(var(--section) * .9 + var(--safe-b)); z-index:6;
+    display:flex; align-items:baseline; flex-wrap:wrap; gap:14px 22px; pointer-events:none; }
+  .select-all .ga-link{ pointer-events:auto; display:inline-flex; align-items:center; gap:11px;
+    padding:12px 20px; border:1px solid var(--p-bline); background:rgba(12,14,16,.5);
+    -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px);
+    color:var(--p-ink); text-decoration:none;
+    font-size:11px; letter-spacing:.24em; text-transform:uppercase;
+    transition:color .25s ease, border-color .25s ease, background-color .25s ease; }
+  .select-all .ga-link:hover{ color:#fff; border-color:var(--p-blue); background:rgba(12,14,16,.72); }
+  .select-all .ga-link:focus-visible{ outline:2px solid var(--p-blue); outline-offset:3px; }
+  .select-all .ga-link .arr{ transition:transform .35s var(--ease-page); }
+  .select-all .ga-link:hover .arr{ transform:translateX(5px); }
+  .select-all .ga-note{ font-family:var(--serif); font-style:italic; font-size:14px;
+    letter-spacing:.03em; color:var(--p-muted); }
+  @media(max-width:620px){
+    .select-all{ bottom:calc(var(--section) * .7 + var(--safe-b)); }
+    .select-all .ga-note{ display:none; }
+  }
+
+  /* ---------- V7 Testimonials: a tasteful quote gallery, cyan accents ----------
+     the lead quote (named, ACG) carries weight; the rest sit in a calm two-up
+     grid. Polished in both themes (paper + dark). */
+  .quotes{ list-style:none; margin-top:clamp(40px, 6vh, 72px);
+    display:grid; grid-template-columns:1fr 1fr; gap:clamp(18px, 2.4vw, 34px); }
+  .quote{ position:relative; border:1px dotted var(--bline); background:var(--bg-2);
+    padding:clamp(26px, 3vw, 42px) clamp(24px, 2.8vw, 40px); }
+  .quote::before{ content:"\201C"; position:absolute; top:8px; left:16px;
+    font-family:var(--serif); font-size:64px; line-height:1; color:var(--blue);
+    opacity:.32; pointer-events:none; }
+  .quote--lead{ grid-column:1 / -1; border-style:solid; border-color:var(--bline-2);
+    border-top:2px solid var(--blue); background:var(--bg-2); }
+  .quote blockquote{ position:relative; margin:0; font-family:var(--serif); font-weight:400;
+    font-style:italic; line-height:1.5; color:var(--ink);
+    font-size:clamp(17px, .9vw + 13px, 22px); }
+  .quote--lead blockquote{ font-size:clamp(20px, 1.5vw + 14px, 32px); line-height:1.42; max-width:30ch; }
+  .quote .q-by{ display:flex; flex-direction:column; gap:5px;
+    margin-top:clamp(20px, 2.4vh, 30px); padding-top:16px; border-top:1px solid var(--bline-2); }
+  .quote .q-name{ font-size:11px; letter-spacing:.26em; text-transform:uppercase; color:var(--blue); }
+  .quote .q-role{ font-family:var(--serif); font-style:italic; font-size:14px; color:var(--muted); }
+  .mode-3d .quote{ background:rgba(var(--bg2-rgb),.55); -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px); }
+  @media(max-width:760px){ .quotes{ grid-template-columns:1fr; } }
 
   /* contact / footer */
   .c-lab{ display:inline-block; font-size:10px; letter-spacing:.32em; text-transform:uppercase; color:var(--blue); }
@@ -987,8 +965,7 @@
   .mode-3d .stats .cell{ background:rgba(var(--bg-rgb),.5); }
   .mode-3d .card{ background:rgba(var(--bg2-rgb),.55); -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px); }
   /* the Works index is a typeset spread — opaque paper in both modes */
-  .mode-3d .panel[data-chapter="works"]{ background:var(--bg); }
-  .mode-3d .panel[data-chapter="principals"],
+  .mode-3d .panel[data-chapter="testimonials"],
   .mode-3d .panel[data-chapter="contact"]{ background:rgba(var(--bg-rgb),.8); }
 
   /* ============ LIGHT THEME — "gallery print": the monograph on white paper ============
@@ -1283,19 +1260,35 @@
     <span class="plate-corner pc-br" aria-hidden="true"></span>
   </div>
 
+  <!-- ============ THE HANDOVER (NEW, V7 §1.5) — fixed full-bleed plate ============
+       The payoff of the transparent process: a real delivered interior (Odyssey's
+       luxe living room with the mountain view — the warmest, most lived-in frame)
+       under a theme-aware scrim, with the resonant handover line. Reuses the plate
+       engine verbatim, so its reveal is consistent with the Select Projects beds. -->
+  <div class="plate plate--handover" id="plateHandover" data-plate-for="handover" data-push="1.07">
+    <div class="leaf" data-w="0,1">
+      <div class="plate-bed"><picture>
+        <source srcset="img/proj-odyssey-01.webp" type="image/webp">
+        <img src="img/proj-odyssey-01.jpg" loading="lazy"
+             alt="A delivered Odyssey living room at handover — a chandelier, marble floor and a mountain view through full-height glass" />
+      </picture></div>
+      <div class="plate-scrim" aria-hidden="true"></div>
+      <div class="plate-mark" aria-hidden="true"><span class="pm-word">The Handover</span><span class="pm-name">keys in hand</span></div>
+      <div class="plate-foot">
+        <p class="plate-title"><span class="line"><span class="line-inner">The day we hand over</span></span><span class="line"><span class="line-inner"><em>the keys,</em></span></span><span class="line"><span class="line-inner">the drawing becomes</span></span><span class="line"><span class="line-inner"><em>your every morning.</em></span></span></p>
+        <p class="plate-caption">A real delivered interior — the render kept, the keys handed over, the room now lived in.
+          <span class="pc-tag">Odyssey · Residence — built work, delivered</span>
+        </p>
+      </div>
+    </div>
+    <span class="plate-corner pc-tl" aria-hidden="true"></span>
+    <span class="plate-corner pc-tr" aria-hidden="true"></span>
+    <span class="plate-corner pc-bl" aria-hidden="true"></span>
+    <span class="plate-corner pc-br" aria-hidden="true"></span>
+  </div>
+
   <!-- fixed chrome -->
   <div id="chrome" aria-hidden="true">
-    <div class="brand">
-      <svg viewBox="0 0 64 64" aria-hidden="true">
-        <g fill="currentColor">
-          <rect x="13" y="13" width="17.5" height="17.5" rx="5"/>
-          <rect x="33.5" y="13" width="17.5" height="17.5" rx="5"/>
-          <rect x="13" y="33.5" width="17.5" height="17.5" rx="5"/>
-          <rect x="33.5" y="33.5" width="17.5" height="17.5" rx="5"/>
-        </g>
-      </svg>
-      <span class="bw">Buildhive<small>Masterplanners · Architects · Interior Designers</small></span>
-    </div>
     <div class="topright">Company Profile · 2026</div>
     <div class="cue" id="cue"><div class="word">Scroll</div><div class="track"></div></div>
     <div class="hv-tags" id="heroTags" data-stage="0">
@@ -1304,23 +1297,43 @@
     </div>
   </div>
 
-  <!-- theme switch — outside #chrome (aria-hidden) so assistive tech reaches it -->
-  <button type="button" id="themeBtn" class="theme-toggle" aria-label="Switch to light theme">
+  <!-- BRAND LOCKUP — real client logo (V7 §4). Lives OUTSIDE #chrome (which is
+       aria-hidden) so the home link is reachable by assistive tech. Two paths
+       swapped on data-theme:
+       · light / default: the full-colour lockup PNG (cyan mark + BUILDHIVE +
+         tagline on white) — sits perfectly on the gallery-paper chrome.
+       · dark: a white box would show on dark, so we render the transparent cyan
+         4-cell mark (brand-logo.png) + "BUILDHIVE" + tagline as light themed text. -->
+  <a class="brand" href="index.html" aria-label="BuildHive — home">
+    <img class="brand-lockup" src="img/brand-buildhive-lockup.png" width="456" height="285"
+         alt="BuildHive — Masterplanners, Architects, Interior Designers" />
+    <span class="brand-dark" aria-hidden="true">
+      <span class="brand-mark"><img src="img/brand-logo.png" width="456" height="285" alt="" /></span>
+      <span class="bw">Buildhive<small>Masterplanners · Architects · Interior Designers</small></span>
+    </span>
+  </a>
+
+  <!-- theme switch — outside #chrome (aria-hidden) so assistive tech reaches it.
+       V7 default is light, so the pre-JS label/word reflect the light state (the
+       toggle's reflect() re-syncs from data-theme on boot regardless). -->
+  <button type="button" id="themeBtn" class="theme-toggle" aria-label="Switch to dark theme">
     <span class="tt-disc" aria-hidden="true"></span>
-    <span class="tt-word" aria-hidden="true">Dark</span>
+    <span class="tt-word" aria-hidden="true">Light</span>
   </button>
 
+  <!-- V7 tick nav — 1:1 positional with the [data-chapter] sections in #content
+       (Intro · About · the three Select Projects plates · Engagement · Transparency ·
+       Handover · Testimonials · Contact). Order MUST match the DOM order below. -->
   <nav id="scenes" aria-label="Chapters">
     <button type="button" aria-label="Go to Intro">Intro</button>
-    <button type="button" aria-label="Go to urna">urna</button>
+    <button type="button" aria-label="Go to About">About</button>
     <button type="button" aria-label="Go to Cadence">Cadence</button>
+    <button type="button" aria-label="Go to urna">urna</button>
     <button type="button" aria-label="Go to AMODAA">AMODAA</button>
-    <button type="button" aria-label="Go to Studio">Studio</button>
-    <button type="button" aria-label="Go to Scale">Scale</button>
-    <button type="button" aria-label="Go to Method">Method</button>
-    <button type="button" aria-label="Go to Proof">Proof</button>
-    <button type="button" aria-label="Go to Works">Works</button>
-    <button type="button" aria-label="Go to People">People</button>
+    <button type="button" aria-label="Go to Engagement">Engagement</button>
+    <button type="button" aria-label="Go to Transparency">Transparency</button>
+    <button type="button" aria-label="Go to The Handover">Handover</button>
+    <button type="button" aria-label="Go to Testimonials">Voices</button>
     <button type="button" aria-label="Go to Contact">Contact</button>
   </nav>
   <div id="progress" aria-hidden="true"></div>
@@ -1337,23 +1350,12 @@
       </div>
     </section>
 
-    <!-- FEATURED WORK — urna: transparent runway over the fixed plate -->
-    <section class="plate-run plate-run--I" data-chapter="urna" id="runUrna">
-      <h2 class="sr-only">Featured work — urna by Sanjay Mittal. A residential tower, Versova, Mumbai — a concept in design development.</h2>
-    </section>
-
-    <!-- FEATURED WORK — Cadence: transparent runway over the fixed plate -->
-    <section class="plate-run plate-run--cad" data-chapter="cadence" id="runCadence">
-      <h2 class="sr-only">Featured work — Cadence. A faceted, twisted glass office tower — a concept in design development.</h2>
-    </section>
-
-    <!-- FEATURED WORK — AMODAA: transparent runway over the fixed plate -->
-    <section class="plate-run plate-run--II" data-chapter="amodaa" id="runAmodaa">
-      <h2 class="sr-only">Featured work — AMODAA. A bungalow at Lonavala — built work.</h2>
-    </section>
-
-    <!-- 01 — THE STUDIO -->
-    <section class="panel" data-chapter="studio">
+    <!-- ============ 02 — ABOUT THE PRACTICE (V7 §1.2) ============
+         The Studio + Built-at-Scale numbers + the Principals, merged into one
+         coherent chapter with three internal sub-sections. The massing-city 3D
+         instrument (logo-cell clusters) reveals across this chapter; the count-up
+         figures live in its numbers sub-section. -->
+    <section class="panel panel--about" data-chapter="about">
       <div class="backdrop" aria-hidden="true">
         <picture>
           <source srcset="img/novatr-tower-dusk.webp" type="image/webp">
@@ -1361,7 +1363,7 @@
         </picture>
       </div>
       <div class="wrap">
-        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>01 — The Studio</p></div>
+        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>02 — About the Practice</p></div>
         <h2 class="lede rv"><span class="line"><span class="line-inner">A large-scale</span></span><span class="line"><span class="line-inner"><em>design-build practice.</em></span></span></h2>
         <p class="sub rv">One firm carrying masterplanning, architecture and interiors across project types and seven cities — towers, townships, workplaces and homes, drawn and delivered under a single roof. The two principals lead every commission; a BIM-, AI- and camera-driven stack is what makes that span hold its schedule at scale.</p>
         <ul class="facts rv">
@@ -1371,14 +1373,9 @@
           <li><span class="fx">04</span>A live camera on every site, 24/7</li>
           <li><span class="fx">05</span>Geopathic + Vastu mapping before a line is drawn</li>
         </ul>
-      </div>
-    </section>
 
-    <!-- 02 — BUILT AT SCALE -->
-    <section class="panel" data-chapter="scale">
-      <div class="wrap">
-        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>02 — Built at Scale</p></div>
-        <h2 class="lede rv"><span class="line"><span class="line-inner">The number that</span></span><span class="line"><span class="line-inner"><em>says it plainest.</em></span></span></h2>
+        <!-- sub-section: the number that says it plainest -->
+        <h3 class="about-sub rv"><span class="pm-rule"></span>The number that says it plainest</h3>
 
         <!-- the headline magnitude: over 0.6M sqft, carried at display scale -->
         <div class="bignum rv" id="bignum">
@@ -1424,14 +1421,65 @@
             <div class="lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>render-to-reality match</div>
           </div>
         </div>
+
+        <!-- sub-section: the two principals who lead every commission -->
+        <h3 class="about-sub rv" id="principalsHead"><span class="pm-rule"></span>Two architects. One signature.</h3>
+        <div class="pp-grid">
+          <article class="pp rv">
+            <span class="role">Principal</span>
+            <h3>Ar. Deepakk Bhatija</h3>
+            <p>23 years of large-scale projects — now midway through a Master's in Computational Design. The hand that sketches also writes the algorithm.</p>
+          </article>
+          <article class="pp rv">
+            <span class="role">Principal</span>
+            <h3>Ar. Darius Dalal</h3>
+            <p>24 years and a UK practice behind him, with one obsession: the built thing must match the drawing. He is the reason the 95% number exists.</p>
+          </article>
+        </div>
+        <div class="pp-strap rv">
+          <span class="num">48+</span>
+          <span class="lab">years combined design &amp; execution experience</span>
+        </div>
+        <p class="partners rv"><span class="c-lab">Key partners</span>Harsh Gangar &amp; Associates · Epicons Consultants · Avinash Raj &amp; Associates · AP Energy</p>
       </div>
     </section>
 
-    <!-- 03 — METHOD: how we design, and how we deliver -->
-    <section class="panel" data-chapter="method">
+    <!-- ============ 03 — SELECT PROJECTS (V7 §1.3) ============
+         The three featured full-bleed beds, in the order Cadence → urna → AMODAA.
+         Each is a fixed plate driven by its transparent runway here; the run ends
+         with a prominent "See all projects →" pointer to the Inception page. -->
+
+    <!-- SELECT PROJECTS — Cadence (first): transparent runway over the fixed plate -->
+    <section class="plate-run plate-run--cad" data-chapter="cadence" id="runCadence">
+      <h2 class="sr-only">Select projects — Cadence. A faceted, twisted glass office tower — a concept in design development.</h2>
+    </section>
+
+    <!-- SELECT PROJECTS — urna: transparent runway over the fixed plate -->
+    <section class="plate-run plate-run--I" data-chapter="urna" id="runUrna">
+      <h2 class="sr-only">Select projects — urna by Sanjay Mittal. A residential tower, Versova, Mumbai — a concept in design development.</h2>
+    </section>
+
+    <!-- SELECT PROJECTS — AMODAA: transparent runway over the fixed plate -->
+    <section class="plate-run plate-run--II" data-chapter="amodaa" id="runAmodaa">
+      <h2 class="sr-only">Select projects — AMODAA. A bungalow at Lonavala — built work.</h2>
+      <!-- the all-projects pointer rides at the foot of the AMODAA runway, just
+           before Engagement, so the three beds read as "select" work -->
+      <div class="select-all">
+        <a class="ga-link" href="projects.html">See all projects <span class="arr" aria-hidden="true">→</span></a>
+        <span class="ga-note">Towers, townships, workplaces and homes — the full catalogue.</span>
+      </div>
+    </section>
+
+    <!-- ============ 04 — ENGAGEMENT &amp; TRANSPARENCY (V7 §1.4) ============
+         The Method (the three pillar modals + their 3D hover morphs + the two-phase
+         35d / 90–120d timeline + the day gates) merged with the Proof (render→reality
+         95% swipe). Reframed as: how we engage, and how we stay transparent. The
+         method modals and the proof swipe both stay fully wired. -->
+    <section class="panel" data-chapter="engage">
       <div class="wrap">
-        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>03 — Method</p></div>
-        <h2 class="lede rv"><span class="line"><span class="line-inner">How we design —</span></span><span class="line"><span class="line-inner"><em>and how we deliver.</em></span></span></h2>
+        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>04 — Engagement &amp; Transparency</p></div>
+        <h2 class="lede rv"><span class="line"><span class="line-inner">How we engage —</span></span><span class="line"><span class="line-inner"><em>and how we stay transparent.</em></span></span></h2>
+        <p class="sub rv">The way we work is the way we earn trust: a method you can interrogate, a schedule with every day accounted for, and — at the end — a photograph you can hold up against the render you approved.</p>
         <div class="cards">
           <button type="button" class="card rv" data-modal="0" aria-haspopup="dialog">
             <span class="meta"><span class="dom">Design</span><span class="ix">01</span></span>
@@ -1496,139 +1544,29 @@
       </div>
     </section>
 
-    <!-- 04 — THE PROOF: transparent runway over the fixed full-bleed proof stage -->
+    <!-- TRANSPARENCY (the render→reality proof) — transparent runway over the fixed
+         full-bleed proof stage. This is the second half of Engagement & Transparency:
+         the photograph held up against the approved render. -->
     <section class="plate-run plate-run--proof" data-chapter="proof" id="runProof">
-      <h2 class="sr-only">The proof — a 95% match between the render approved and the space photographed as built. Open office and board room, render versus as-built photograph.</h2>
+      <h2 class="sr-only">Transparency — a 95% match between the render approved and the space photographed as built. Open office and board room, render versus as-built photograph.</h2>
     </section>
 
-    <!-- 05 — WORKS: fluidic projects grid -->
-    <section class="panel" data-chapter="works">
-      <div class="wrap">
-        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>05 — Works</p></div>
-        <h2 class="lede rv"><span class="line"><span class="line-inner">From masterplan</span></span><span class="line"><span class="line-inner"><em>to door handle.</em></span></span></h2>
-
-        <!-- headline stats from the client's two project collages -->
-        <div class="gal-stats rv">
-          <span class="gal-stat">
-            <svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>
-            <span class="gs-num">167,000<span class="unit">sqft</span></span><span class="gs-lab">Commercial interiors</span>
-          </span>
-          <span class="gal-stat">
-            <svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>
-            <span class="gs-num">50,667<span class="unit">sqft</span></span><span class="gs-lab">Residential interiors</span>
-          </span>
-        </div>
-
-        <!-- prominent pointer to the full catalogue -->
-        <div class="gal-all rv">
-          <a class="ga-link" href="projects.html">All projects <span class="arr" aria-hidden="true">→</span></a>
-          <span class="ga-note">Towers, townships, workplaces and homes — the full catalogue.</span>
-        </div>
-
-        <!-- ============ the fluidic tile field — an asymmetric, multi-scale wall ============
-             every tile opens the existing lightbox carousel for that project; the wall
-             flows on scroll (per-tile parallax, rAF/IO) and springs on hover. -->
-        <div class="flux rv" id="flux">
-          <button type="button" class="flux-tile fx-hero" data-gallery="urna" data-rate="-0.7" aria-haspopup="dialog" aria-label="urna — residential tower, concept in design development. Open gallery.">
-            <span class="flux-tag">Concept</span>
-            <span class="flux-img"><picture><source srcset="img/urna-real-01.webp" type="image/webp">
-              <img src="img/urna-real-01.jpg" loading="lazy" decoding="async"
-                   alt="urna — golden-hour render of the residential tower in parkland, Versova" /></picture></span>
-            <span class="flux-cap"><span class="flux-name">urna</span>
-              <span class="flux-meta">Residential tower · Versova, Mumbai</span>
-              <span class="flux-open" aria-hidden="true">View gallery · 3</span></span>
-          </button>
-
-          <button type="button" class="flux-tile fx-tall" data-gallery="cadence" data-rate="0.9" aria-haspopup="dialog" aria-label="Cadence — faceted glass office tower, concept in design development. Open gallery.">
-            <span class="flux-tag">Concept</span>
-            <span class="flux-img"><picture><source srcset="img/proj-cadence-02.webp" type="image/webp">
-              <img src="img/proj-cadence-02.jpg" loading="lazy" decoding="async"
-                   alt="Cadence — the twisted glass office tower at twilight, glowing lobby and cabs below" /></picture></span>
-            <span class="flux-cap"><span class="flux-name">Cadence</span>
-              <span class="flux-meta">Faceted office tower</span>
-              <span class="flux-open" aria-hidden="true">View gallery · 6</span></span>
-          </button>
-
-          <button type="button" class="flux-tile fx-wide" data-gallery="astaguru" data-rate="-1.1" aria-haspopup="dialog" aria-label="AstaGuru — workplace, Fort, Mumbai. Open gallery.">
-            <span class="flux-img"><picture><source srcset="img/proj-astaguru-fort-01.webp" type="image/webp">
-              <img src="img/proj-astaguru-fort-01.jpg" loading="lazy" decoding="async"
-                   alt="AstaGuru Fort — a double-height open office under a circular ceiling feature, mezzanine and stair" /></picture></span>
-            <span class="flux-cap"><span class="flux-name">AstaGuru</span>
-              <span class="flux-meta">Workplace · Fort, Mumbai · 9,000 sqft · 2025</span>
-              <span class="flux-open" aria-hidden="true">View gallery · 4</span></span>
-          </button>
-
-          <button type="button" class="flux-tile fx-box" data-gallery="odyssey" data-rate="0.6" aria-haspopup="dialog" aria-label="Odyssey — residence, built work. Open gallery.">
-            <span class="flux-img"><picture><source srcset="img/proj-odyssey-01.webp" type="image/webp">
-              <img src="img/proj-odyssey-01.jpg" loading="lazy" decoding="async"
-                   alt="Odyssey — a luxe living room with a chandelier, marble floor and a mountain view" /></picture></span>
-            <span class="flux-cap"><span class="flux-name">Odyssey</span>
-              <span class="flux-meta">Residence · Built work</span>
-              <span class="flux-open" aria-hidden="true">View gallery · 3</span></span>
-          </button>
-
-          <button type="button" class="flux-tile fx-band" data-gallery="acg" data-rate="-0.9" aria-haspopup="dialog" aria-label="ACG — workplace, Kandivali. Open gallery.">
-            <span class="flux-img"><picture><source srcset="img/proj-acg-kandivali-01.webp" type="image/webp">
-              <img src="img/proj-acg-kandivali-01.jpg" loading="lazy" decoding="async"
-                   alt="ACG Kandivali — a symmetric open office under a hexagonal ceiling feature" /></picture></span>
-            <span class="flux-cap"><span class="flux-name">ACG</span>
-              <span class="flux-meta">Workplace · Kandivali · 8,500 sqft · 2025</span>
-              <span class="flux-open" aria-hidden="true">View gallery · 4</span></span>
-          </button>
-
-          <button type="button" class="flux-tile fx-tall" data-gallery="amodaa" data-rate="0.8" aria-haspopup="dialog" aria-label="AMODAA — bungalow, Lonavala, built work. Open gallery.">
-            <span class="flux-img"><picture><source srcset="img/proj-amoda-01.webp" type="image/webp">
-              <img src="img/proj-amoda-01.jpg" loading="lazy" decoding="async"
-                   alt="AMODAA — a hill-station bungalow at dusk, lit facade behind a perforated-metal screen" /></picture></span>
-            <span class="flux-cap"><span class="flux-name">AMODAA</span>
-              <span class="flux-meta">Bungalow · Lonavala · 4,500 sqft · Built</span>
-              <span class="flux-open" aria-hidden="true">View gallery · 4</span></span>
-          </button>
-
-          <button type="button" class="flux-tile fx-box" data-gallery="clifton" data-rate="-0.6" aria-haspopup="dialog" aria-label="Clifton — residence, built work. Open gallery.">
-            <span class="flux-img"><picture><source srcset="img/proj-clifton-01.webp" type="image/webp">
-              <img src="img/proj-clifton-01.jpg" loading="lazy" decoding="async"
-                   alt="Clifton — a living room with mustard sofas, a green glass partition and a slatted TV wall" /></picture></span>
-            <span class="flux-cap"><span class="flux-name">Clifton</span>
-              <span class="flux-meta">Residence · Built work</span>
-              <span class="flux-open" aria-hidden="true">View gallery · 3</span></span>
-          </button>
-
-          <button type="button" class="flux-tile fx-wide" data-gallery="bsm" data-rate="0.7" aria-haspopup="dialog" aria-label="BSM — workplace, Olympia, Powai. Open gallery.">
-            <span class="flux-img"><picture><source srcset="img/proj-bsm-olympia-01.webp" type="image/webp">
-              <img src="img/proj-bsm-olympia-01.jpg" loading="lazy" decoding="async"
-                   alt="BSM Olympia — a training room with symmetric geometric wood-panel feature walls" /></picture></span>
-            <span class="flux-cap"><span class="flux-name">BSM</span>
-              <span class="flux-meta">Workplace · Olympia, Powai · 20,000 sqft · 2022</span>
-              <span class="flux-open" aria-hidden="true">View gallery · 3</span></span>
-          </button>
-
-          <button type="button" class="flux-tile fx-sm" data-gallery="ubp" data-rate="-0.8" aria-haspopup="dialog" aria-label="UBP — office tower, concept in design development. Open gallery.">
-            <span class="flux-tag">Concept</span>
-            <span class="flux-img"><picture><source srcset="img/proj-ubp-01.webp" type="image/webp">
-              <img src="img/proj-ubp-01.jpg" loading="lazy" decoding="async"
-                   alt="UBP — a terraced glass office tower at dusk, stepped cantilevers and a lit lobby" /></picture></span>
-            <span class="flux-cap"><span class="flux-name">UBP</span>
-              <span class="flux-meta">Office tower</span>
-              <span class="flux-open" aria-hidden="true">View gallery</span></span>
-          </button>
-
-          <button type="button" class="flux-tile fx-sm" data-gallery="mpavilion" data-rate="0.5" aria-haspopup="dialog" aria-label="M Pavilion — parametric pavilion, BuildHive concept study. Open gallery.">
-            <span class="flux-tag">Concept</span>
-            <span class="flux-img"><picture><source srcset="img/proj-mpavilion-01.webp" type="image/webp">
-              <img src="img/proj-mpavilion-01.jpg" loading="lazy" decoding="async"
-                   alt="M Pavilion — a top-down view of the parametric lattice pavilion beside an autumn tree" /></picture></span>
-            <span class="flux-cap"><span class="flux-name">M Pavilion</span>
-              <span class="flux-meta">Parametric pavilion · Concept study</span>
-              <span class="flux-open" aria-hidden="true">View gallery · 3</span></span>
-          </button>
-        </div>
-
-        <p class="ix-note rv">Towers and townships under BuildHive; interiors delivered with DBC — sister concerns, shared principals, one team. <a href="projects.html" style="color:var(--blue); text-decoration:none; border-bottom:1px solid var(--bline);">See the full catalogue →</a></p>
-      </div>
+    <!-- THE HANDOVER (V7 §1.5) — transparent runway over the fixed full-bleed
+         Odyssey interior plate, with the resonant handover line. -->
+    <section class="plate-run plate-run--handover" data-chapter="handover" id="runHandover">
+      <h2 class="sr-only">The Handover — the day we hand over the keys, the drawing becomes your every morning. A delivered Odyssey living room with a mountain view.</h2>
     </section>
 
-    <!-- ============ LIGHTBOX — carousel dialog (reuses the method-modal a11y pattern) ============ -->
+    <!-- the flux all-projects grid is removed in V7 — the full catalogue lives on
+         projects.html (reached via "See all projects" at the foot of Select Projects);
+         the homepage's projects ARE the three Select Projects beds. The lightbox
+         dialog below is preserved (the engine contract keeps it) though no homepage
+         control opens it now. -->
+    <!-- ============ LIGHTBOX — carousel dialog (reuses the method-modal a11y pattern) ============
+         Preserved per the engine contract. No homepage control opens it in V7 (the
+         flux all-projects grid was removed); the lightbox JS early-returns when it
+         finds no [data-gallery] openers, so this is inert but intact. -->
+    <!-- LIGHTBOX MARKUP -->
     <div class="lb" id="lightbox" hidden>
       <div class="lb-ov" id="lbOv"></div>
       <div class="lb-panel" role="dialog" aria-modal="true" aria-labelledby="lbTitle" tabindex="-1">
@@ -1650,41 +1588,44 @@
       </div>
     </div>
 
-    <!-- 06 — THE PRINCIPALS -->
-    <section class="panel" data-chapter="principals">
+    <!-- ============ 06 — TESTIMONIALS (NEW, V7 §1.6) ============
+         Five REAL verbatim quotes from buildhive.co.in — wording is NOT altered.
+         Mahesh Madgavkar / ACG named; ACG as an organisation; the three unnamed
+         quotes attributed honestly as "Client" (they are unnamed on the source).
+         Tasteful gallery layout, cyan accents, polished in both themes. -->
+    <section class="panel" data-chapter="testimonials">
       <div class="backdrop" aria-hidden="true">
         <picture>
           <source srcset="img/novatr-tower-night.webp" type="image/webp">
           <img src="img/novatr-tower-night.jpg" alt="" loading="lazy" />
         </picture>
       </div>
-      <div class="pp-sketch" aria-hidden="true">
-        <picture>
-          <source srcset="img/mittal-tower-sketch.webp" type="image/webp">
-          <img src="img/mittal-tower-sketch.jpg" alt="" loading="lazy" />
-        </picture>
-        <p class="pp-sketch-cap">first sketch — urna towers.</p>
-      </div>
       <div class="wrap">
-        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>06 — The Principals</p></div>
-        <h2 class="lede rv"><span class="line"><span class="line-inner">Two architects.</span></span><span class="line"><span class="line-inner"><em>One signature.</em></span></span></h2>
-        <div class="pp-grid">
-          <article class="pp rv">
-            <span class="role">Principal</span>
-            <h3>Ar. Deepakk Bhatija</h3>
-            <p>23 years of large-scale projects — now midway through a Master's in Computational Design. The hand that sketches also writes the algorithm.</p>
-          </article>
-          <article class="pp rv">
-            <span class="role">Principal</span>
-            <h3>Ar. Darius Dalal</h3>
-            <p>24 years and a UK practice behind him, with one obsession: the built thing must match the drawing. He is the reason the 95% number exists.</p>
-          </article>
-        </div>
-        <div class="pp-strap rv">
-          <span class="num">48+</span>
-          <span class="lab">years combined design &amp; execution experience</span>
-        </div>
-        <p class="partners rv"><span class="c-lab">Key partners</span>Harsh Gangar &amp; Associates · Epicons Consultants · Avinash Raj &amp; Associates · AP Energy</p>
+        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>06 — In Their Words</p></div>
+        <h2 class="lede rv"><span class="line"><span class="line-inner">What the people we</span></span><span class="line"><span class="line-inner"><em>handed over to say.</em></span></span></h2>
+
+        <ul class="quotes">
+          <li class="quote quote--lead rv">
+            <blockquote>Overall the team's responsiveness, cost management, and commitment to quality and timelines made the entire experience smooth and efficient.</blockquote>
+            <p class="q-by"><span class="q-name">Mahesh Madgavkar</span><span class="q-role">Head of Administration &amp; HR, ACG</span></p>
+          </li>
+          <li class="quote rv">
+            <blockquote>We would like to place on record our appreciation for the excellent interior design and execution work carried out by BuildHive.</blockquote>
+            <p class="q-by"><span class="q-name">ACG</span></p>
+          </li>
+          <li class="quote rv">
+            <blockquote>Exceptional design and flawless execution! The space feels refreshed, elegant, and perfectly tailored to our needs.</blockquote>
+            <p class="q-by"><span class="q-name">Client</span></p>
+          </li>
+          <li class="quote rv">
+            <blockquote>Impressive work! The space feels fresh, functional, and beautifully styled. Truly elevated our environment.</blockquote>
+            <p class="q-by"><span class="q-name">Client</span></p>
+          </li>
+          <li class="quote rv">
+            <blockquote>Fantastic experience! The interior design exceeded our expectations — stylish, functional, and beautifully executed.</blockquote>
+            <p class="q-by"><span class="q-name">Client</span></p>
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -1741,7 +1682,7 @@
 
     <!-- entry beat: the verdict -->
     <div class="pf-beat pf-entry" data-w="0,0.26">
-      <p class="kicker pf-ui"><span class="pm-rule"></span>04 — The Proof</p>
+      <p class="kicker pf-ui"><span class="pm-rule"></span>04 — Transparency</p>
       <div class="pf-num pf-ui" aria-hidden="true"><span id="pfCount" data-count="95">95</span><span class="pf-pct">%</span></div>
       <p class="pf-tagline pf-ui">The render is the promise; <em>the photograph is the receipt.</em></p>
     </div>
@@ -2723,17 +2664,8 @@
       apply(t);
       try{ localStorage.setItem('bh-theme', t); }catch(e){}   // private mode: theme still applies
     });
-    // no stored choice yet: keep following the OS until the visitor picks a side
-    try{
-      var mq = window.matchMedia('(prefers-color-scheme: light)');
-      var follow = function(ev){
-        var stored = null;
-        try{ stored = localStorage.getItem('bh-theme'); }catch(e){}
-        if(stored !== 'dark' && stored !== 'light') apply(ev.matches ? 'light' : 'dark');
-      };
-      if(mq.addEventListener) mq.addEventListener('change', follow);
-      else if(mq.addListener) mq.addListener(follow);
-    }catch(e){}
+    // V7: light is the default with no saved choice — we no longer follow the OS,
+    // so the white "gallery print" experience is what every first-time visitor sees.
   })();
 
   initProof();
@@ -3290,20 +3222,26 @@ async function boot3d(){
   }));
   scene.add(points);
 
-  /* ---------- camera journey: poses keyed to REAL chapter offsets ----------
-     urna / cadence / amodaa carry NO pose — they are DOM plates; the Catmull
-     spline drifts the camera through them while the canvas sits dimmed behind. */
+  /* ---------- camera journey: poses keyed to REAL chapter offsets (V7 flow) ----------
+     The 7-beat DOM order is hero · about · cadence · urna · amodaa · engage · proof ·
+     handover · testimonials · contact. Only the chapters that own a 3D instrument
+     carry a pose: hero (the blueprint resolve), about (flies toward the massing
+     city), engage (the modular assembly + day gates), proof (the drafting-line bed),
+     contact (the tilt-out). cadence / urna / amodaa / handover / testimonials carry
+     NO pose — they are DOM plates/panels, so the Catmull spline drifts the camera
+     through them while the canvas sits dimmed behind. Keys strictly increase. */
   const POSES = {
-    hero:       { p: [0, 0.15, 8.2],      l: [0, 0.05, 0] },
-    studio:     { p: [0.6, 0.30, 3.0],    l: [-0.3, 0.1, -4.5] },
-    scale:      { p: [-0.8, 0.5, -4.6],   l: [0.2, 0.2, -10.5] },
-    method:     { p: [0.7, 1.6, -9.4],    l: [0, -0.5, -14] },
-    /* proof is a DOM bed: no dip toward set pieces — a straight quiet drift
-       that still carries the camera through the last day gates */
-    proof:      { p: [0, 0.4, -16.2],     l: [0, 0.05, -20.6] },
-    index:      { p: [0, 0.20, -27.5],    l: [0, 0.05, -31] },
-    principals: { p: [-0.4, 0.55, -30],   l: [0.2, 0.4, -33.5] },
-    contact:    { p: [0, 0.9, -33],       l: [0, 1.8, -37] }
+    hero:    { p: [0, 0.15, 8.2],    l: [0, 0.05, 0] },
+    /* about merges Studio + the big numbers + Principals: the camera settles in
+       front of the logo-cell massing city (which lives at z ≈ -10.8 .. -11.5) */
+    about:   { p: [-0.2, 0.42, -3.0], l: [0.1, 0.2, -10.6] },
+    /* engage merges Method + Proof: the modular assembly (GRID_C.z = -14) and the
+       day gates (z -13.4 .. -17.4) are flown while the timeline DOM is on screen */
+    engage:  { p: [0.7, 1.6, -9.4],   l: [0, -0.5, -14] },
+    /* proof is a DOM bed: a straight quiet drift that still carries the camera
+       through the last day gates */
+    proof:   { p: [0, 0.4, -16.2],    l: [0, 0.05, -20.6] },
+    contact: { p: [0, 0.9, -33],      l: [0, 1.8, -37] }
   };
   const END_POSE = { p: [0, 1.9, -34.5], l: [0, 4.6, -39] };   // gentle upward tilt out
 
@@ -3374,7 +3312,8 @@ async function boot3d(){
     /* DOM-bed chapters (plates + the proof stage): sub-perceptual breathing so
        the dimmed dust layer behind the beds never reads as a frozen canvas */
     const pp = chapterP('proof');
-    const breathe = Math.max(chapterP('urna'), chapterP('cadence'), chapterP('amodaa'), pp);
+    const breathe = Math.max(chapterP('cadence'), chapterP('urna'), chapterP('amodaa'),
+                             chapterP('handover'), pp);
     if (pathOK){
       const u = pathT(S.smoothY);                       // clamped to [0,1]
       posCurve.getPoint(u, _pos);
@@ -3395,15 +3334,17 @@ async function boot3d(){
     const heroWin = 1 - clamp01((S.smoothY - heroRun * 0.92) / (vh * 0.55));
     applyHero(heroPlane, heroStage, heroWin, dt, t);
 
-    /* massing city scrubbed by scale progress, releases entering method */
-    const scp = chapterP('scale');
-    const stp = chapterP('method');
-    const cityWin = clamp01((scp - 0.03) / 0.12) * (1 - clamp01((stp - 0.18) / 0.28));
+    /* massing city scrubbed by ABOUT progress (the numbers sub-section sits mid-
+       chapter): it rises as About opens and releases before About ends, so it is
+       gone by the time Select Projects (the plates) takes over the canvas. */
+    const scp = chapterP('about');
+    const stp = chapterP('engage');
+    const cityWin = clamp01((scp - 0.06) / 0.16) * (1 - clamp01((scp - 0.78) / 0.16));
     cityGroup.visible = cityWin > 0.002;
     if (cityGroup.visible){
       cityMat.opacity     = cityWin * 0.85;
       cityEdgeMat.opacity = cityWin * 0.6;
-      updateCity(clamp01((scp - 0.06) / 0.62));
+      updateCity(clamp01((scp - 0.10) / 0.55));
     }
     for (let i = 0; i < cityLabels.length; i++){
       const L = cityLabels[i];
@@ -3421,7 +3362,8 @@ async function boot3d(){
       }
     }
 
-    /* modular assembly scrubbed by method progress */
+    /* modular assembly scrubbed by ENGAGE progress (the method half of Engagement
+       & Transparency), releasing as the Transparency proof bed takes the canvas */
     const boxWin = clamp01((stp - 0.04) / 0.12) * (1 - clamp01((pp - 0.25) / 0.3));
     stratGroup.visible = boxWin > 0.002;
     if (stratGroup.visible){
