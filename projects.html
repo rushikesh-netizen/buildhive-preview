@@ -1,0 +1,1092 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0c0e10" />
+<meta name="color-scheme" content="dark" />
+<meta name="description" content="Every project by BuildHive Architects — masterplanning, architecture and interiors across seven cities. Towers, workplaces and homes, with every interior shown in full." />
+<title>Projects · BuildHive Architects</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<script>
+/* theme gate — runs BEFORE the stylesheet so the first paint is already the
+   right theme (no flash). Shares the localStorage('bh-theme') key with index.html. */
+(function(){
+  var t = null;
+  try { t = localStorage.getItem('bh-theme'); } catch(e){}
+  if (t !== 'dark' && t !== 'light'){
+    t = 'dark';
+    try {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) t = 'light';
+    } catch(e){}
+  }
+  document.documentElement.setAttribute('data-theme', t);
+  function syncMeta(theme){
+    var tc = document.querySelector('meta[name="theme-color"]');
+    if (tc) tc.setAttribute('content', theme === 'light' ? '#f2efe9' : '#0c0e10');
+    var cs = document.querySelector('meta[name="color-scheme"]');
+    if (cs) cs.setAttribute('content', theme === 'light' ? 'light' : 'dark');
+  }
+  syncMeta(t);
+  window.__syncThemeMeta = syncMeta;   // the toggle re-syncs the metas on switch
+})();
+</script>
+<style>
+  /* ============ DESIGN TOKENS — copied from index.html so the catalogue page
+     matches the brand monograph exactly (standalone, no shared bundle). ============ */
+  :root{
+    color-scheme:dark;
+    --bg:#0c0e10;
+    --bg-2:#101317;
+    --bg-rgb:12,14,16;
+    --bg2-rgb:16,19,23;
+    --ink:#eef3f6;
+    --body-c:#c3cdd4;
+    --muted:#9aa3ab;
+    --faint:#6d7680;
+    --blue:#6EC1E4;
+    --blue-deep:#3196CC;
+    --brand-cyan:#46C7EF;                  /* the logo mark's vivid cyan — MARK ONLY */
+    --blue-display:#6EC1E4;
+    --blue-hover:#9ad6ef;
+    --line:rgba(238,243,246,.12);
+    --line-2:rgba(238,243,246,.06);
+    --bline:rgba(110,193,228,.34);
+    --bline-2:rgba(110,193,228,.15);
+    --bline-strong:rgba(110,193,228,.62);
+    --scroll-bed:rgba(238,243,246,.05);
+    --panel-bg:#0e1114;
+
+    /* photo-bedded furniture (over images) — never theme-swaps */
+    --p-ink:#eef3f6; --p-body:#c3cdd4; --p-muted:#9aa3ab; --p-blue:#6EC1E4;
+    --p-bline:rgba(110,193,228,.34); --p-bline-2:rgba(110,193,228,.15);
+    --p-line:rgba(238,243,246,.12); --p-line-2:rgba(238,243,246,.06);
+
+    --chrome-ink:var(--ink); --chrome-muted:var(--muted);
+    --chrome-blue:var(--blue); --chrome-line:var(--line);
+
+    --serif:'EB Garamond', Georgia, 'Times New Roman', serif;
+    --sans:Tahoma, Geneva, Verdana, system-ui, sans-serif;
+
+    --t-kicker:clamp(10px, .5vw + 8px, 12px);
+    --t-body:clamp(15px, .45vw + 13px, 17px);
+    --t-h3:clamp(21px, 1.6vw + 14px, 32px);
+    --t-h2:clamp(30px, 3.6vw + 10px, 60px);
+    --t-display:clamp(40px, 7vw + 8px, 104px);
+
+    --edge:clamp(18px, 3.2vw, 46px);
+    --gutter:clamp(26px, 5.4vw, 84px);
+    --section:clamp(84px, 13vh, 184px);
+
+    --ease-page:cubic-bezier(.22,.61,.30,1);
+    --ease-draw:cubic-bezier(.65,.02,.30,1);
+
+    --safe-b:env(safe-area-inset-bottom, 0px);
+    --safe-l:env(safe-area-inset-left, 0px);
+    --safe-r:env(safe-area-inset-right, 0px);
+    --safe-t:env(safe-area-inset-top, 0px);
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{ -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; background:var(--bg);
+    scroll-behavior:smooth; scrollbar-width:thin; scrollbar-color:var(--blue-deep) var(--scroll-bed); }
+  body{ background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:var(--t-body); letter-spacing:.01em; overflow-x:hidden; }
+  ::selection{ background:var(--blue-deep); color:#fff; }
+  ::-webkit-scrollbar{ width:9px; height:9px; }
+  ::-webkit-scrollbar-track{ background:var(--scroll-bed); }
+  ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg, var(--blue), var(--blue-deep));
+    border:2px solid var(--bg); border-radius:20px; background-clip:padding-box; }
+  ::-webkit-scrollbar-thumb:hover{ background:linear-gradient(180deg, var(--blue-hover), var(--blue));
+    border:2px solid var(--bg); background-clip:padding-box; }
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible{ outline:2px solid var(--blue); outline-offset:3px; }
+  .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+
+  /* ---------- fixed chrome (brand lockup · back · theme) ---------- */
+  #chrome{ position:fixed; top:0; left:0; right:0; z-index:5;
+    display:flex; align-items:flex-start; justify-content:space-between; gap:18px;
+    padding:calc(var(--edge) + var(--safe-t)) calc(var(--edge) + var(--safe-r)) 14px calc(var(--edge) + var(--safe-l));
+    background:linear-gradient(to bottom, var(--bg) 30%, rgba(var(--bg-rgb),0));
+    pointer-events:none; }
+  #chrome a, #chrome button{ pointer-events:auto; }
+  .brand{ display:flex; align-items:flex-start; gap:11px; text-decoration:none; }
+  /* the 4-cell mark stays the client's brand cyan in BOTH themes — it is a logo */
+  .brand svg{ width:20px; height:20px; flex:none; margin-top:1px; color:var(--brand-cyan); }
+  .brand .bw{ font-size:13px; letter-spacing:.4em; text-transform:uppercase; color:var(--chrome-ink); }
+  .brand .bw small{ display:block; font-size:8.5px; letter-spacing:.22em; color:var(--chrome-muted); margin-top:6px; }
+  @media(max-width:700px){ .brand .bw small{ display:none; } }
+  .chrome-r{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:flex-end; }
+  .back-link{ display:inline-flex; align-items:center; gap:9px; text-decoration:none;
+    font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--chrome-muted);
+    padding:6px 4px; transition:color .25s ease; }
+  .back-link:hover{ color:var(--chrome-blue); }
+  .back-link .arr{ transition:transform .35s var(--ease-page); }
+  .back-link:hover .arr{ transform:translateX(-4px); }
+
+  /* theme toggle — same minimal pill as index */
+  .theme-toggle{ appearance:none; -webkit-appearance:none; display:inline-flex; align-items:center; gap:9px;
+    padding:6px 11px; background:transparent; border:1px solid var(--chrome-line); border-radius:999px;
+    font:inherit; font-size:10px; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--chrome-muted); cursor:pointer;
+    transition:color .3s ease, border-color .3s ease, background-color .3s ease; }
+  .theme-toggle:hover{ color:var(--chrome-blue); border-color:var(--chrome-blue); }
+  .theme-toggle:focus-visible{ outline:2px solid var(--chrome-blue); outline-offset:3px; }
+  .tt-disc{ position:relative; width:14px; height:14px; flex:none; border-radius:50%; border:1px solid currentColor; }
+  .tt-disc::after{ content:""; position:absolute; inset:2px; border-radius:50%;
+    background:currentColor; transform:scale(1); transition:transform .3s var(--ease-page); }
+  [data-theme="light"] .tt-disc::after{ transform:scale(.45); }
+  .tt-word{ display:none; letter-spacing:.3em; padding-right:2px; }
+  @media(min-width:900px){ .tt-word{ display:inline; } }
+
+  /* ---------- page shell ---------- */
+  .shell{ max-width:1320px; margin:0 auto;
+    padding:0 calc(var(--gutter) + var(--safe-r)) calc(var(--section)*.7 + var(--safe-b)) calc(var(--gutter) + var(--safe-l)); }
+
+  /* intro — the one-line scale statement */
+  .intro{ padding-top:clamp(108px, 17vh, 188px); }
+  .kicker{ font-size:var(--t-kicker); letter-spacing:.36em; text-transform:uppercase; color:var(--blue); }
+  .pm-rule{ display:inline-block; width:34px; height:1px; background:var(--bline);
+    vertical-align:middle; margin:-2px 14px 0 0; }
+  .intro h1{ font-family:var(--serif); font-weight:400; line-height:1.03; letter-spacing:.002em;
+    font-size:var(--t-h2); margin:24px 0 0; max-width:20ch; }
+  .intro h1 em{ font-style:italic; color:var(--blue-display); }
+  .intro .lead{ max-width:62ch; margin-top:22px; color:var(--body-c); font-size:var(--t-body); line-height:1.8; }
+  /* verified-figures strip — BuildHive numbers ONLY */
+  .figs{ display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:clamp(30px, 4.5vh, 52px); }
+  .fig{ display:inline-flex; align-items:center; gap:11px;
+    border:1px dotted var(--bline); background:var(--bg-2); padding:13px 18px; }
+  .fig .hive-mark{ width:13px; height:13px; flex:none; color:var(--blue-deep); }
+  .fig .fg-num{ font-family:var(--serif); font-size:clamp(18px, 1vw + 12px, 24px); color:var(--ink);
+    font-variant-numeric:tabular-nums; }
+  .fig .fg-num .unit{ font-size:.62em; color:var(--blue); letter-spacing:.04em; margin-left:3px; }
+  .fig .fg-lab{ font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); }
+
+  /* ---------- filter chips (accessible button group) ---------- */
+  .filters{ position:sticky; top:calc(var(--edge) + var(--safe-t) + 42px); z-index:4;
+    margin-top:clamp(36px, 5.5vh, 64px); padding:14px 0;
+    background:linear-gradient(to bottom, var(--bg) 62%, rgba(var(--bg-rgb),0)); }
+  .filters .ftrack{ display:flex; flex-wrap:wrap; gap:9px 10px; }
+  .chip{ appearance:none; -webkit-appearance:none; font:inherit; cursor:pointer;
+    padding:9px 16px; border:1px solid var(--line); background:var(--bg-2); color:var(--body-c);
+    font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; border-radius:999px;
+    transition:color .25s ease, border-color .25s ease, background-color .25s ease; }
+  .chip:hover{ color:var(--ink); border-color:var(--bline); }
+  .chip[aria-pressed="true"]{ color:var(--bg); background:var(--blue); border-color:var(--blue); font-weight:600; }
+  [data-theme="light"] .chip[aria-pressed="true"]{ color:#fff; }
+  .chip .ct{ font-variant-numeric:tabular-nums; opacity:.7; margin-left:7px; font-size:.92em; }
+  .filters .fcount{ margin-top:11px; font-family:var(--serif); font-style:italic;
+    font-size:13px; letter-spacing:.04em; color:var(--muted); }
+
+  /* ---------- project sections ---------- */
+  .catalog{ margin-top:clamp(24px, 3.5vh, 40px); }
+  .proj{ padding:clamp(38px, 6vh, 72px) 0; border-top:1px solid var(--bline-2); }
+  .proj:first-child{ border-top:0; }
+  /* the smooth show/hide as filters change — opacity + collapse, transform-only feel */
+  .proj{ transition:opacity .45s var(--ease-page); }
+  .proj.is-hidden{ display:none; }
+  .proj.is-fading{ opacity:0; }
+
+  .proj-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:20px 32px; flex-wrap:wrap; }
+  .proj-id{ max-width:60ch; }
+  .proj-cats{ display:flex; flex-wrap:wrap; gap:7px; }
+  .proj-cat{ font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+    border:1px solid var(--line-2); padding:5px 9px; }
+  .proj-name{ font-family:var(--serif); font-weight:400; line-height:1.04;
+    font-size:var(--t-h3); color:var(--ink); display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
+  .proj-name .tag{ font-family:var(--sans); font-size:9px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--p-blue); border:1px solid var(--bline); padding:4px 9px; white-space:nowrap; }
+  .proj-meta{ margin-top:13px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+    display:flex; flex-wrap:wrap; gap:6px 12px; }
+  .proj-meta .dot{ color:var(--faint); }
+  .proj-meta .fact{ color:var(--blue); }
+  .proj-desc{ margin-top:18px; max-width:64ch; color:var(--body-c); line-height:1.8; font-size:15.5px;
+    font-family:var(--serif); }
+
+  /* the image set — a responsive multi-scale grid; every image opens the lightbox */
+  .shots{ display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap:clamp(10px, 1.3vw, 18px); margin-top:clamp(24px, 3.5vh, 40px); }
+  .shot{ appearance:none; -webkit-appearance:none; position:relative; display:block;
+    margin:0; padding:0; border:0; background:#0c0e10; color:var(--ink); cursor:pointer;
+    overflow:hidden; text-align:left; font:inherit; min-width:0; aspect-ratio:4 / 3;
+    box-shadow:inset 0 0 0 1px var(--p-line-2);
+    transition:box-shadow .4s var(--ease-page); }
+  /* the lead shot of each project reads larger on wide viewports */
+  @media(min-width:900px){ .shot.lead{ grid-column:span 2; aspect-ratio:16 / 9; } }
+  .shot.portrait{ aspect-ratio:3 / 4; }
+  .shot img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
+    filter:saturate(.96) contrast(1.03); transition:transform .6s var(--ease-page); transform:scale(1.02); }
+  .shot::after{ content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
+    background:linear-gradient(to top, rgba(9,11,13,.6) 0%, rgba(9,11,13,.06) 42%, rgba(9,11,13,0) 64%);
+    opacity:0; transition:opacity .4s var(--ease-page); }
+  .shot::before{ content:""; position:absolute; inset:0; z-index:2; pointer-events:none;
+    box-shadow:inset 0 0 0 1px var(--p-blue); opacity:0; transition:opacity .4s var(--ease-page); }
+  .shot-cap{ position:absolute; left:0; right:0; bottom:0; z-index:2; pointer-events:none;
+    padding:clamp(11px, 1.2vw, 16px); font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--p-ink); opacity:0; transform:translateY(6px);
+    transition:opacity .4s var(--ease-page), transform .4s var(--ease-page); }
+  .shot-cap::before{ content:""; display:inline-block; width:13px; height:1px; background:var(--p-blue);
+    vertical-align:middle; margin:-2px 9px 0 0; }
+  @media(hover:hover){
+    .shot:hover{ z-index:3; box-shadow:0 18px 48px rgba(6,8,10,.45); }
+    .shot:hover img{ transform:scale(1.09); }
+    .shot:hover::after,.shot:hover::before,.shot:hover .shot-cap{ opacity:1; }
+    .shot:hover .shot-cap{ transform:none; }
+  }
+  .shot:focus-visible{ outline:none; z-index:3; }
+  .shot:focus-visible::before{ opacity:1; box-shadow:inset 0 0 0 2px var(--p-blue); }
+  .shot:focus-visible::after,.shot:focus-visible .shot-cap{ opacity:1; }
+  .shot:focus-visible .shot-cap{ transform:none; }
+  @media(hover:none){ .shot::after{ opacity:1; } .shot-cap{ opacity:.95; transform:none; } }
+  @media(prefers-reduced-motion:reduce){
+    html{ scroll-behavior:auto; }
+    .shot img{ transition:none; transform:none; }
+    .shot,.shot::after,.shot::before,.shot-cap{ transition:none; }
+    .proj{ transition:none; }
+  }
+
+  .empty{ display:none; padding:clamp(40px, 7vh, 80px) 0; text-align:center;
+    font-family:var(--serif); font-style:italic; font-size:clamp(17px, 1vw + 12px, 22px); color:var(--muted); }
+  .empty.show{ display:block; }
+
+  /* ---------- LIGHTBOX — accessible carousel dialog (copied from index.html) ---------- */
+  html.modal-open{ overflow:hidden; }
+  .lb{ position:fixed; inset:0; z-index:7; display:flex; align-items:center; justify-content:center;
+    padding:clamp(12px, 2.5vw, 40px); }
+  .lb[hidden]{ display:none; }
+  .lb-ov{ position:absolute; inset:0; background:rgba(6,8,10,.86);
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); opacity:0; transition:opacity .35s ease; }
+  [data-theme="light"] .lb-ov{ background:rgba(21,24,27,.74); }
+  .lb-panel{ position:relative; width:100%; max-width:min(1180px, 100%); max-height:92vh;
+    display:flex; flex-direction:column; background:var(--panel-bg);
+    border:1px solid var(--line); border-top:1px solid var(--bline);
+    opacity:0; transform:translateY(14px);
+    transition:opacity .45s var(--ease-page), transform .45s var(--ease-page); }
+  .lb.open .lb-ov{ opacity:1; }
+  .lb.open .lb-panel{ opacity:1; transform:none; }
+  .lb-head{ display:flex; align-items:center; gap:14px; flex:none;
+    padding:clamp(16px, 2vw, 22px) clamp(18px, 2.4vw, 28px); border-bottom:1px solid var(--bline-2); }
+  .lb-head .hive-mark{ flex:none; width:20px; height:20px; color:var(--brand-cyan); }
+  .lb-title{ font-family:var(--serif); font-weight:400; font-size:var(--t-h3); line-height:1.1; margin-right:auto; }
+  .lb-sub{ display:block; margin-top:5px; font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); }
+  .lb-x{ appearance:none; -webkit-appearance:none; flex:none; width:38px; height:38px;
+    background:none; border:1px solid var(--line); color:var(--muted);
+    font-size:19px; line-height:1; cursor:pointer; transition:color .25s ease, border-color .25s ease; }
+  .lb-x:hover{ color:var(--blue); border-color:var(--bline); }
+  .lb-stage{ position:relative; flex:1 1 auto; min-height:0; background:#0c0e10;
+    display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .lb-fig{ margin:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+  .lb-fig img{ max-width:100%; max-height:62vh; width:auto; height:auto; object-fit:contain; display:block; }
+  .lb-arrow{ appearance:none; -webkit-appearance:none; position:absolute; top:50%; transform:translateY(-50%);
+    z-index:3; width:46px; height:46px; border-radius:50%; cursor:pointer;
+    background:rgba(12,14,16,.62); border:1px solid var(--p-bline); color:var(--p-ink);
+    -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);
+    display:flex; align-items:center; justify-content:center; font-size:20px; line-height:1;
+    transition:background-color .25s ease, border-color .25s ease, color .25s ease; }
+  .lb-arrow:hover{ color:#fff; border-color:var(--p-blue); background:rgba(12,14,16,.82); }
+  .lb-prev{ left:clamp(10px, 1.6vw, 20px); }
+  .lb-next{ right:clamp(10px, 1.6vw, 20px); }
+  .lb-arrow:disabled{ opacity:.3; cursor:default; }
+  .lb-foot{ flex:none; display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    padding:clamp(14px, 1.8vw, 20px) clamp(18px, 2.4vw, 28px); border-top:1px solid var(--bline-2); }
+  .lb-cap{ flex:1 1 240px; min-width:0; font-family:var(--serif); font-style:italic;
+    font-size:15px; line-height:1.5; color:var(--body-c); }
+  .lb-counter{ flex:none; font-size:11px; letter-spacing:.14em; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .lb-dots{ display:flex; gap:8px; flex:none; flex-wrap:wrap; }
+  .lb-dot{ appearance:none; -webkit-appearance:none; width:9px; height:9px; padding:0; cursor:pointer;
+    border:1px solid var(--bline); background:transparent; border-radius:50%;
+    transition:background-color .25s ease, border-color .25s ease; }
+  .lb-dot[aria-current="true"]{ background:var(--blue); border-color:var(--blue); }
+  .lb-dot:hover{ border-color:var(--bline-strong); }
+  @media(max-width:620px){
+    .lb{ padding:0; }
+    .lb-panel{ max-width:none; height:100%; max-height:none; }
+    .lb-fig img{ max-height:48vh; }
+    .lb-arrow{ width:40px; height:40px; }
+  }
+  @media(prefers-reduced-motion:reduce){
+    .lb-ov, .lb-panel{ opacity:1; transform:none; transition:none; }
+  }
+
+  /* ---------- footer (same as index) ---------- */
+  footer.foot{ border-top:1px solid var(--bline-2);
+    padding:clamp(52px, 9vh, 96px) calc(var(--gutter) + var(--safe-r)) calc(clamp(48px, 7vh, 80px) + var(--safe-b)) calc(var(--gutter) + var(--safe-l)); }
+  .foot-wrap{ max-width:1320px; margin:0 auto; }
+  .c-lab{ display:inline-block; font-size:10px; letter-spacing:.32em; text-transform:uppercase; color:var(--blue); }
+  .c-grid{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:clamp(24px, 3vw, 40px); }
+  .c-block .c-lab{ margin-bottom:13px; }
+  .c-block p{ color:var(--body-c); line-height:1.85; font-size:15px; }
+  .c-block a{ color:var(--ink); text-decoration:none; border-bottom:1px solid var(--bline);
+    transition:color .25s ease, border-color .25s ease; }
+  .c-block a:hover{ color:var(--blue); border-color:var(--blue); }
+  @media(max-width:900px){ .c-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
+  @media(max-width:480px){ .c-grid{ grid-template-columns:1fr; } }
+  .folio-rule{ height:1px; background:var(--bline-2); position:relative; margin-top:clamp(52px, 9vh, 100px); }
+  .folio-rule::before,.folio-rule::after{ content:""; position:absolute; top:-5px;
+    width:2px; height:11px; background:var(--blue); opacity:.5; }
+  .folio-rule::before{ left:0; } .folio-rule::after{ right:0; }
+  .credit{ display:flex; align-items:baseline; flex-wrap:wrap; gap:10px 16px; margin-top:36px; }
+  .credit .by{ font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--muted); }
+  .credit .lab{ font-family:var(--serif); font-size:clamp(22px, 2vw + 14px, 30px); line-height:1;
+    color:var(--blue); font-weight:400; letter-spacing:.01em; text-decoration:none; }
+  .credit .lab:hover{ color:var(--blue-hover); }
+  .credit .links{ display:flex; align-items:baseline; flex-wrap:wrap; gap:8px 12px;
+    font-size:13px; letter-spacing:.04em; color:var(--muted); }
+  .credit .links a{ color:var(--muted); text-decoration:none; border-bottom:1px solid transparent;
+    transition:color .25s ease, border-color .25s ease; }
+  .credit .links a:hover{ color:var(--blue); border-color:var(--bline); }
+  .credit .sep{ color:var(--faint); opacity:.6; }
+  .footmeta{ display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap;
+    margin-top:30px; color:var(--muted); font-size:11px; letter-spacing:.08em; }
+
+  /* ============ LIGHT THEME — "gallery print" (copied from index.html) ============ */
+  [data-theme="light"]{
+    color-scheme:light;
+    --bg:#f2efe9;
+    --bg-2:#eae6dd;
+    --bg-rgb:242,239,233;
+    --bg2-rgb:234,230,221;
+    --ink:#15181b;
+    --body-c:#3a4046;
+    --muted:#5a6066;
+    --faint:#8a9199;
+    --blue:#20689a;
+    --blue-deep:#17567c;
+    --blue-display:#2e8dc0;
+    --blue-hover:#17567c;
+    --line:rgba(21,24,27,.16);
+    --line-2:rgba(21,24,27,.08);
+    --bline:rgba(32,104,154,.42);
+    --bline-2:rgba(32,104,154,.20);
+    --bline-strong:rgba(32,104,154,.62);
+    --scroll-bed:rgba(21,24,27,.07);
+    --panel-bg:#f7f4ee;
+  }
+  @media(prefers-reduced-motion:no-preference){
+    html, body, .chip, .fig, .shot, .proj-cat, .c-block a{
+      transition:background-color .3s ease, color .3s ease, border-color .3s ease;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ fixed chrome ============ -->
+  <header id="chrome">
+    <a class="brand" href="index.html" aria-label="BuildHive Architects — home">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <g fill="currentColor">
+          <rect x="13" y="13" width="17.5" height="17.5" rx="5"/>
+          <rect x="33.5" y="13" width="17.5" height="17.5" rx="5"/>
+          <rect x="13" y="33.5" width="17.5" height="17.5" rx="5"/>
+          <rect x="33.5" y="33.5" width="17.5" height="17.5" rx="5"/>
+        </g>
+      </svg>
+      <span class="bw">Buildhive<small>Masterplanners · Architects · Interior Designers</small></span>
+    </a>
+    <div class="chrome-r">
+      <a class="back-link" href="index.html"><span class="arr" aria-hidden="true">←</span> Home</a>
+      <button type="button" id="themeBtn" class="theme-toggle" aria-label="Switch to light theme">
+        <span class="tt-disc" aria-hidden="true"></span>
+        <span class="tt-word" aria-hidden="true">Dark</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="shell">
+
+    <!-- ============ intro — the scale statement ============ -->
+    <section class="intro">
+      <p class="kicker"><span class="pm-rule"></span>Projects · The full catalogue</p>
+      <h1>Every scale, <em>one practice</em> — masterplanning, architecture and interiors.</h1>
+      <p class="lead">Towers, workplaces and homes, drawn and delivered by one firm across seven cities — from a city block to a corner office. The full set, with every interior shown in full.</p>
+      <div class="figs">
+        <span class="fig">
+          <svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>
+          <span class="fg-num">167,000<span class="unit">sqft</span></span><span class="fg-lab">Commercial interiors</span>
+        </span>
+        <span class="fig">
+          <svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>
+          <span class="fg-num">50,667<span class="unit">sqft</span></span><span class="fg-lab">Residential interiors</span>
+        </span>
+        <span class="fig">
+          <svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>
+          <span class="fg-num">7<span class="unit">cities</span></span><span class="fg-lab">Mumbai to London</span>
+        </span>
+        <span class="fig">
+          <svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>
+          <span class="fg-num">95<span class="unit">%+</span></span><span class="fg-lab">Render-to-reality</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- ============ filter chips ============ -->
+    <nav class="filters" aria-label="Filter projects by category">
+      <div class="ftrack" id="chips" role="group" aria-label="Project categories">
+        <button type="button" class="chip" data-cat="all" aria-pressed="true">All <span class="ct" aria-hidden="true">10</span></button>
+        <button type="button" class="chip" data-cat="towers" aria-pressed="false">Towers <span class="ct" aria-hidden="true">2</span></button>
+        <button type="button" class="chip" data-cat="masterplanning" aria-pressed="false">Masterplanning <span class="ct" aria-hidden="true">1</span></button>
+        <button type="button" class="chip" data-cat="architecture" aria-pressed="false">Architecture <span class="ct" aria-hidden="true">3</span></button>
+        <button type="button" class="chip" data-cat="commercial" aria-pressed="false">Commercial Interiors <span class="ct" aria-hidden="true">3</span></button>
+        <button type="button" class="chip" data-cat="residential" aria-pressed="false">Residential Interiors <span class="ct" aria-hidden="true">2</span></button>
+      </div>
+      <p class="fcount" id="fcount" aria-live="polite">Showing all 10 projects.</p>
+    </nav>
+
+    <!-- ============ the catalogue ============ -->
+    <div class="catalog" id="catalog">
+
+      <!-- urna — Towers + Masterplanning (concept) -->
+      <article class="proj" data-gallery="urna" data-cat="towers masterplanning" data-count="3">
+        <div class="proj-head">
+          <div class="proj-id">
+            <h2 class="proj-name">urna <span class="tag">Concept · in design development</span></h2>
+            <div class="proj-meta"><span>Residential tower</span><span class="dot">·</span><span>Versova, Mumbai</span><span class="dot">·</span><span class="fact">Up to 18 storeys · FSI 5.4</span></div>
+          </div>
+          <div class="proj-cats" aria-hidden="true"><span class="proj-cat">Towers</span><span class="proj-cat">Masterplanning</span></div>
+        </div>
+        <p class="proj-desc">A green-clad residential tower rising from a perforated-brick podium in parkland — designed for the densest envelope Mumbai permits, yet read at the scale of a city block. Renders are design-stage visualizations, not photographs of built work.</p>
+        <div class="shots">
+          <button type="button" class="shot lead" data-i="0" aria-haspopup="dialog" aria-label="urna, image 1 — open gallery">
+            <picture><source srcset="img/urna-real-01.webp" type="image/webp"><img src="img/urna-real-01.jpg" loading="eager" decoding="async" alt="urna — golden-hour establishing render of the tower in parkland, Versova" /></picture>
+            <span class="shot-cap">Golden-hour establishing render</span>
+          </button>
+          <button type="button" class="shot portrait" data-i="1" aria-haspopup="dialog" aria-label="urna, image 2 — open gallery">
+            <picture><source srcset="img/urna-real-02.webp" type="image/webp"><img src="img/urna-real-02.jpg" loading="lazy" decoding="async" alt="urna — upward view of the perforated brick podium meeting the green-clad tower" /></picture>
+            <span class="shot-cap">Podium meeting the tower</span>
+          </button>
+          <button type="button" class="shot portrait" data-i="2" aria-haspopup="dialog" aria-label="urna, image 3 — open gallery">
+            <picture><source srcset="img/urna-real-03.webp" type="image/webp"><img src="img/urna-real-03.jpg" loading="lazy" decoding="async" alt="urna — street-context at dusk, the tower over its green podium" /></picture>
+            <span class="shot-cap">Street-context at dusk</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- Cadence — Towers (concept) -->
+      <article class="proj" data-gallery="cadence" data-cat="towers" data-count="6">
+        <div class="proj-head">
+          <div class="proj-id">
+            <h2 class="proj-name">Cadence <span class="tag">Concept · in design development</span></h2>
+            <div class="proj-meta"><span>Faceted glass office tower</span></div>
+          </div>
+          <div class="proj-cats" aria-hidden="true"><span class="proj-cat">Towers</span></div>
+        </div>
+        <p class="proj-desc">A twisted, faceted glass office tower studied across weather and light — overcast, twilight, rain and a day-lit hourglass base. A concept visualization in design development; no location or area is fixed.</p>
+        <div class="shots">
+          <button type="button" class="shot lead" data-i="0" aria-haspopup="dialog" aria-label="Cadence, image 1 — open gallery">
+            <picture><source srcset="img/proj-cadence-01.webp" type="image/webp"><img src="img/proj-cadence-01.jpg" loading="lazy" decoding="async" alt="Cadence — the twisted glass tower under an overcast sky, wet street below" /></picture>
+            <span class="shot-cap">Overcast, wet street</span>
+          </button>
+          <button type="button" class="shot portrait" data-i="1" aria-haspopup="dialog" aria-label="Cadence, image 2 — open gallery">
+            <picture><source srcset="img/proj-cadence-02.webp" type="image/webp"><img src="img/proj-cadence-02.jpg" loading="lazy" decoding="async" alt="Cadence — twilight, a glowing lobby at the base and yellow cabs at the kerb" /></picture>
+            <span class="shot-cap">Twilight, glowing lobby</span>
+          </button>
+          <button type="button" class="shot" data-i="2" aria-haspopup="dialog" aria-label="Cadence, image 3 — open gallery">
+            <picture><source srcset="img/proj-cadence-03.webp" type="image/webp"><img src="img/proj-cadence-03.jpg" loading="lazy" decoding="async" alt="Cadence — aerial, the tower at the centre of a public plaza" /></picture>
+            <span class="shot-cap">Aerial over the plaza</span>
+          </button>
+          <button type="button" class="shot portrait" data-i="3" aria-haspopup="dialog" aria-label="Cadence, image 4 — open gallery">
+            <picture><source srcset="img/proj-cadence-04.webp" type="image/webp"><img src="img/proj-cadence-04.jpg" loading="lazy" decoding="async" alt="Cadence — rainy night, lit windows and a long-exposure street" /></picture>
+            <span class="shot-cap">Rainy night</span>
+          </button>
+          <button type="button" class="shot portrait" data-i="4" aria-haspopup="dialog" aria-label="Cadence, image 5 — open gallery">
+            <picture><source srcset="img/proj-cadence-05.webp" type="image/webp"><img src="img/proj-cadence-05.jpg" loading="lazy" decoding="async" alt="Cadence — upward atrium glow, faceted glass converging over a warm-lit interior" /></picture>
+            <span class="shot-cap">Atrium glow</span>
+          </button>
+          <button type="button" class="shot portrait" data-i="5" aria-haspopup="dialog" aria-label="Cadence, image 6 — open gallery">
+            <picture><source srcset="img/proj-cadence-06.webp" type="image/webp"><img src="img/proj-cadence-06.jpg" loading="lazy" decoding="async" alt="Cadence — the hourglass base and glazed entrance by day" /></picture>
+            <span class="shot-cap">Hourglass base by day</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- M Pavilion — Architecture (concept) -->
+      <article class="proj" data-gallery="mpavilion" data-cat="architecture" data-count="3">
+        <div class="proj-head">
+          <div class="proj-id">
+            <h2 class="proj-name">M Pavilion <span class="tag">BuildHive concept study</span></h2>
+            <div class="proj-meta"><span>Parametric pavilion</span></div>
+          </div>
+          <div class="proj-cats" aria-hidden="true"><span class="proj-cat">Architecture</span></div>
+        </div>
+        <p class="proj-desc">A parametric lattice pavilion studied top-down, at eye level and lit at night — a concept study exploring a freeform structural skin at a civic scale.</p>
+        <div class="shots">
+          <button type="button" class="shot lead" data-i="0" aria-haspopup="dialog" aria-label="M Pavilion, image 1 — open gallery">
+            <picture><source srcset="img/proj-mpavilion-01.webp" type="image/webp"><img src="img/proj-mpavilion-01.jpg" loading="lazy" decoding="async" alt="M Pavilion — top-down view of the parametric lattice pavilion beside an autumn tree" /></picture>
+            <span class="shot-cap">Top-down view</span>
+          </button>
+          <button type="button" class="shot" data-i="1" aria-haspopup="dialog" aria-label="M Pavilion, image 2 — open gallery">
+            <picture><source srcset="img/proj-mpavilion-02.webp" type="image/webp"><img src="img/proj-mpavilion-02.jpg" loading="lazy" decoding="async" alt="M Pavilion — golden-hour, eye-level, people walking through the lattice" /></picture>
+            <span class="shot-cap">Eye-level at golden hour</span>
+          </button>
+          <button type="button" class="shot" data-i="2" aria-haspopup="dialog" aria-label="M Pavilion, image 3 — open gallery">
+            <picture><source srcset="img/proj-mpavilion-03.webp" type="image/webp"><img src="img/proj-mpavilion-03.jpg" loading="lazy" decoding="async" alt="M Pavilion — night, the illuminated lattice glowing against the skyline" /></picture>
+            <span class="shot-cap">Illuminated at night</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- UBP — Architecture (concept) -->
+      <article class="proj" data-gallery="ubp" data-cat="architecture" data-count="1">
+        <div class="proj-head">
+          <div class="proj-id">
+            <h2 class="proj-name">UBP <span class="tag">Concept · in design development</span></h2>
+            <div class="proj-meta"><span>Office tower</span></div>
+          </div>
+          <div class="proj-cats" aria-hidden="true"><span class="proj-cat">Architecture</span></div>
+        </div>
+        <p class="proj-desc">A terraced glass office tower with stepped cantilevers and a lit ground-floor lobby — shown at dusk. A design-stage concept.</p>
+        <div class="shots">
+          <button type="button" class="shot lead" data-i="0" aria-haspopup="dialog" aria-label="UBP, image 1 — open gallery">
+            <picture><source srcset="img/proj-ubp-01.webp" type="image/webp"><img src="img/proj-ubp-01.jpg" loading="lazy" decoding="async" alt="UBP — a terraced glass office tower at dusk with stepped cantilevers and a lit lobby" /></picture>
+            <span class="shot-cap">Dusk, stepped cantilevers</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- AMODAA — Architecture (built) -->
+      <article class="proj" data-gallery="amodaa" data-cat="architecture" data-count="4">
+        <div class="proj-head">
+          <div class="proj-id">
+            <h2 class="proj-name">AMODAA</h2>
+            <div class="proj-meta"><span>Bungalow</span><span class="dot">·</span><span>Lonavala</span><span class="dot">·</span><span class="fact">4,500 sqft BUA · Built</span></div>
+          </div>
+          <div class="proj-cats" aria-hidden="true"><span class="proj-cat">Architecture</span></div>
+        </div>
+        <p class="proj-desc">A built hill-station bungalow — a lit three-storey facade behind a perforated-metal screen, a double-height living room inside, and a rooftop terrace over the hills. Designed and delivered as built work.</p>
+        <div class="shots">
+          <button type="button" class="shot lead" data-i="0" aria-haspopup="dialog" aria-label="AMODAA, image 1 — open gallery">
+            <picture><source srcset="img/proj-amoda-01.webp" type="image/webp"><img src="img/proj-amoda-01.jpg" loading="lazy" decoding="async" alt="AMODAA — dusk exterior, the lit three-storey facade behind a perforated-metal screen" /></picture>
+            <span class="shot-cap">Dusk exterior</span>
+          </button>
+          <button type="button" class="shot" data-i="1" aria-haspopup="dialog" aria-label="AMODAA, image 2 — open gallery">
+            <picture><source srcset="img/proj-amoda-02.webp" type="image/webp"><img src="img/proj-amoda-02.jpg" loading="lazy" decoding="async" alt="AMODAA — the double-height living room with tan leather seating" /></picture>
+            <span class="shot-cap">Double-height living room</span>
+          </button>
+          <button type="button" class="shot portrait" data-i="2" aria-haspopup="dialog" aria-label="AMODAA, image 3 — open gallery">
+            <picture><source srcset="img/proj-amoda-03.webp" type="image/webp"><img src="img/proj-amoda-03.jpg" loading="lazy" decoding="async" alt="AMODAA — the same living room seen vertically, the full double-height sweep" /></picture>
+            <span class="shot-cap">The full vertical sweep</span>
+          </button>
+          <button type="button" class="shot" data-i="3" aria-haspopup="dialog" aria-label="AMODAA, image 4 — open gallery">
+            <picture><source srcset="img/proj-amoda-04.webp" type="image/webp"><img src="img/proj-amoda-04.jpg" loading="lazy" decoding="async" alt="AMODAA — rooftop terrace at sunset, the city and hills beyond" /></picture>
+            <span class="shot-cap">Rooftop terrace at sunset</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- ACG Kandivali — Commercial Interiors (built) -->
+      <article class="proj" data-gallery="acg" data-cat="commercial" data-count="4">
+        <div class="proj-head">
+          <div class="proj-id">
+            <h2 class="proj-name">ACG Kandivali</h2>
+            <div class="proj-meta"><span>Workplace · Commercial interiors</span><span class="dot">·</span><span>Kandivali, Mumbai</span><span class="dot">·</span><span class="fact">8,500 sqft · 90 days · 2025</span></div>
+          </div>
+          <div class="proj-cats" aria-hidden="true"><span class="proj-cat">Commercial Interiors</span></div>
+        </div>
+        <p class="proj-desc">A built workplace fit-out — a symmetric open office under a hexagonal ceiling feature, a curved-desk reception, a colourful breakout lounge and glass-partitioned floors. Delivered in 90 days.</p>
+        <div class="shots">
+          <button type="button" class="shot lead" data-i="0" aria-haspopup="dialog" aria-label="ACG Kandivali, image 1 — open gallery">
+            <picture><source srcset="img/proj-acg-kandivali-01.webp" type="image/webp"><img src="img/proj-acg-kandivali-01.jpg" loading="lazy" decoding="async" alt="ACG Kandivali — a symmetric open office under a hexagonal ceiling feature" /></picture>
+            <span class="shot-cap">Hexagonal-ceiling open office</span>
+          </button>
+          <button type="button" class="shot" data-i="1" aria-haspopup="dialog" aria-label="ACG Kandivali, image 2 — open gallery">
+            <picture><source srcset="img/proj-acg-kandivali-02.webp" type="image/webp"><img src="img/proj-acg-kandivali-02.jpg" loading="lazy" decoding="async" alt="ACG Kandivali — reception with a curved desk, marble floor and an accent chair" /></picture>
+            <span class="shot-cap">Reception</span>
+          </button>
+          <button type="button" class="shot" data-i="2" aria-haspopup="dialog" aria-label="ACG Kandivali, image 3 — open gallery">
+            <picture><source srcset="img/proj-acg-kandivali-03.webp" type="image/webp"><img src="img/proj-acg-kandivali-03.jpg" loading="lazy" decoding="async" alt="ACG Kandivali — breakout lounge with colourful carpet tiles and an autumn mural" /></picture>
+            <span class="shot-cap">Breakout lounge</span>
+          </button>
+          <button type="button" class="shot" data-i="3" aria-haspopup="dialog" aria-label="ACG Kandivali, image 4 — open gallery">
+            <picture><source srcset="img/proj-acg-kandivali-04.webp" type="image/webp"><img src="img/proj-acg-kandivali-04.jpg" loading="lazy" decoding="async" alt="ACG Kandivali — open office, wide angle, with glass partitions" /></picture>
+            <span class="shot-cap">Open office, wide angle</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- AstaGuru Fort — Commercial Interiors (built) -->
+      <article class="proj" data-gallery="astaguru" data-cat="commercial" data-count="4">
+        <div class="proj-head">
+          <div class="proj-id">
+            <h2 class="proj-name">AstaGuru Fort</h2>
+            <div class="proj-meta"><span>Workplace · Commercial interiors</span><span class="dot">·</span><span>Fort, Mumbai</span><span class="dot">·</span><span class="fact">9,000 sqft · 90 days · 2025</span></div>
+          </div>
+          <div class="proj-cats" aria-hidden="true"><span class="proj-cat">Commercial Interiors</span></div>
+        </div>
+        <p class="proj-desc">A built auction-house workplace — a double-height open office under a circular ceiling feature with a mezzanine and stair, a branded reception on herringbone floors, and a line-art boardroom. Delivered in 90 days.</p>
+        <div class="shots">
+          <button type="button" class="shot lead" data-i="0" aria-haspopup="dialog" aria-label="AstaGuru Fort, image 1 — open gallery">
+            <picture><source srcset="img/proj-astaguru-fort-01.webp" type="image/webp"><img src="img/proj-astaguru-fort-01.jpg" loading="lazy" decoding="async" alt="AstaGuru Fort — a double-height open office, circular ceiling feature over a mezzanine and stair" /></picture>
+            <span class="shot-cap">Double-height open office</span>
+          </button>
+          <button type="button" class="shot" data-i="1" aria-haspopup="dialog" aria-label="AstaGuru Fort, image 2 — open gallery">
+            <picture><source srcset="img/proj-astaguru-fort-02.webp" type="image/webp"><img src="img/proj-astaguru-fort-02.jpg" loading="lazy" decoding="async" alt="AstaGuru Fort — branded reception with a herringbone floor and lounge chairs" /></picture>
+            <span class="shot-cap">Branded reception</span>
+          </button>
+          <button type="button" class="shot" data-i="2" aria-haspopup="dialog" aria-label="AstaGuru Fort, image 3 — open gallery">
+            <picture><source srcset="img/proj-astaguru-fort-03.webp" type="image/webp"><img src="img/proj-astaguru-fort-03.jpg" loading="lazy" decoding="async" alt="AstaGuru Fort — the wider lobby and cabin corridor" /></picture>
+            <span class="shot-cap">Lobby and corridor</span>
+          </button>
+          <button type="button" class="shot" data-i="3" aria-haspopup="dialog" aria-label="AstaGuru Fort, image 4 — open gallery">
+            <picture><source srcset="img/proj-astaguru-fort-04.webp" type="image/webp"><img src="img/proj-astaguru-fort-04.jpg" loading="lazy" decoding="async" alt="AstaGuru Fort — boardroom with circular ceiling pendants and a line-art wall" /></picture>
+            <span class="shot-cap">Boardroom</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- BSM Olympia — Commercial Interiors (built) -->
+      <article class="proj" data-gallery="bsm" data-cat="commercial" data-count="3">
+        <div class="proj-head">
+          <div class="proj-id">
+            <h2 class="proj-name">BSM Olympia</h2>
+            <div class="proj-meta"><span>Workplace · Commercial interiors</span><span class="dot">·</span><span>Olympia, Powai</span><span class="dot">·</span><span class="fact">20,000 sqft · 90 days · 2022</span></div>
+          </div>
+          <div class="proj-cats" aria-hidden="true"><span class="proj-cat">Commercial Interiors</span></div>
+        </div>
+        <p class="proj-desc">A built 20,000 sqft workplace — a training room framed by symmetric geometric wood-panel walls, a branded open office with a gold-trim glass railing, and bright glass-walled meeting rooms. Delivered in 90 days.</p>
+        <div class="shots">
+          <button type="button" class="shot lead" data-i="0" aria-haspopup="dialog" aria-label="BSM Olympia, image 1 — open gallery">
+            <picture><source srcset="img/proj-bsm-olympia-01.webp" type="image/webp"><img src="img/proj-bsm-olympia-01.jpg" loading="lazy" decoding="async" alt="BSM Olympia — a training room with symmetric geometric wood-panel feature walls" /></picture>
+            <span class="shot-cap">Training room</span>
+          </button>
+          <button type="button" class="shot" data-i="1" aria-haspopup="dialog" aria-label="BSM Olympia, image 2 — open gallery">
+            <picture><source srcset="img/proj-bsm-olympia-02.webp" type="image/webp"><img src="img/proj-bsm-olympia-02.jpg" loading="lazy" decoding="async" alt="BSM Olympia — a branded open office with a gold-trim glass railing" /></picture>
+            <span class="shot-cap">Branded open office</span>
+          </button>
+          <button type="button" class="shot" data-i="2" aria-haspopup="dialog" aria-label="BSM Olympia, image 3 — open gallery">
+            <picture><source srcset="img/proj-bsm-olympia-03.webp" type="image/webp"><img src="img/proj-bsm-olympia-03.jpg" loading="lazy" decoding="async" alt="BSM Olympia — a bright, glass-walled meeting room" /></picture>
+            <span class="shot-cap">Glass-walled meeting room</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- Odyssey — Residential Interiors (built) -->
+      <article class="proj" data-gallery="odyssey" data-cat="residential" data-count="3">
+        <div class="proj-head">
+          <div class="proj-id">
+            <h2 class="proj-name">Odyssey</h2>
+            <div class="proj-meta"><span>Residence · Residential interiors</span><span class="dot">·</span><span class="fact">Built work</span></div>
+          </div>
+          <div class="proj-cats" aria-hidden="true"><span class="proj-cat">Residential Interiors</span></div>
+        </div>
+        <p class="proj-desc">A built residence — a chandelier-lit living room over a marble floor with a mountain view, a formal dining room and a marble-waterfall kitchen looking out over the city.</p>
+        <div class="shots">
+          <button type="button" class="shot lead" data-i="0" aria-haspopup="dialog" aria-label="Odyssey, image 1 — open gallery">
+            <picture><source srcset="img/proj-odyssey-01.webp" type="image/webp"><img src="img/proj-odyssey-01.jpg" loading="lazy" decoding="async" alt="Odyssey — a luxe living room with a chandelier, marble floor and a mountain view" /></picture>
+            <span class="shot-cap">Living room with a mountain view</span>
+          </button>
+          <button type="button" class="shot" data-i="1" aria-haspopup="dialog" aria-label="Odyssey, image 2 — open gallery">
+            <picture><source srcset="img/proj-odyssey-02.webp" type="image/webp"><img src="img/proj-odyssey-02.jpg" loading="lazy" decoding="async" alt="Odyssey — a formal dining room under a statement chandelier" /></picture>
+            <span class="shot-cap">Formal dining</span>
+          </button>
+          <button type="button" class="shot" data-i="2" aria-haspopup="dialog" aria-label="Odyssey, image 3 — open gallery">
+            <picture><source srcset="img/proj-odyssey-03.webp" type="image/webp"><img src="img/proj-odyssey-03.jpg" loading="lazy" decoding="async" alt="Odyssey — a kitchen with a marble waterfall island and a city view" /></picture>
+            <span class="shot-cap">Marble waterfall kitchen</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- Clifton — Residential Interiors (built) -->
+      <article class="proj" data-gallery="clifton" data-cat="residential" data-count="3">
+        <div class="proj-head">
+          <div class="proj-id">
+            <h2 class="proj-name">Clifton</h2>
+            <div class="proj-meta"><span>Residence · Residential interiors</span><span class="dot">·</span><span class="fact">Built work</span></div>
+          </div>
+          <div class="proj-cats" aria-hidden="true"><span class="proj-cat">Residential Interiors</span></div>
+        </div>
+        <p class="proj-desc">A built apartment — a living room with mustard sofas, a green glass partition and a slatted TV wall; a bedroom behind a bold floral feature wall; and a dark-grey modular kitchen under copper pendants.</p>
+        <div class="shots">
+          <button type="button" class="shot lead" data-i="0" aria-haspopup="dialog" aria-label="Clifton, image 1 — open gallery">
+            <picture><source srcset="img/proj-clifton-01.webp" type="image/webp"><img src="img/proj-clifton-01.jpg" loading="lazy" decoding="async" alt="Clifton — a living room with mustard sofas, a green glass partition and a slatted TV wall" /></picture>
+            <span class="shot-cap">Living room</span>
+          </button>
+          <button type="button" class="shot" data-i="1" aria-haspopup="dialog" aria-label="Clifton, image 2 — open gallery">
+            <picture><source srcset="img/proj-clifton-02.webp" type="image/webp"><img src="img/proj-clifton-02.jpg" loading="lazy" decoding="async" alt="Clifton — a bedroom with a bold floral feature wall, mirrored wardrobe and balcony view" /></picture>
+            <span class="shot-cap">Bedroom</span>
+          </button>
+          <button type="button" class="shot" data-i="2" aria-haspopup="dialog" aria-label="Clifton, image 3 — open gallery">
+            <picture><source srcset="img/proj-clifton-03.webp" type="image/webp"><img src="img/proj-clifton-03.jpg" loading="lazy" decoding="async" alt="Clifton — a dark-grey modular kitchen with copper pendants" /></picture>
+            <span class="shot-cap">Modular kitchen</span>
+          </button>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="empty" id="empty">No projects in this category.</p>
+  </main>
+
+  <!-- ============ LIGHTBOX — carousel dialog (a11y contract copied from index.html) ============ -->
+  <div class="lb" id="lightbox" hidden>
+    <div class="lb-ov" id="lbOv"></div>
+    <div class="lb-panel" role="dialog" aria-modal="true" aria-labelledby="lbTitle" tabindex="-1">
+      <div class="lb-head">
+        <svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>
+        <h3 class="lb-title" id="lbTitle"><span id="lbName"></span><span class="lb-sub" id="lbSub"></span></h3>
+        <button type="button" class="lb-x" id="lbX" aria-label="Close gallery">×</button>
+      </div>
+      <div class="lb-stage">
+        <button type="button" class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous image">‹</button>
+        <figure class="lb-fig"><picture><source id="lbSrc" type="image/webp"><img id="lbImg" alt="" /></picture></figure>
+        <button type="button" class="lb-arrow lb-next" id="lbNext" aria-label="Next image">›</button>
+      </div>
+      <div class="lb-foot">
+        <p class="lb-cap" id="lbCap" aria-live="polite"></p>
+        <span class="lb-counter" id="lbCounter"></span>
+        <div class="lb-dots" id="lbDots" role="group" aria-label="Gallery images"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ footer (same as index — Aether Lab credit + BuildHive contact) ============ -->
+  <footer class="foot">
+    <div class="foot-wrap">
+      <div class="c-grid">
+        <div class="c-block">
+          <span class="c-lab">Studio</span>
+          <p>601, C Wing, Kailash Business Park,<br>Vikhroli West, Mumbai</p>
+        </div>
+        <div class="c-block">
+          <span class="c-lab">Email</span>
+          <p><a href="mailto:design@buildhive.co.in">design@buildhive.co.in</a><br>
+             <a href="mailto:buildhive21@gmail.com">buildhive21@gmail.com</a></p>
+        </div>
+        <div class="c-block">
+          <span class="c-lab">Phone</span>
+          <p><a href="tel:+919920130126">+91 99201 30126</a><br>
+             <a href="tel:+919820001791">+91 98200 01791</a></p>
+        </div>
+        <div class="c-block">
+          <span class="c-lab">Web</span>
+          <p><a href="https://buildhive.co.in" target="_blank" rel="noopener">buildhive.co.in</a><br>
+             <a href="index.html">Back to home →</a></p>
+        </div>
+      </div>
+      <div class="folio-rule" aria-hidden="true"></div>
+      <div class="credit">
+        <span class="by">Created by</span>
+        <a class="lab" href="https://www.aetherlab.in" target="_blank" rel="noopener">Aether&nbsp;Lab</a>
+        <span class="links">
+          <a href="https://www.aetherlab.in" target="_blank" rel="noopener">www.aetherlab.in</a>
+          <span class="sep">·</span>
+          <a href="tel:+918591300630">+91&nbsp;85913&nbsp;00630</a>
+        </span>
+      </div>
+      <div class="footmeta">
+        <div>© 2026 · BuildHive Architects</div>
+        <div>Company Profile · Vikhroli West, Mumbai</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  /* ---------- theme switch: dark <-> "gallery print" light ----------
+     The head gate already painted the right theme; this only handles the
+     hand-off — attribute flip, meta sync, persistence (shared bh-theme key). */
+  (function(){
+    var btn = document.getElementById('themeBtn');
+    if(!btn) return;
+    var word = btn.querySelector('.tt-word');
+    var root = document.documentElement;
+    function current(){ return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
+    function reflect(t){
+      btn.setAttribute('aria-label', 'Switch to ' + (t === 'dark' ? 'light' : 'dark') + ' theme');
+      if(word) word.textContent = t === 'dark' ? 'Dark' : 'Light';
+    }
+    function apply(t){
+      root.setAttribute('data-theme', t);
+      if(window.__syncThemeMeta) window.__syncThemeMeta(t);
+      reflect(t);
+    }
+    reflect(current());
+    btn.addEventListener('click', function(){
+      var t = current() === 'light' ? 'dark' : 'light';
+      apply(t);
+      try{ localStorage.setItem('bh-theme', t); }catch(e){}
+    });
+    try{
+      var mq = window.matchMedia('(prefers-color-scheme: light)');
+      var follow = function(ev){
+        var stored = null;
+        try{ stored = localStorage.getItem('bh-theme'); }catch(e){}
+        if(stored !== 'dark' && stored !== 'light') apply(ev.matches ? 'light' : 'dark');
+      };
+      if(mq.addEventListener) mq.addEventListener('change', follow);
+      else if(mq.addListener) mq.addListener(follow);
+    }catch(e){}
+  })();
+
+  /* ---------- gallery lightbox: accessible carousel dialog ----------
+     The a11y contract is copied verbatim from index.html (role=dialog aria-modal,
+     focus trap routed through the panel tabindex=-1, ESC + overlay + × close,
+     focus restore, prev/next + arrows + dots + counter). The scroll-lock is
+     adapted to NATIVE scroll for this no-virtual-scroll page: it pins <html> at
+     the current offset and restores it on close. */
+  (function(){
+    var lb = document.getElementById('lightbox');
+    if(!lb) return;
+    var panel  = lb.querySelector('.lb-panel');
+    var ovEl   = document.getElementById('lbOv');
+    var xBtn   = document.getElementById('lbX');
+    var prevB  = document.getElementById('lbPrev');
+    var nextB  = document.getElementById('lbNext');
+    var imgEl  = document.getElementById('lbImg');
+    var srcEl  = document.getElementById('lbSrc');
+    var nameEl = document.getElementById('lbName');
+    var subEl  = document.getElementById('lbSub');
+    var capEl  = document.getElementById('lbCap');
+    var countEl= document.getElementById('lbCounter');
+    var dotsEl = document.getElementById('lbDots');
+
+    /* captions trimmed from v5-image-manifest.md; concept projects carry their
+       honesty tag in the project sub-line (never imply built). */
+    var GALLERY = {
+      urna: { name:'urna', sub:'Residential tower · Versova, Mumbai · Concept · in design development', imgs:[
+        { s:'urna-real-01', cap:'Golden-hour establishing render — the full tower in parkland.' },
+        { s:'urna-real-02', cap:'Upward view — the perforated brick podium meeting the green-clad tower.' },
+        { s:'urna-real-03', cap:'Street-context at dusk — the tower over its green podium, city edge behind.' } ] },
+      cadence: { name:'Cadence', sub:'Faceted glass office tower · Concept · in design development', imgs:[
+        { s:'proj-cadence-01', cap:'The twisted glass tower under an overcast sky, wet street below.' },
+        { s:'proj-cadence-02', cap:'Twilight — a glowing lobby at the base, yellow cabs at the kerb.' },
+        { s:'proj-cadence-03', cap:'Aerial — the tower at the centre of a public plaza.' },
+        { s:'proj-cadence-04', cap:'Rainy night — lit windows, a long-exposure street.' },
+        { s:'proj-cadence-05', cap:'Upward atrium glow — faceted glass converging over a warm-lit interior.' },
+        { s:'proj-cadence-06', cap:'The hourglass base and glazed entrance by day.' } ] },
+      mpavilion: { name:'M Pavilion', sub:'Parametric pavilion · BuildHive concept study', imgs:[
+        { s:'proj-mpavilion-01', cap:'Top-down view of the parametric lattice pavilion beside an autumn tree.' },
+        { s:'proj-mpavilion-02', cap:'Golden-hour, eye-level — people walking through the lattice.' },
+        { s:'proj-mpavilion-03', cap:'Night — the illuminated lattice glowing against the skyline.' } ] },
+      ubp: { name:'UBP', sub:'Office tower · Concept · in design development', imgs:[
+        { s:'proj-ubp-01', cap:'Dusk — a terraced glass office tower with stepped cantilevers and a lit lobby.' } ] },
+      amodaa: { name:'AMODAA', sub:'Bungalow · Lonavala · 4,500 sqft BUA · Built work', imgs:[
+        { s:'proj-amoda-01', cap:'Dusk exterior — the lit three-storey facade behind a perforated-metal screen.' },
+        { s:'proj-amoda-02', cap:'Double-height living room, tan leather seating.' },
+        { s:'proj-amoda-03', cap:'The same living room seen vertically — the full double-height sweep.' },
+        { s:'proj-amoda-04', cap:'Rooftop terrace at sunset, the city and hills beyond.' } ] },
+      acg: { name:'ACG Kandivali', sub:'Workplace · Kandivali · 8,500 sqft · 90 days · 2025', imgs:[
+        { s:'proj-acg-kandivali-01', cap:'Hexagonal-ceiling open office, symmetric.' },
+        { s:'proj-acg-kandivali-02', cap:'Reception — a curved desk, marble floor and an accent chair.' },
+        { s:'proj-acg-kandivali-03', cap:'Breakout lounge — colourful carpet tiles and an autumn mural.' },
+        { s:'proj-acg-kandivali-04', cap:'Open office, wide angle, glass partitions.' } ] },
+      astaguru: { name:'AstaGuru Fort', sub:'Workplace · Fort, Mumbai · 9,000 sqft · 90 days · 2025', imgs:[
+        { s:'proj-astaguru-fort-01', cap:'Double-height open office — a circular ceiling feature over a mezzanine and stair.' },
+        { s:'proj-astaguru-fort-02', cap:'Branded reception — herringbone floor and lounge chairs.' },
+        { s:'proj-astaguru-fort-03', cap:'The wider lobby and cabin corridor.' },
+        { s:'proj-astaguru-fort-04', cap:'Boardroom — circular ceiling pendants and a line-art wall.' } ] },
+      bsm: { name:'BSM Olympia', sub:'Workplace · Olympia, Powai · 20,000 sqft · 90 days · 2022', imgs:[
+        { s:'proj-bsm-olympia-01', cap:'Training room — symmetric geometric wood-panel feature walls.' },
+        { s:'proj-bsm-olympia-02', cap:'Branded open office with a gold-trim glass railing.' },
+        { s:'proj-bsm-olympia-03', cap:'A bright, glass-walled meeting room.' } ] },
+      odyssey: { name:'Odyssey', sub:'Residence · Built work', imgs:[
+        { s:'proj-odyssey-01', cap:'Luxe living room — a chandelier, marble floor and a mountain view.' },
+        { s:'proj-odyssey-02', cap:'Formal dining under a statement chandelier.' },
+        { s:'proj-odyssey-03', cap:'Kitchen — a marble waterfall island with a city view.' } ] },
+      clifton: { name:'Clifton', sub:'Residence · Built work', imgs:[
+        { s:'proj-clifton-01', cap:'Living room — mustard sofas, a green glass partition and a slatted TV wall.' },
+        { s:'proj-clifton-02', cap:'Bedroom — a bold floral feature wall, mirrored wardrobe and balcony view.' },
+        { s:'proj-clifton-03', cap:'A dark-grey modular kitchen with copper pendants.' } ] }
+    };
+
+    var cur = null, idx = 0, lastFocus = null, savedY = 0, dots = [], keyBound = false;
+
+    function lock(){
+      savedY = window.scrollY || window.pageYOffset || 0;
+      document.documentElement.classList.add('modal-open');
+    }
+    function unlock(){
+      document.documentElement.classList.remove('modal-open');
+      window.scrollTo(0, savedY);
+    }
+    function focusables(){
+      return Array.prototype.filter.call(
+        panel.querySelectorAll('button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'),
+        function(el){ return el.offsetParent !== null; });
+    }
+    function onKey(e){
+      if(e.key === 'Escape'){ e.preventDefault(); close(); return; }
+      if(e.key === 'ArrowLeft'){ e.preventDefault(); go(idx - 1); return; }
+      if(e.key === 'ArrowRight'){ e.preventDefault(); go(idx + 1); return; }
+      if(e.key !== 'Tab') return;
+      var f = focusables();
+      if(!f.length){ e.preventDefault(); return; }
+      var first = f[0], last = f[f.length - 1];
+      if(f.indexOf(document.activeElement) === -1){
+        e.preventDefault(); (e.shiftKey ? last : first).focus(); return;
+      }
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+    function render(){
+      var im = cur.imgs[idx];
+      srcEl.srcset = 'img/' + im.s + '.webp';
+      imgEl.src = 'img/' + im.s + '.jpg';
+      imgEl.alt = cur.name + ' — ' + im.cap;
+      capEl.textContent = im.cap;
+      countEl.textContent = (idx + 1) + ' / ' + cur.imgs.length;
+      for(var i = 0; i < dots.length; i++){
+        dots[i].setAttribute('aria-current', i === idx ? 'true' : 'false');
+      }
+      var multi = cur.imgs.length > 1;
+      prevB.disabled = !multi;
+      nextB.disabled = !multi;
+    }
+    function go(n){
+      var len = cur.imgs.length;
+      idx = ((n % len) + len) % len;     // wrap both directions
+      render();
+    }
+    function buildDots(){
+      dotsEl.innerHTML = '';
+      dots = [];
+      if(cur.imgs.length < 2) return;
+      cur.imgs.forEach(function(im, i){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'lb-dot';
+        b.setAttribute('aria-label', 'Image ' + (i + 1) + ' of ' + cur.imgs.length);
+        b.addEventListener('click', function(){ go(i); });
+        dotsEl.appendChild(b);
+        dots.push(b);
+      });
+    }
+    function open(key, startIdx, opener){
+      var data = GALLERY[key];
+      if(!data) return;
+      if(!lb.hidden) return;
+      cur = data;
+      idx = (startIdx > 0 && startIdx < data.imgs.length) ? startIdx : 0;
+      nameEl.textContent = data.name;
+      subEl.textContent = data.sub;
+      buildDots();
+      render();
+      lastFocus = opener || document.activeElement;
+      lock();
+      lb.hidden = false;
+      void lb.offsetWidth;
+      lb.classList.add('open');
+      if(!keyBound){ document.addEventListener('keydown', onKey, true); keyBound = true; }
+      panel.focus();
+    }
+    function close(){
+      if(lb.hidden) return;
+      lb.classList.remove('open');
+      lb.hidden = true;
+      if(keyBound){ document.removeEventListener('keydown', onKey, true); keyBound = false; }
+      unlock();
+      imgEl.removeAttribute('src');
+      srcEl.removeAttribute('srcset');
+      cur = null;
+      if(lastFocus && lastFocus.focus) lastFocus.focus();
+      lastFocus = null;
+    }
+    ovEl.addEventListener('click', close);
+    xBtn.addEventListener('click', close);
+    prevB.addEventListener('click', function(){ go(idx - 1); });
+    nextB.addEventListener('click', function(){ go(idx + 1); });
+
+    // every shot button opens its project gallery at the clicked image
+    Array.prototype.forEach.call(document.querySelectorAll('.proj'), function(proj){
+      var key = proj.getAttribute('data-gallery');
+      Array.prototype.forEach.call(proj.querySelectorAll('.shot'), function(shot){
+        shot.addEventListener('click', function(){
+          var start = parseInt(shot.getAttribute('data-i'), 10) || 0;
+          open(key, start, shot);
+        });
+      });
+    });
+    window.__lbOpen = open;   // exposed for completeness; not required
+  })();
+
+  /* ---------- filter chips: show/hide project sections by category ----------
+     Accessible button group (aria-pressed). Keyboard: chips are real buttons;
+     ArrowLeft/Right move focus across the group (roving), Home/End jump to ends.
+     Filtering fades sections out, then collapses them (display:none) so the grid
+     reflows without jank; reduced-motion skips the fade. */
+  (function(){
+    var group = document.getElementById('chips');
+    if(!group) return;
+    var chips = Array.prototype.slice.call(group.querySelectorAll('.chip'));
+    var projs = Array.prototype.slice.call(document.querySelectorAll('.proj'));
+    var fcount = document.getElementById('fcount');
+    var empty = document.getElementById('empty');
+    var reduce = false;
+    try{ reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
+
+    var CAT_LABEL = {
+      all:'projects', towers:'towers', masterplanning:'masterplanning-scale projects',
+      architecture:'architecture projects', commercial:'commercial-interiors projects',
+      residential:'residential-interiors projects'
+    };
+
+    function matches(proj, cat){
+      if(cat === 'all') return true;
+      var cats = (proj.getAttribute('data-cat') || '').split(/\s+/);
+      return cats.indexOf(cat) !== -1;
+    }
+    function applyFilter(cat){
+      var shown = 0;
+      projs.forEach(function(p){
+        if(matches(p, cat)){
+          shown++;
+          p.classList.remove('is-hidden');
+          // re-show: clear any lingering fade on the next frame
+          requestAnimationFrame(function(){ p.classList.remove('is-fading'); });
+        } else {
+          if(reduce){ p.classList.add('is-hidden'); p.classList.remove('is-fading'); }
+          else {
+            p.classList.add('is-fading');
+            setTimeout(function(){
+              // only collapse if it is still meant to be hidden
+              if(p.classList.contains('is-fading')) p.classList.add('is-hidden');
+            }, 300);
+          }
+        }
+      });
+      empty.classList.toggle('show', shown === 0);
+      var noun = CAT_LABEL[cat] || 'projects';
+      fcount.textContent = (cat === 'all')
+        ? 'Showing all ' + shown + ' projects.'
+        : 'Showing ' + shown + ' ' + noun + '.';
+      // keep the active chip's badge honest with the real (distinct) project count,
+      // so the 'All' total can never drift from the catalogue.
+      var activeChip = group.querySelector('.chip[data-cat="' + cat + '"]');
+      if(activeChip){ var badge = activeChip.querySelector('.ct'); if(badge) badge.textContent = shown; }
+    }
+    function select(chip){
+      chips.forEach(function(c){ c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'); });
+      applyFilter(chip.getAttribute('data-cat'));
+    }
+    // recompute counts from the live catalogue on load so the chip badges and
+    // the #fcount line always match the actual number of <article class="proj"> elements.
+    chips.forEach(function(c){
+      var cat = c.getAttribute('data-cat');
+      var n = projs.reduce(function(acc, p){ return acc + (matches(p, cat) ? 1 : 0); }, 0);
+      var badge = c.querySelector('.ct');
+      if(badge) badge.textContent = n;
+    });
+    applyFilter('all');
+    group.addEventListener('click', function(e){
+      var chip = e.target.closest('.chip');
+      if(chip) select(chip);
+    });
+    // roving keyboard nav across the chip group
+    group.addEventListener('keydown', function(e){
+      var i = chips.indexOf(document.activeElement);
+      if(i === -1) return;
+      var n = i;
+      if(e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % chips.length;
+      else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + chips.length) % chips.length;
+      else if(e.key === 'Home') n = 0;
+      else if(e.key === 'End') n = chips.length - 1;
+      else return;
+      e.preventDefault();
+      chips[n].focus();
+    });
+  })();
+  </script>
+
+</body>
+</html>
