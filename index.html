@@ -214,16 +214,26 @@
   /* The Handover: a warmer, more lived-in scrim — the room reads through, the line
      sits over the darker lower-left. Theme-aware (the bed is photo furniture, the
      scrim deepens a touch more in light so the white title clears the bright glass). */
-  .plate--handover .plate-bed img{ filter:saturate(.98) contrast(1.02) brightness(.97); object-position:center 46%; }
+  /* V8 §8 — Handover harmonized into the site's cool scrim STRUCTURE, with only a
+     faint warm wash layered on top so it stays the warmest, most lived-in beat. */
+  .plate--handover .plate-bed img{ object-position:center 46%; }
   .plate--handover .plate-scrim{
     background:
-      linear-gradient(105deg, rgba(10,9,7,.80) 0%, rgba(10,9,7,.42) 42%, rgba(10,9,7,.06) 74%),
-      linear-gradient(to top, rgba(10,9,7,.82) 0%, rgba(10,9,7,.16) 44%, rgba(10,9,7,0) 66%); }
+      linear-gradient(to top, rgba(122,72,32,.16) 0%, rgba(122,72,32,0) 52%),
+      linear-gradient(105deg, rgba(9,11,13,.80) 0%, rgba(9,11,13,.42) 42%, rgba(9,11,13,.05) 74%),
+      linear-gradient(to top, rgba(9,11,13,.82) 0%, rgba(9,11,13,.14) 44%, rgba(9,11,13,0) 66%); }
   [data-theme="light"] .plate--handover .plate-scrim{
     background:
-      linear-gradient(105deg, rgba(10,9,7,.86) 0%, rgba(10,9,7,.50) 42%, rgba(10,9,7,.10) 74%),
-      linear-gradient(to top, rgba(10,9,7,.88) 0%, rgba(10,9,7,.22) 46%, rgba(10,9,7,0) 66%); }
-  .plate--handover .plate-title{ font-size:clamp(30px, 4.4vw + 8px, 64px); line-height:1.04; max-width:18ch; }
+      linear-gradient(to top, rgba(122,72,32,.18) 0%, rgba(122,72,32,0) 52%),
+      linear-gradient(105deg, rgba(9,11,13,.84) 0%, rgba(9,11,13,.48) 42%, rgba(9,11,13,.08) 74%),
+      linear-gradient(to top, rgba(9,11,13,.86) 0%, rgba(9,11,13,.20) 46%, rgba(9,11,13,0) 66%); }
+  /* title at plate scale but capped + width-guarded so the four-line sentence never
+     overflows the frame (full --t-display 80px was running out of bounds) */
+  .plate--handover .plate-title{ font-size:clamp(28px, 3.8vw + 8px, 56px); line-height:1.08;
+    max-width:22ch; overflow-wrap:break-word; }
+  /* the cyan drafting rule — the instrument signature, bridging from the timeline's handover end-cap */
+  .plate--handover .plate-frule{ width:64px; margin:24px 0 0; }
+  .plate--handover .plate-caption{ border-top:0; margin-top:16px; padding-top:0; }
   /* the handover line is four masked lines — stagger every one (the base rule only
      delays the 2nd), so the sentence rises in sequence */
   .plate--handover .plate-title .line:nth-child(2) .line-inner{ transition-delay:90ms; }
@@ -309,35 +319,10 @@
   .brand{ position:fixed; top:calc(var(--edge) + var(--safe-t)); left:calc(var(--edge) + var(--safe-l));
     z-index:5; display:flex; align-items:flex-start; gap:11px; pointer-events:auto; text-decoration:none; }
   .brand:focus-visible{ outline:2px solid var(--chrome-blue); outline-offset:4px; }
-  /* V7 logo swap — light/default: the real full-colour lockup PNG. Its source has
-     a solid-white background; multiply drops that white onto the warm gallery paper
-     (white × paper = paper) so no faint box edge shows, while the cyan mark + dark
-     wordmark print through. */
-  .brand .brand-lockup{ display:block; width:clamp(140px, 13vw, 178px); height:auto;
-    mix-blend-mode:multiply; }
-  /* over a full-bleed dark plate (html.ph, light theme) the multiply would crush the
-     lockup into the dark photo — but in light theme the chrome only flips to photo
-     furniture over plates, where the DARK logo path is the right read anyway; so when
-     a photo stage is under the chrome in light theme, show the transparent-mark path */
-  html.ph[data-theme="light"] .brand .brand-lockup{ display:none; }
-  html.ph[data-theme="light"] .brand .brand-dark{ display:flex; }
-  /* dark: the white-bg lockup would be a white box, so we show the transparent
-     cyan 4-cell mark + BUILDHIVE wordmark + tagline as light themed text */
-  .brand .brand-dark{ display:none; align-items:flex-start; gap:11px; }
-  /* crop brand-logo.png to just its 4-cell mark (the source canvas carries dead
-     space below/right of the mark): a fixed window with overflow hidden and the
-     image scaled up + shifted so only the mark region (≈x115-345, y18-185 of the
-     456x285 source) shows — ~30x22px, the transparent cyan mark on dark */
-  .brand .brand-mark{ display:block; width:30px; height:22px; flex:none; margin-top:1px;
-    overflow:hidden; position:relative; }
-  .brand .brand-mark img{ position:absolute; width:60px; height:auto; left:-15px; top:-2.4px;
-    -webkit-user-drag:none; }
-  [data-theme="dark"] .brand .brand-lockup{ display:none; }
-  [data-theme="dark"] .brand .brand-dark{ display:flex; }
-  .brand .bw{ font-size:13px; letter-spacing:.4em; text-transform:uppercase; color:var(--chrome-ink); }
-  .brand .bw small{ display:block; font-size:8.5px; letter-spacing:.22em; color:var(--chrome-muted); margin-top:6px; }
-  /* tagline line — hidden on narrow viewports so the lockup stays one tidy unit */
-  @media(max-width:700px){ .brand .bw small{ display:none; } }
+  /* V8 logo — one transparent asset (cyan BB mark + BUILDHIVE wordmark; the tagline
+     line is dropped). Transparent anti-aliased edges read on white, dark, and over
+     photos, so the old light/dark dual-path + white-box multiply hack is retired. */
+  .brand .brand-lockup{ display:block; width:clamp(138px, 13vw, 176px); height:auto; }
   .topright{ position:absolute; top:calc(var(--edge) + var(--safe-t)); right:calc(var(--edge) + var(--safe-r));
     font-size:10px; letter-spacing:.32em; text-transform:uppercase; color:var(--chrome-muted); text-align:right; line-height:1.7; }
 
@@ -387,6 +372,26 @@
     opacity:.5; transition:color .4s ease, opacity .4s ease; white-space:nowrap; }
   #scenes button:hover{ color:var(--chrome-blue); opacity:.85; }
   #scenes button.on{ color:var(--chrome-blue); opacity:1; }
+  /* V8 §3 — the Projects tick carries the three featured projects; its sub-dots
+     appear only while the projects range is the active beat */
+  #scenes button.has-sub{ position:relative; }
+  #scenes .subdots{ position:absolute; left:0; top:calc(100% + 5px); display:none; gap:5px; }
+  #scenes button.has-sub.show-sub .subdots{ display:flex; }
+  #scenes .subdots i{ width:5px; height:5px; border-radius:50%; background:var(--chrome-blue);
+    opacity:.32; transition:opacity .3s ease; }
+  #scenes .subdots i.on{ opacity:1; }
+  /* V8 §4 — scroll-intimation cue: names the next beat near a beat's end so the
+     chapter never arrives cold. Purely a hint — it never blocks scroll. */
+  #nextcue{ position:fixed; left:50%; bottom:calc(58px + var(--safe-b));
+    transform:translateX(-50%) translateY(6px); z-index:4; pointer-events:none;
+    display:flex; flex-direction:column; align-items:center; gap:4px; text-align:center;
+    opacity:0; transition:opacity .5s ease, transform .5s ease; }
+  #nextcue.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  #nextcue .nc-k{ font-size:9px; letter-spacing:.34em; text-transform:uppercase; color:var(--chrome-blue); }
+  #nextcue .nc-name{ font-family:var(--serif), Georgia, serif; font-style:italic; font-size:14px; color:var(--chrome-ink); }
+  #nextcue .nc-arr{ font-size:15px; line-height:1; color:var(--chrome-blue); animation:ncbob 1.8s ease-in-out infinite; }
+  @keyframes ncbob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(3px); } }
+  @media(prefers-reduced-motion:reduce){ #nextcue .nc-arr{ animation:none; } #nextcue{ transition:opacity .5s ease; } }
 
   /* ---------- panels: opaque sections that rise over the hero visual ---------- */
   .panel{ position:relative; background:var(--bg);
@@ -401,6 +406,33 @@
   .panel[data-chapter="engage"]{ min-height:420vh; }   /* cards + the merged two-phase timeline */
   .panel[data-chapter="testimonials"]{ min-height:170vh; }
   .panel[data-chapter="contact"]{ min-height:120vh; }
+  /* V9 — ALL PROJECTS dive-in grid: editorial cards on the monograph vibe; each
+     card carries an always-visible "Dive in →" CTA (the old affordance was too faint). */
+  .works-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap:clamp(14px, 1.6vw, 24px); margin-top:clamp(40px, 6vh, 72px); }
+  .work-card{ display:flex; flex-direction:column; text-align:left; padding:0; overflow:hidden; position:relative;
+    border:1px solid var(--bline); background:var(--bg-2); color:inherit; cursor:pointer;
+    appearance:none; -webkit-appearance:none;
+    opacity:0; transform:translateY(16px);
+    transition:opacity .6s var(--ease-page), transform .6s var(--ease-page), border-color .3s ease; }
+  .works-grid.rv.in .work-card{ opacity:1; transform:none; }
+  .works-grid.rv.in .work-card:nth-child(2){ transition-delay:50ms; }
+  .works-grid.rv.in .work-card:nth-child(3){ transition-delay:100ms; }
+  .works-grid.rv.in .work-card:nth-child(4){ transition-delay:150ms; }
+  .works-grid.rv.in .work-card:nth-child(n+5){ transition-delay:200ms; }
+  .work-card:hover, .work-card:focus-visible{ border-color:var(--blue); }
+  .work-card .wc-img{ display:block; aspect-ratio:4/3; overflow:hidden; }
+  .work-card .wc-img img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .9s var(--ease-page); }
+  .work-card:hover .wc-img img, .work-card:focus-visible .wc-img img{ transform:scale(1.05); }
+  .work-card .wc-meta{ padding:clamp(16px, 1.4vw, 22px); display:flex; flex-direction:column; gap:5px; }
+  .work-card .wc-name{ font-family:var(--serif); font-weight:400; font-size:clamp(18px, 1vw + 13px, 24px); color:var(--ink); line-height:1.1; }
+  .work-card .wc-typ{ font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+  .work-card .wc-dive{ margin-top:12px; display:inline-flex; align-items:center; gap:8px;
+    font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--blue); font-weight:700; }
+  .work-card .wc-arr{ transition:transform .3s ease; }
+  .work-card:hover .wc-arr, .work-card:focus-visible .wc-arr{ transform:translateX(5px); }
+  .work-card:focus-visible{ outline:2px solid var(--blue); outline-offset:3px; }
+  .mode-3d .work-card{ background:rgba(var(--bg2-rgb),.55); -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px); }
 
   /* subtle photographic backdrop accents */
   .backdrop{ position:absolute; inset:0; overflow:hidden; pointer-events:none; }
@@ -434,19 +466,31 @@
   .bignum .bn-fig, .pf-num{ flex-wrap:wrap; }
   .sub{ max-width:62ch; margin-top:24px; color:var(--body-c); font-size:var(--t-body); line-height:1.8; }
 
-  /* studio facts */
-  .facts{ list-style:none; margin-top:clamp(44px, 7vh, 84px); border-top:1px solid var(--bline-2); }
-  .facts li{ display:grid; grid-template-columns:54px 1fr; gap:18px; align-items:baseline;
-    padding:21px 2px; border-bottom:1px dotted var(--bline);
-    font-size:clamp(16px, .9vw + 12px, 21px); color:var(--ink);
+  /* V8 §5 — the scale ladder: masterplanning -> architecture -> interiors on a
+     City->Room axis. The span is the message; "large" is never claimed. */
+  .ladder{ margin-top:clamp(40px, 6vh, 82px); }
+  .ladder .lad-stops{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(12px,2vw,30px); position:relative; }
+  .ladder .lad-stops::before{ content:""; position:absolute; left:17%; right:17%; top:35px; height:2px;
+    background:var(--blue); opacity:.5; }
+  .ladder .lad{ text-align:center; position:relative;
     opacity:0; transform:translateY(14px);
-    transition:opacity .62s var(--ease-page), transform .62s var(--ease-page); }
-  .facts.rv.in li{ opacity:1; transform:none; }
-  .facts li:nth-child(2){ transition-delay:80ms; }
-  .facts li:nth-child(3){ transition-delay:160ms; }
-  .facts li:nth-child(4){ transition-delay:240ms; }
-  .facts li:nth-child(5){ transition-delay:320ms; }
-  .facts .fx{ font-family:var(--serif); color:var(--blue); font-size:17px; letter-spacing:.08em; }
+    transition:opacity .6s var(--ease-page), transform .6s var(--ease-page); }
+  .ladder.rv.in .lad{ opacity:1; transform:none; }
+  .ladder.rv.in .lad:nth-child(2){ transition-delay:120ms; }
+  .ladder.rv.in .lad:nth-child(3){ transition-delay:240ms; }
+  .ladder .lad-ico{ width:70px; height:70px; margin:0 auto 14px; border:2px solid var(--blue);
+    border-radius:50%; background:var(--bg); color:var(--blue-deep);
+    display:flex; align-items:center; justify-content:center; position:relative; z-index:1; }
+  .ladder .lad-ico svg{ width:30px; height:30px; }
+  .ladder .lad h4{ font-family:var(--serif); font-weight:400; font-size:clamp(16px,1vw+12px,20px); color:var(--ink); }
+  .ladder .lad p{ margin-top:4px; font-size:11px; letter-spacing:.03em; color:var(--muted); }
+  .ladder .lad-axis{ display:flex; justify-content:space-between; margin-top:20px;
+    font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); }
+  .ladder .lad-how{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:24px; }
+  .ladder .lad-how span{ font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--body-c);
+    border:1px solid var(--bline); padding:8px 14px; }
+  @media(max-width:640px){ .ladder .lad-stops{ grid-template-columns:1fr; gap:26px; }
+    .ladder .lad-stops::before{ display:none; } }
 
   /* ---------- SCALE: big-numbers centrepiece ---------- */
   /* the headline magnitude — one figure carried at display scale, breadth read beneath */
@@ -457,17 +501,19 @@
   .bignum .bn-fig .unit{ font-size:.32em; color:var(--blue-display); letter-spacing:.02em; }
   .bignum .bn-lab{ display:block; margin-top:6px; font-size:clamp(12px, .6vw + 9px, 15px);
     letter-spacing:.22em; text-transform:uppercase; color:var(--muted); }
-  /* the breadth split beneath the headline — architecture / interiors / residential */
-  .breadth{ display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:1px;
-    margin-top:clamp(30px, 4vh, 52px); background:var(--line-2); border:1px solid var(--line-2); }
-  .breadth .bd{ background:var(--bg); padding:clamp(20px, 2.4vw, 34px) clamp(16px, 2vw, 28px); }
-  .breadth .bd-num{ font-family:var(--serif); font-size:clamp(30px, 3vw + 14px, 54px); line-height:1;
-    color:var(--ink); font-weight:400; font-variant-numeric:tabular-nums; }
-  .breadth .bd-num .unit, .breadth .bd-num .pct{ font-size:.5em; color:var(--blue); letter-spacing:.04em; margin-left:2px; }
-  .breadth .bd-lab{ margin-top:12px; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
-    color:var(--muted); line-height:1.7; }
-  .breadth .bd-lab .hive-mark{ width:13px; height:13px; vertical-align:-2px; margin-right:9px; color:var(--blue-deep); }
-  .mode-3d .breadth .bd{ background:rgba(var(--bg-rgb),.5); }
+  /* V8 §5 — the 0.6M+ area as one labelled split bar; segment widths ∝ the figures */
+  .splitbar{ display:flex; margin-top:clamp(26px, 3.5vh, 48px); border:1px solid var(--line-2);
+    min-height:66px; overflow:hidden; }
+  .splitbar .sb-seg{ display:flex; flex-direction:column; justify-content:center; padding:13px 16px; min-width:0; }
+  .splitbar .sb-a{ background:#0d6a8e; color:#fff; }
+  .splitbar .sb-b{ background:#2e9ec6; color:#fff; }
+  .splitbar .sb-c{ background:#86c8e2; color:#0e2a34; }
+  .splitbar .sb-seg b{ font-family:var(--serif); font-weight:400; line-height:1;
+    font-size:clamp(20px,2vw+8px,30px); font-variant-numeric:tabular-nums; }
+  .splitbar .sb-seg span{ font-size:10px; letter-spacing:.13em; text-transform:uppercase; margin-top:4px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  @media(max-width:640px){ .splitbar{ flex-direction:column; min-height:0; }
+    .splitbar .sb-seg{ flex:none !important; flex-direction:row; align-items:baseline; gap:10px; padding:12px 16px; } }
 
   /* count-up stats */
   .stats{ display:grid; grid-template-columns:repeat(auto-fit, minmax(186px, 1fr)); gap:1px;
@@ -476,80 +522,33 @@
   .stats .num{ font-family:var(--serif); font-size:var(--t-num); line-height:1; color:var(--ink); font-weight:400;
     font-variant-numeric:tabular-nums; }
   .stats .num .unit, .stats .num .pct{ font-size:.55em; color:var(--blue); letter-spacing:.04em; margin-left:2px; }
-  .stats .lab{ margin-top:13px; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); line-height:1.7; }
+  .stats .lab{ margin-top:13px; line-height:1.45; }
+  .stats .lab .lab-h{ display:block; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); font-weight:600; }
+  .stats .lab .lab-d{ display:block; margin-top:3px; font-size:11.5px; letter-spacing:.01em; color:var(--muted); }
   .stats .cell-sm .num{ font-size:calc(var(--t-num) * .72); }
   /* 4-cell mark as the stat bullet — tiny, monochrome blue, static (subtlety rules) */
   .stats .lab .hive-mark{ width:13px; height:13px; vertical-align:-2px;
     margin-right:9px; color:var(--blue-deep); }
 
-  /* method cards — real buttons that open the pillar modals */
-  .cards{ display:grid; grid-template-columns:repeat(3, 1fr); gap:clamp(16px, 2vw, 28px); margin-top:clamp(44px, 7vh, 84px); }
+  /* V8 §6 — method cards: inline (modals removed), equal height, with a faint cyan
+     line-art keyed to each idea. Number -> title -> body -> spec strip. */
+  .cards{ display:grid; grid-template-columns:repeat(3, 1fr); gap:clamp(16px, 2vw, 28px);
+    margin-top:clamp(44px, 7vh, 84px); align-items:stretch; }
   .cards .card:nth-child(2){ transition-delay:100ms; }
   .cards .card:nth-child(3){ transition-delay:200ms; }
-  .card{ appearance:none; -webkit-appearance:none; display:block; width:100%;
-    font:inherit; font-size:var(--t-body); letter-spacing:.01em; color:var(--ink); text-align:left;
-    border:1px dotted var(--bline); background:var(--bg-2); padding:clamp(24px, 2.6vw, 38px);
-    cursor:pointer; }
-  .card:hover{ border-color:var(--bline-strong); }
-  .card .meta{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+  .card{ position:relative; display:flex; flex-direction:column; color:var(--ink);
+    border:1px dotted var(--bline); background:var(--bg-2); padding:clamp(24px, 2.6vw, 38px); overflow:hidden; }
+  .card .card-art{ position:absolute; right:-12px; top:-12px; width:118px; height:118px;
+    color:var(--blue); opacity:.12; pointer-events:none; }
+  .card .card-art svg{ width:100%; height:100%; }
+  .card .meta{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; position:relative; }
   .card .dom{ font-size:10.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--blue); }
   .card .ix{ font-family:var(--serif); color:var(--muted); font-size:15px; }
   .card .card-h{ display:block; font-family:var(--serif); font-weight:400; font-size:var(--t-h3); line-height:1.15; margin-top:18px; }
-  .card .card-p{ display:block; margin-top:16px; color:var(--body-c); line-height:1.8; font-size:15.5px; }
-  .card .card-note{ display:block; margin-top:18px; padding-top:14px; border-top:1px dotted var(--bline); }
-  .card .card-note .cn-k{ display:block; font-size:10px; letter-spacing:.28em;
-    text-transform:uppercase; color:var(--blue); margin-bottom:8px; }
-  .card .card-note em{ font-family:var(--serif); font-style:italic; font-size:16px; color:var(--body-c); }
-  /* hover hint — the invitation line */
-  .card .card-hint{ display:block; margin-top:18px; font-size:10.5px; letter-spacing:.26em;
-    text-transform:uppercase; color:var(--blue); opacity:0; transform:translateY(4px);
-    transition:opacity .35s ease, transform .35s ease; }
-  .card .card-hint::before{ content:""; display:inline-block; width:14px; height:1px;
-    background:var(--blue); vertical-align:middle; margin:-2px 9px 0 0; }
-  .card:hover .card-hint, .card:focus-visible .card-hint{ opacity:1; transform:none; }
-  @media(hover:none){ .card .card-hint{ opacity:.8; transform:none; } }
+  .card .card-p{ display:block; margin-top:14px; color:var(--body-c); line-height:1.65; font-size:15px; position:relative; }
+  .card .card-spec{ display:block; margin-top:auto; padding-top:16px; border-top:1px dotted var(--bline);
+    font-size:11px; letter-spacing:.05em; color:var(--muted); line-height:1.6; }
   @media(max-width:900px){ .cards{ grid-template-columns:1fr; } }
-
-  /* ---------- method modal: one accessible dialog, three contents ---------- */
-  html.modal-open{ overflow:hidden; }
-  .modal{ position:fixed; inset:0; z-index:6; display:flex; align-items:center; justify-content:center;
-    padding:clamp(16px, 3vw, 44px); }
-  .modal[hidden]{ display:none; }
-  .modal-ov{ position:absolute; inset:0; background:var(--modal-ov);
-    -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); opacity:0;
-    transition:opacity .35s ease; }
-  .modal-panel{ position:relative; width:100%; max-width:62ch; max-height:min(86vh, 100%);
-    overflow:auto; overscroll-behavior:contain; background:var(--panel-bg);
-    border:1px solid var(--line); border-top:1px solid var(--bline);
-    padding:clamp(28px, 4vw, 50px) clamp(24px, 3.6vw, 48px) clamp(32px, 4.4vw, 56px);
-    opacity:0; transform:translateY(14px);
-    transition:opacity .45s var(--ease-page), transform .45s var(--ease-page); }
-  .modal.open .modal-ov{ opacity:1; }
-  .modal.open .modal-panel{ opacity:1; transform:none; }
-  .modal-head{ display:flex; align-items:center; gap:14px;
-    padding-bottom:18px; border-bottom:1px solid var(--bline-2); }
-  .modal-head .hive-mark{ flex:none; color:var(--blue-deep); }
-  .modal-title{ font-family:var(--serif); font-weight:400; font-size:var(--t-h3);
-    line-height:1.15; margin-right:auto; }
-  .modal-x{ appearance:none; -webkit-appearance:none; flex:none; width:38px; height:38px;
-    background:none; border:1px solid var(--line); color:var(--muted);
-    font-size:19px; line-height:1; cursor:pointer;
-    transition:color .25s ease, border-color .25s ease; }
-  .modal-x:hover{ color:var(--blue); border-color:var(--bline); }
-  .modal-body p{ margin-top:18px; color:var(--body-c); line-height:1.85; font-size:15.5px; }
-  .modal-body p:first-child{ margin-top:24px; font-family:var(--serif); font-style:italic;
-    font-size:clamp(17px, .9vw + 12px, 22px); line-height:1.6; color:var(--ink); }
-  .modal-spec{ margin:28px 0 0; border-top:1px solid var(--bline-2); }
-  .modal-spec > div{ display:grid; grid-template-columns:minmax(0, 1.1fr) minmax(0, 1.5fr);
-    gap:14px; padding:12px 2px; border-bottom:1px dotted var(--bline); }
-  .modal-spec dt{ font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
-    color:var(--blue); padding-top:3px; }
-  .modal-spec dd{ margin:0; font-family:var(--serif); font-style:italic;
-    font-size:15.5px; color:var(--body-c); }
-  @media(max-width:620px){
-    .modal{ padding:0; }              /* full-bleed sheet on phones */
-    .modal-panel{ max-width:none; height:100%; max-height:none; border-left:0; border-right:0; }
-  }
 
   /* method delivery half — serif headline that opens the merged two-phase timeline */
   .meth-split{ font-family:var(--serif); font-weight:400; font-size:var(--t-h3); line-height:1.2;
@@ -645,24 +644,36 @@
   .ph-days{ text-align:right; }
   .ph-days .num{ font-family:var(--serif); font-size:clamp(30px, 2.4vw + 14px, 48px); line-height:1; color:var(--ink); }
   .ph-days .u{ display:block; margin-top:6px; font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); }
-  .tl{ list-style:none; display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
-    margin-top:clamp(22px, 3vh, 34px); }
-  .tl li{ position:relative; border-top:1px solid var(--bline-2); padding:18px 18px 4px 0;
+  /* V8 §7 — each phase is a horizontal lane: a cyan spine that draws left->right,
+     centered stage nodes that pop on, names + durations beneath. */
+  .lane{ position:relative; margin-top:clamp(24px, 3.2vh, 40px); }
+  .lane-spine{ position:absolute; left:calc(50% / var(--stops, 4)); right:calc(50% / var(--stops, 4)); top:6px;
+    height:2px; background:var(--blue); opacity:.5;
+    transform:scaleX(0); transform-origin:left; transition:transform .9s var(--ease-draw); transition-delay:120ms; }
+  .phase.rv.in .lane-spine{ transform:scaleX(1); }
+  .tl{ list-style:none; display:grid; grid-template-columns:repeat(var(--stops, 4), 1fr); margin:0; }
+  .tl li{ position:relative; text-align:center; padding:22px 6px 0;
     opacity:0; transform:translateY(10px);
-    transition:opacity .62s var(--ease-page), transform .62s var(--ease-page); }
-  .tl li::before{ content:""; position:absolute; top:-1px; left:0; width:1px; height:11px; background:var(--blue);
-    transform:scaleY(0); transform-origin:top; transition:transform .3s var(--ease-draw); }
-  /* each stage is plotted on the schedule line (tick draws), then written (text lifts) */
+    transition:opacity .55s var(--ease-page), transform .55s var(--ease-page); }
+  .tl .st-dot{ position:absolute; top:0; left:50%; width:13px; height:13px; margin-left:-6.5px; border-radius:50%;
+    background:var(--bg); border:2px solid var(--blue); transform:scale(0);
+    transition:transform .3s var(--ease-draw); }
+  .tl li.is-end .st-dot{ background:var(--blue); box-shadow:0 0 0 4px rgba(110,193,228,.22); }
   .phase.rv.in .tl li{ opacity:1; transform:none; }
-  .phase.rv.in .tl li::before{ transform:scaleY(1); }
-  .tl li:nth-child(1){ transition-delay:220ms; } .tl li:nth-child(1)::before{ transition-delay:0ms; }
-  .tl li:nth-child(2){ transition-delay:300ms; } .tl li:nth-child(2)::before{ transition-delay:80ms; }
-  .tl li:nth-child(3){ transition-delay:380ms; } .tl li:nth-child(3)::before{ transition-delay:160ms; }
-  .tl li:nth-child(4){ transition-delay:460ms; } .tl li:nth-child(4)::before{ transition-delay:240ms; }
-  .tl li:nth-child(5){ transition-delay:540ms; } .tl li:nth-child(5)::before{ transition-delay:320ms; }
+  .phase.rv.in .tl .st-dot{ transform:scale(1); }
+  .tl li:nth-child(1){ transition-delay:300ms; } .tl li:nth-child(1) .st-dot{ transition-delay:140ms; }
+  .tl li:nth-child(2){ transition-delay:380ms; } .tl li:nth-child(2) .st-dot{ transition-delay:240ms; }
+  .tl li:nth-child(3){ transition-delay:460ms; } .tl li:nth-child(3) .st-dot{ transition-delay:340ms; }
+  .tl li:nth-child(4){ transition-delay:540ms; } .tl li:nth-child(4) .st-dot{ transition-delay:440ms; }
+  .tl li:nth-child(5){ transition-delay:620ms; } .tl li:nth-child(5) .st-dot{ transition-delay:540ms; }
   .tl .st-ix{ display:block; font-size:10px; letter-spacing:.3em; color:var(--blue); }
-  .tl .st-name{ display:block; margin-top:9px; font-size:15px; color:var(--ink); line-height:1.45; }
-  .tl .st-days{ display:block; margin-top:7px; font-size:12px; letter-spacing:.08em; color:var(--muted); }
+  .tl .st-name{ display:block; margin-top:8px; font-size:14px; color:var(--ink); line-height:1.4; }
+  .tl li.is-end .st-name{ color:var(--blue-deep); }
+  .tl .st-days{ display:block; margin-top:6px; font-size:11.5px; letter-spacing:.05em; color:var(--muted); }
+  @media(max-width:680px){ .tl{ grid-template-columns:repeat(2, 1fr); }
+    .lane-spine{ display:none; } .tl li{ text-align:left; padding:18px 12px 0 0; }
+    .tl .st-dot{ left:0; margin-left:0; } }
+  @media(max-width:420px){ .tl{ grid-template-columns:1fr; } }
   /* dimension-string total bracket under each phase timeline (Primitive A in CSS) */
   .tl-rule{ margin-top:clamp(20px, 3vh, 30px); display:flex; justify-content:flex-end; }
   .tl-rule .folio-rule{ width:100%; }
@@ -738,6 +749,10 @@
     background:none; border:1px solid var(--line); color:var(--muted);
     font-size:19px; line-height:1; cursor:pointer; transition:color .25s ease, border-color .25s ease; }
   .lb-x:hover{ color:var(--blue); border-color:var(--bline); }
+  /* V9 — project writeup (the "info") sits below the title, above the carousel */
+  .lb-desc{ flex:none; margin:0; padding:clamp(14px, 1.8vw, 20px) clamp(18px, 2.4vw, 28px) 0;
+    font-size:14px; line-height:1.6; color:var(--body-c); max-width:80ch; }
+  .lb-desc:empty{ display:none; }
   /* the stage: one image at a time, prev/next arrows flanking */
   .lb-stage{ position:relative; flex:1 1 auto; min-height:0; background:#0c0e10;
     display:flex; align-items:center; justify-content:center; overflow:hidden; }
@@ -936,15 +951,15 @@
     .anno-f{ opacity:1; transition:none; }
     .plate-mark, .plate-foot, .leaf-tag{ opacity:1; transform:none; transition:none; }
     .pf-ui{ opacity:1; transform:none; transition:none; }
-    .card .card-hint{ transition:none; transform:none; }
-    .modal-ov, .modal-panel{ opacity:1; transform:none; transition:none; }
+    .card{ transition:none; transform:none; }
     .pp-sketch img{ clip-path:none; transition:none; }
     .pp-sketch-cap{ opacity:.85; transition:none; }
     .index li::after{ width:100%; transition:none; }
     .index li::before{ transition:none; }
     .line-inner{ transform:none; transition:none; }
-    .facts li, .tl li, .c-grid .c-block{ opacity:1; transform:none; transition:none; }
-    .tl li::before, .pp::before{ transform:none; transition:none; }
+    .ladder .lad, .tl li, .c-grid .c-block{ opacity:1; transform:none; transition:none; }
+    .tl .st-dot, .lane-spine{ transform:none; transition:none; }
+    .pp::before{ transform:none; transition:none; }
     .ticks.rv{ clip-path:none; transition:none; }
     .backdrop img{ transform:none !important; }
   }
@@ -1052,16 +1067,16 @@
   <!-- fixed WebGL layer placeholder — Task 10 mounts Three.js here (z below content) -->
   <div id="gl" aria-hidden="true"><canvas></canvas></div>
 
-  <!-- fixed hero visual: the urna golden-hour render, drawn first as its own blueprint -->
+  <!-- fixed hero visual (V8 §2): sharp 16:9 night render of the urna twin-tower, drawn first as its own sketch -->
   <div id="heroVis">
     <picture class="hv">
-      <source srcset="img/urna-real-01.webp" type="image/webp">
-      <img src="img/urna-real-01.jpg" loading="eager" fetchpriority="high"
-           alt="Golden-hour render of the urna tower rising over parkland in Versova, Mumbai — design-stage visualization by BuildHive Architects" />
+      <source srcset="img/hero-tower-night.webp" type="image/webp">
+      <img src="img/hero-tower-night.jpg" loading="eager" fetchpriority="high"
+           alt="Night render of the urna twin-tower rising over parkland in Versova, Mumbai — design-stage visualization by BuildHive Architects" />
     </picture>
     <picture class="hv" id="heroBlue" aria-hidden="true">
-      <source srcset="img/urna-real-01.webp" type="image/webp">
-      <img src="img/urna-real-01.jpg" loading="eager" alt="" />
+      <source srcset="img/hero-tower-night.webp" type="image/webp">
+      <img src="img/hero-tower-night.jpg" loading="eager" alt="" />
     </picture>
     <div class="hv-scrim" aria-hidden="true"></div>
   </div>
@@ -1276,6 +1291,7 @@
       <div class="plate-mark" aria-hidden="true"><span class="pm-word">The Handover</span><span class="pm-name">keys in hand</span></div>
       <div class="plate-foot">
         <p class="plate-title"><span class="line"><span class="line-inner">The day we hand over</span></span><span class="line"><span class="line-inner"><em>the keys,</em></span></span><span class="line"><span class="line-inner">the drawing becomes</span></span><span class="line"><span class="line-inner"><em>your every morning.</em></span></span></p>
+        <div class="folio-rule plate-frule" aria-hidden="true"></div>
         <p class="plate-caption">A real delivered interior — the render kept, the keys handed over, the room now lived in.
           <span class="pc-tag">Odyssey · Residence — built work, delivered</span>
         </p>
@@ -1292,25 +1308,18 @@
     <div class="topright">Company Profile · 2026</div>
     <div class="cue" id="cue"><div class="word">Scroll</div><div class="track"></div></div>
     <div class="hv-tags" id="heroTags" data-stage="0">
-      <span class="tag tag-w">Drawn</span>
+      <span class="tag tag-w">Sketch</span>
       <span class="tag tag-r">Rendered</span>
     </div>
   </div>
 
-  <!-- BRAND LOCKUP — real client logo (V7 §4). Lives OUTSIDE #chrome (which is
-       aria-hidden) so the home link is reachable by assistive tech. Two paths
-       swapped on data-theme:
-       · light / default: the full-colour lockup PNG (cyan mark + BUILDHIVE +
-         tagline on white) — sits perfectly on the gallery-paper chrome.
-       · dark: a white box would show on dark, so we render the transparent cyan
-         4-cell mark (brand-logo.png) + "BUILDHIVE" + tagline as light themed text. -->
+  <!-- BRAND LOCKUP (V8 §1) — one transparent asset: cyan BB mark + BUILDHIVE wordmark,
+       tagline line dropped. Transparent edges read on white, dark, and over photos, so
+       the old light/dark dual-path is gone. Lives OUTSIDE the aria-hidden #chrome so the
+       home link stays reachable by assistive tech. -->
   <a class="brand" href="index.html" aria-label="BuildHive — home">
-    <img class="brand-lockup" src="img/brand-buildhive-lockup.png" width="456" height="285"
+    <img class="brand-lockup" src="img/brand-buildhive-mark.png" width="456" height="240"
          alt="BuildHive — Masterplanners, Architects, Interior Designers" />
-    <span class="brand-dark" aria-hidden="true">
-      <span class="brand-mark"><img src="img/brand-logo.png" width="456" height="285" alt="" /></span>
-      <span class="bw">Buildhive<small>Masterplanners · Architects · Interior Designers</small></span>
-    </span>
   </a>
 
   <!-- theme switch — outside #chrome (aria-hidden) so assistive tech reaches it.
@@ -1321,21 +1330,22 @@
     <span class="tt-word" aria-hidden="true">Light</span>
   </button>
 
-  <!-- V7 tick nav — 1:1 positional with the [data-chapter] sections in #content
-       (Intro · About · the three Select Projects plates · Engagement · Transparency ·
-       Handover · Testimonials · Contact). Order MUST match the DOM order below. -->
+  <!-- V8 §3 tick nav — 7 section headers (not content names). The three project
+       chapters (cadence·urna·amodaa) group under "Projects"; its sub-dots show which
+       one is active. "Engagement" covers engage+proof. The 10-chapter → 7-button
+       mapping (BTN_FOR_CHAP / CHAP_FOR_BTN) lives in the scroll engine below. -->
   <nav id="scenes" aria-label="Chapters">
     <button type="button" aria-label="Go to Intro">Intro</button>
     <button type="button" aria-label="Go to About">About</button>
-    <button type="button" aria-label="Go to Cadence">Cadence</button>
-    <button type="button" aria-label="Go to urna">urna</button>
-    <button type="button" aria-label="Go to AMODAA">AMODAA</button>
-    <button type="button" aria-label="Go to Engagement">Engagement</button>
+    <button type="button" class="has-sub" aria-label="Go to Projects">Projects<span class="subdots" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
     <button type="button" aria-label="Go to Transparency">Transparency</button>
+    <button type="button" aria-label="Go to Engagement">Engagement</button>
     <button type="button" aria-label="Go to The Handover">Handover</button>
-    <button type="button" aria-label="Go to Testimonials">Voices</button>
+    <button type="button" aria-label="Go to Testimonials">Testimonials</button>
     <button type="button" aria-label="Go to Contact">Contact</button>
   </nav>
+  <!-- V8 §4 scroll-intimation cue — fades in near each beat's end to name what's next -->
+  <div id="nextcue" aria-hidden="true"><span class="nc-k">Next</span><span class="nc-name"></span><span class="nc-arr">↓</span></div>
   <div id="progress" aria-hidden="true"></div>
 
   <!-- virtual smooth-scroll stage -->
@@ -1364,15 +1374,27 @@
       </div>
       <div class="wrap">
         <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>02 — About the Practice</p></div>
-        <h2 class="lede rv"><span class="line"><span class="line-inner">A large-scale</span></span><span class="line"><span class="line-inner"><em>design-build practice.</em></span></span></h2>
-        <p class="sub rv">One firm carrying masterplanning, architecture and interiors across project types and seven cities — towers, townships, workplaces and homes, drawn and delivered under a single roof. The two principals lead every commission; a BIM-, AI- and camera-driven stack is what makes that span hold its schedule at scale.</p>
-        <ul class="facts rv">
-          <li><span class="fx">01</span>Masterplanning, architecture and interiors — every scale, one practice</li>
-          <li><span class="fx">02</span>One contract — masterplan to door handle</li>
-          <li><span class="fx">03</span>The BIM model is the single source of truth: BOQs, clashes, as-builts</li>
-          <li><span class="fx">04</span>A live camera on every site, 24/7</li>
-          <li><span class="fx">05</span>Geopathic + Vastu mapping before a line is drawn</li>
-        </ul>
+        <h2 class="lede rv"><span class="line"><span class="line-inner">From the master plan</span></span><span class="line"><span class="line-inner">to the <em>door handle.</em></span></span></h2>
+        <p class="sub rv">One studio takes a project the whole way — planning the block, shaping the building, detailing the rooms, handing over the keys. Two principals lead every commission; a BIM-, AI- and camera-driven stack keeps that span on schedule.</p>
+        <!-- V8 §5 — the scale ladder: City -> Room, the span shown not claimed -->
+        <div class="ladder rv" aria-label="What we do, from city scale to room scale">
+          <div class="lad-stops">
+            <div class="lad">
+              <span class="lad-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="9" height="9"/><rect x="19" y="4" width="9" height="9"/><rect x="4" y="19" width="9" height="9"/><rect x="19" y="19" width="9" height="9"/></svg></span>
+              <h4>Masterplanning</h4><p>districts · layouts · the block</p>
+            </div>
+            <div class="lad">
+              <span class="lad-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="10" y="4" width="12" height="24"/><line x1="16" y1="4" x2="16" y2="28"/><line x1="10" y1="11" x2="22" y2="11"/><line x1="10" y1="18" x2="22" y2="18"/></svg></span>
+              <h4>Architecture</h4><p>towers · campuses · the building</p>
+            </div>
+            <div class="lad">
+              <span class="lad-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 27V13l11-8 11 8v14"/><rect x="13" y="18" width="6" height="9"/></svg></span>
+              <h4>Interiors</h4><p>workplaces · homes · the room</p>
+            </div>
+          </div>
+          <p class="lad-axis"><span>City scale</span><span>Room scale</span></p>
+          <div class="lad-how"><span>BIM + AI</span><span>24/7 site cameras</span><span>Vastu / geopathic mapping</span></div>
+        </div>
 
         <!-- sub-section: the number that says it plainest -->
         <h3 class="about-sub rv"><span class="pm-rule"></span>The number that says it plainest</h3>
@@ -1385,40 +1407,28 @@
 
         <div class="ticks rv" aria-hidden="true"></div>
 
-        <!-- breadth split: how that area divides across the practice -->
-        <div class="breadth rv" id="breadth">
-          <div class="bd">
-            <div class="bd-num"><span class="cnt" data-count="359">359</span><span class="unit">K</span></div>
-            <div class="bd-lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>sqft architecture</div>
-          </div>
-          <div class="bd">
-            <div class="bd-num"><span class="cnt" data-count="167">167</span><span class="unit">K</span></div>
-            <div class="bd-lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>sqft commercial interiors</div>
-          </div>
-          <div class="bd">
-            <div class="bd-num"><span class="cnt" data-count="50.6" data-dec="1">50.6</span><span class="unit">K</span></div>
-            <div class="bd-lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>sqft residential interiors</div>
-          </div>
+        <!-- V8 §5 — the 0.6M+ area as one labelled split bar (proportions visible) -->
+        <div class="splitbar rv" id="breadth" aria-label="0.6M+ sq ft split — architecture 359K, commercial interiors 167K, residential interiors 50.6K">
+          <div class="sb-seg sb-a" style="flex:359"><b><span class="cnt" data-count="359">359</span>K</b><span>Architecture</span></div>
+          <div class="sb-seg sb-b" style="flex:167"><b><span class="cnt" data-count="167">167</span>K</b><span>Commercial interiors</span></div>
+          <div class="sb-seg sb-c" style="flex:51"><b><span class="cnt" data-count="50.6" data-dec="1">50.6</span>K</b><span>Residential interiors</span></div>
         </div>
 
         <p class="sub rv">From a township masterplan to a single corner office — the same firm, the same standard, across the whole span.</p>
 
+        <!-- V8 §5 — each figure captioned so its meaning reads at a glance -->
         <div class="stats rv" id="stats">
           <div class="cell">
             <div class="num"><span class="cnt" data-count="7">7</span></div>
-            <div class="lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>cities — Mumbai to London</div>
+            <div class="lab"><span class="lab-h">Cities</span><span class="lab-d">Mumbai → London</span></div>
           </div>
           <div class="cell">
             <div class="num"><span class="cnt" data-count="48">48</span><span class="pct">+</span></div>
-            <div class="lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>years across two principals</div>
-          </div>
-          <div class="cell">
-            <div class="num"><span class="cnt" data-count="75">75</span>–<span class="cnt" data-count="90">90</span></div>
-            <div class="lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>days design-to-handover</div>
+            <div class="lab"><span class="lab-h">Years</span><span class="lab-d">combined, the two principals</span></div>
           </div>
           <div class="cell">
             <div class="num"><span class="cnt" data-count="95">95</span><span class="pct">%+</span></div>
-            <div class="lab"><svg class="hive-mark" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>render-to-reality match</div>
+            <div class="lab"><span class="lab-h">Render &rarr; reality</span><span class="lab-d">what we drew vs. what we built</span></div>
           </div>
         </div>
 
@@ -1462,12 +1472,65 @@
     <!-- SELECT PROJECTS — AMODAA: transparent runway over the fixed plate -->
     <section class="plate-run plate-run--II" data-chapter="amodaa" id="runAmodaa">
       <h2 class="sr-only">Select projects — AMODAA. A bungalow at Lonavala — built work.</h2>
-      <!-- the all-projects pointer rides at the foot of the AMODAA runway, just
-           before Engagement, so the three beds read as "select" work -->
-      <div class="select-all">
-        <a class="ga-link" href="projects.html">See all projects <span class="arr" aria-hidden="true">→</span></a>
-        <span class="ga-note">Towers, townships, workplaces and homes — the full catalogue.</span>
+    </section>
+
+    <!-- ============ 03b — ALL PROJECTS (V9): the dive-in grid ============
+         A grid of all ten projects on the site's monograph vibe. Each card carries a
+         clearly visible "Dive in →" CTA that opens that project's image carousel
+         (the deep dive) via the existing lightbox (data-gallery). -->
+    <section class="panel panel--works" data-chapter="works" id="runWorks">
+      <div class="wrap">
+        <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>03 — All projects</p></div>
+        <h2 class="lede rv"><span class="line"><span class="line-inner">Dive into the</span></span><span class="line"><span class="line-inner"><em>full body of work.</em></span></span></h2>
+        <p class="sub rv">Ten projects — towers, workplaces and homes. Open any one to dive into its images.</p>
+        <div class="works-grid rv">
+          <button class="work-card" type="button" data-gallery="cadence" aria-label="Cadence — dive into images">
+            <span class="wc-img"><picture><source srcset="img/proj-cadence-01.webp" type="image/webp"><img src="img/proj-cadence-01.jpg" loading="lazy" decoding="async" alt="Cadence — Office tower · concept"></picture></span>
+            <span class="wc-meta"><span class="wc-name">Cadence</span><span class="wc-typ">Office tower · concept</span><span class="wc-dive">Explore Project <span class="wc-arr" aria-hidden="true">→</span></span></span>
+          </button>
+          <button class="work-card" type="button" data-gallery="urna" aria-label="urna — dive into images">
+            <span class="wc-img"><picture><source srcset="img/urna-real-01.webp" type="image/webp"><img src="img/urna-real-01.jpg" loading="lazy" decoding="async" alt="urna — Residential tower · concept"></picture></span>
+            <span class="wc-meta"><span class="wc-name">urna</span><span class="wc-typ">Residential tower · concept</span><span class="wc-dive">Explore Project <span class="wc-arr" aria-hidden="true">→</span></span></span>
+          </button>
+          <button class="work-card" type="button" data-gallery="amodaa" aria-label="AMODAA — dive into images">
+            <span class="wc-img"><picture><source srcset="img/proj-amoda-01.webp" type="image/webp"><img src="img/proj-amoda-01.jpg" loading="lazy" decoding="async" alt="AMODAA — Bungalow · built"></picture></span>
+            <span class="wc-meta"><span class="wc-name">AMODAA</span><span class="wc-typ">Bungalow · built</span><span class="wc-dive">Explore Project <span class="wc-arr" aria-hidden="true">→</span></span></span>
+          </button>
+          <button class="work-card" type="button" data-gallery="mpavilion" aria-label="M Pavilion — dive into images">
+            <span class="wc-img"><picture><source srcset="img/proj-mpavilion-01.webp" type="image/webp"><img src="img/proj-mpavilion-01.jpg" loading="lazy" decoding="async" alt="M Pavilion — Pavilion · concept study"></picture></span>
+            <span class="wc-meta"><span class="wc-name">M Pavilion</span><span class="wc-typ">Pavilion · concept study</span><span class="wc-dive">Explore Project <span class="wc-arr" aria-hidden="true">→</span></span></span>
+          </button>
+          <button class="work-card" type="button" data-gallery="ubp" aria-label="UBP — dive into images">
+            <span class="wc-img"><picture><source srcset="img/proj-ubp-01.webp" type="image/webp"><img src="img/proj-ubp-01.jpg" loading="lazy" decoding="async" alt="UBP — Office tower · concept"></picture></span>
+            <span class="wc-meta"><span class="wc-name">UBP</span><span class="wc-typ">Office tower · concept</span><span class="wc-dive">Explore Project <span class="wc-arr" aria-hidden="true">→</span></span></span>
+          </button>
+          <button class="work-card" type="button" data-gallery="acg" aria-label="ACG Kandivali — dive into images">
+            <span class="wc-img"><picture><source srcset="img/proj-acg-kandivali-01.webp" type="image/webp"><img src="img/proj-acg-kandivali-01.jpg" loading="lazy" decoding="async" alt="ACG Kandivali — Workplace · built"></picture></span>
+            <span class="wc-meta"><span class="wc-name">ACG Kandivali</span><span class="wc-typ">Workplace · built</span><span class="wc-dive">Explore Project <span class="wc-arr" aria-hidden="true">→</span></span></span>
+          </button>
+          <button class="work-card" type="button" data-gallery="astaguru" aria-label="AstaGuru Fort — dive into images">
+            <span class="wc-img"><picture><source srcset="img/proj-astaguru-fort-01.webp" type="image/webp"><img src="img/proj-astaguru-fort-01.jpg" loading="lazy" decoding="async" alt="AstaGuru Fort — Workplace · built"></picture></span>
+            <span class="wc-meta"><span class="wc-name">AstaGuru Fort</span><span class="wc-typ">Workplace · built</span><span class="wc-dive">Explore Project <span class="wc-arr" aria-hidden="true">→</span></span></span>
+          </button>
+          <button class="work-card" type="button" data-gallery="bsm" aria-label="BSM Olympia — dive into images">
+            <span class="wc-img"><picture><source srcset="img/proj-bsm-olympia-01.webp" type="image/webp"><img src="img/proj-bsm-olympia-01.jpg" loading="lazy" decoding="async" alt="BSM Olympia — Workplace · built"></picture></span>
+            <span class="wc-meta"><span class="wc-name">BSM Olympia</span><span class="wc-typ">Workplace · built</span><span class="wc-dive">Explore Project <span class="wc-arr" aria-hidden="true">→</span></span></span>
+          </button>
+          <button class="work-card" type="button" data-gallery="odyssey" aria-label="Odyssey — dive into images">
+            <span class="wc-img"><picture><source srcset="img/proj-odyssey-01.webp" type="image/webp"><img src="img/proj-odyssey-01.jpg" loading="lazy" decoding="async" alt="Odyssey — Residence · built"></picture></span>
+            <span class="wc-meta"><span class="wc-name">Odyssey</span><span class="wc-typ">Residence · built</span><span class="wc-dive">Explore Project <span class="wc-arr" aria-hidden="true">→</span></span></span>
+          </button>
+          <button class="work-card" type="button" data-gallery="clifton" aria-label="Clifton — dive into images">
+            <span class="wc-img"><picture><source srcset="img/proj-clifton-01.webp" type="image/webp"><img src="img/proj-clifton-01.jpg" loading="lazy" decoding="async" alt="Clifton — Residence · built"></picture></span>
+            <span class="wc-meta"><span class="wc-name">Clifton</span><span class="wc-typ">Residence · built</span><span class="wc-dive">Explore Project <span class="wc-arr" aria-hidden="true">→</span></span></span>
+          </button>
+        </div>
       </div>
+    </section>
+
+    <!-- 03c — OPEN OFFICE (the render→reality proof), moved ahead of Engagement (V9) -->
+    <section class="plate-run plate-run--proof" data-chapter="proof" id="runProof">
+      <h2 class="sr-only">Transparency — a 95% match between the render approved and the space photographed as built. The open office, render versus as-built photograph.</h2>
     </section>
 
     <!-- ============ 04 — ENGAGEMENT &amp; TRANSPARENCY (V7 §1.4) ============
@@ -1481,57 +1544,67 @@
         <h2 class="lede rv"><span class="line"><span class="line-inner">How we engage —</span></span><span class="line"><span class="line-inner"><em>and how we stay transparent.</em></span></span></h2>
         <p class="sub rv">The way we work is the way we earn trust: a method you can interrogate, a schedule with every day accounted for, and — at the end — a photograph you can hold up against the render you approved.</p>
         <div class="cards">
-          <button type="button" class="card rv" data-modal="0" aria-haspopup="dialog">
+          <div class="card rv">
+            <span class="card-art" aria-hidden="true"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="26" height="26"/><rect x="38" y="8" width="26" height="26"/><rect x="68" y="8" width="24" height="56"/><rect x="8" y="38" width="26" height="26"/><rect x="38" y="38" width="26" height="26"/><rect x="8" y="68" width="56" height="24"/></svg></span>
             <span class="meta"><span class="dom">Design</span><span class="ix">01</span></span>
             <span class="card-h">Modular Intelligence</span>
-            <span class="card-p">A 100,000 sqft floor is twelve modules, not a thousand decisions. Modular planning is why our schedules hold.</span>
-            <span class="card-hint">Open: how modules hold schedules</span>
-          </button>
-          <button type="button" class="card rv" data-modal="1" aria-haspopup="dialog">
+            <span class="card-p">A 100,000 sqft floor is twelve modules, not a thousand decisions — which is why our schedules hold and the cooling load is sized to how the floor actually works.</span>
+            <span class="card-spec">Repeatable modules · standard details · ~400 TR sized by zoning</span>
+          </div>
+          <div class="card rv">
+            <span class="card-art" aria-hidden="true"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 80 L50 20 L80 80 Z"/><path d="M20 80 L50 92 L80 80"/><path d="M50 20 L50 92"/><circle cx="50" cy="20" r="4" fill="currentColor" stroke="none"/><circle cx="20" cy="80" r="4" fill="currentColor" stroke="none"/><circle cx="80" cy="80" r="4" fill="currentColor" stroke="none"/></svg></span>
             <span class="meta"><span class="dom">Technology</span><span class="ix">02</span></span>
             <span class="card-h">BIM + AI</span>
-            <span class="card-p">Every discipline coordinated in one 3D model — clashes die on screen, not on site. AI speeds iteration; BOQs come straight from the model; cameras stream every site, day and night.</span>
-            <span class="card-note"><span class="cn-k">As-built BIM at handover · 4D scheduling</span><em>You receive the building — and its model.</em></span>
-            <span class="card-hint">Open: where clashes die first</span>
-          </button>
-          <button type="button" class="card rv" data-modal="2" aria-haspopup="dialog">
+            <span class="card-p">Every discipline in one 3D model — clashes die on screen, not on site. BOQs come straight from the model; cameras stream every site, day and night.</span>
+            <span class="card-spec">Clash-free coordination · 4D scheduling · you receive the building <em>and its as-built model</em></span>
+          </div>
+          <div class="card rv">
+            <span class="card-art" aria-hidden="true"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2"><circle cx="50" cy="50" r="38"/><circle cx="50" cy="50" r="20"/><path d="M50 6 L50 94 M6 50 L94 50 M22 22 L78 78 M78 22 L22 78"/></svg></span>
             <span class="meta"><span class="dom">Wellness</span><span class="ix">03</span></span>
             <span class="card-h">Geopathic + Vastu</span>
-            <span class="card-p">Earth-energy lines mapped before planning. Boardrooms, cabins and finance zones placed where people perform — corrected at fitout, because it cannot be corrected after.</span>
-            <span class="card-hint">Open: the floor we map first</span>
-          </button>
+            <span class="card-p">Earth-energy lines mapped before planning, so boardrooms, cabins and finance zones sit where people perform — corrected once, at fitout.</span>
+            <span class="card-spec">Orientation study · grid alignment · mapped first</span>
+          </div>
         </div>
 
         <!-- delivery half: the two-phase timeline -->
         <h3 class="meth-split rv">Two phases. <em>Every day accounted for.</em></h3>
 
+        <!-- V8 §7 — Track 1: Design Development as a horizontal lane on a cyan spine -->
         <div class="phase rv">
           <div class="ph-head">
             <div><span class="ph-k">Phase 1</span><h4 class="ph-h">Design Development</h4></div>
             <div class="ph-days"><span class="num">35</span><span class="u">days</span></div>
           </div>
-          <ol class="tl">
-            <li><span class="st-ix">1</span><span class="st-name">Strategic brief</span></li>
-            <li><span class="st-ix">2</span><span class="st-name">Concept design</span></li>
-            <li><span class="st-ix">3</span><span class="st-name">Detailed design</span></li>
-            <li><span class="st-ix">4</span><span class="st-name">Technical docs</span></li>
-          </ol>
+          <div class="lane" style="--stops:4">
+            <span class="lane-spine" aria-hidden="true"></span>
+            <ol class="tl">
+              <li><span class="st-dot" aria-hidden="true"></span><span class="st-ix">01</span><span class="st-name">Strategic brief</span></li>
+              <li><span class="st-dot" aria-hidden="true"></span><span class="st-ix">02</span><span class="st-name">Concept design</span></li>
+              <li><span class="st-dot" aria-hidden="true"></span><span class="st-ix">03</span><span class="st-name">Detailed design</span></li>
+              <li><span class="st-dot" aria-hidden="true"></span><span class="st-ix">04</span><span class="st-name">Technical docs</span></li>
+            </ol>
+          </div>
           <div class="tl-rule" aria-hidden="true"><div class="folio-rule" style="position:relative; width:100%;"><span class="tr-lab">35 days, end to end</span></div></div>
         </div>
 
+        <!-- V8 §7 — Track 2: Build, ending in the Handover end-cap that leads into the Handover chapter -->
         <div class="phase rv">
           <div class="ph-head">
             <div><span class="ph-k">Phase 2</span><h4 class="ph-h">Build</h4></div>
             <div class="ph-days"><span class="num">90–120</span><span class="u">days</span></div>
           </div>
-          <ol class="tl">
-            <li><span class="st-ix">1</span><span class="st-name">Mobilization</span><span class="st-days">7–10 days</span></li>
-            <li><span class="st-ix">2</span><span class="st-name">Core services</span><span class="st-days">30–35 days</span></li>
-            <li><span class="st-ix">3</span><span class="st-name">Interior build-out</span><span class="st-days">30–40 days</span></li>
-            <li><span class="st-ix">4</span><span class="st-name">Finishing</span><span class="st-days">18–30 days</span></li>
-            <li><span class="st-ix">5</span><span class="st-name">Handover</span><span class="st-days">5–15 days</span></li>
-          </ol>
-          <div class="tl-rule" aria-hidden="true"><div class="folio-rule" style="position:relative; width:100%;"><span class="tr-lab">90–120 days, site to keys</span></div></div>
+          <div class="lane" style="--stops:5">
+            <span class="lane-spine" aria-hidden="true"></span>
+            <ol class="tl">
+              <li><span class="st-dot" aria-hidden="true"></span><span class="st-ix">01</span><span class="st-name">Mobilization</span><span class="st-days">7–10 days</span></li>
+              <li><span class="st-dot" aria-hidden="true"></span><span class="st-ix">02</span><span class="st-name">Core services</span><span class="st-days">30–35 days</span></li>
+              <li><span class="st-dot" aria-hidden="true"></span><span class="st-ix">03</span><span class="st-name">Interior build-out</span><span class="st-days">30–40 days</span></li>
+              <li><span class="st-dot" aria-hidden="true"></span><span class="st-ix">04</span><span class="st-name">Finishing</span><span class="st-days">18–30 days</span></li>
+              <li class="is-end"><span class="st-dot" aria-hidden="true"></span><span class="st-ix">05</span><span class="st-name">Handover</span><span class="st-days">5–15 days</span></li>
+            </ol>
+          </div>
+          <div class="tl-rule" aria-hidden="true"><div class="folio-rule" style="position:relative; width:100%;"><span class="tr-lab">90–120 days, site to keys → the handover</span></div></div>
         </div>
 
         <p class="sub rv">Phases overlap — approvals and procurement run while design details. Door to door: 75–90 days.</p>
@@ -1544,12 +1617,7 @@
       </div>
     </section>
 
-    <!-- TRANSPARENCY (the render→reality proof) — transparent runway over the fixed
-         full-bleed proof stage. This is the second half of Engagement & Transparency:
-         the photograph held up against the approved render. -->
-    <section class="plate-run plate-run--proof" data-chapter="proof" id="runProof">
-      <h2 class="sr-only">Transparency — a 95% match between the render approved and the space photographed as built. Open office and board room, render versus as-built photograph.</h2>
-    </section>
+    <!-- (open office / proof runway moved up to 03c, ahead of Engagement) -->
 
     <!-- THE HANDOVER (V7 §1.5) — transparent runway over the fixed full-bleed
          Odyssey interior plate, with the resonant handover line. -->
@@ -1566,40 +1634,14 @@
          Preserved per the engine contract. No homepage control opens it in V7 (the
          flux all-projects grid was removed); the lightbox JS early-returns when it
          finds no [data-gallery] openers, so this is inert but intact. -->
-    <!-- LIGHTBOX MARKUP -->
-    <div class="lb" id="lightbox" hidden>
-      <div class="lb-ov" id="lbOv"></div>
-      <div class="lb-panel" role="dialog" aria-modal="true" aria-labelledby="lbTitle" tabindex="-1">
-        <div class="lb-head">
-          <svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>
-          <h3 class="lb-title" id="lbTitle"><span id="lbName"></span><span class="lb-sub" id="lbSub"></span></h3>
-          <button type="button" class="lb-x" id="lbX" aria-label="Close gallery">×</button>
-        </div>
-        <div class="lb-stage">
-          <button type="button" class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous image">‹</button>
-          <figure class="lb-fig"><picture><source id="lbSrc" type="image/webp"><img id="lbImg" alt="" /></picture></figure>
-          <button type="button" class="lb-arrow lb-next" id="lbNext" aria-label="Next image">›</button>
-        </div>
-        <div class="lb-foot">
-          <p class="lb-cap" id="lbCap" aria-live="polite"></p>
-          <span class="lb-counter" id="lbCounter"></span>
-          <div class="lb-dots" id="lbDots" role="group" aria-label="Gallery images"></div>
-        </div>
-      </div>
-    </div>
-
     <!-- ============ 06 — TESTIMONIALS (NEW, V7 §1.6) ============
          Five REAL verbatim quotes from buildhive.co.in — wording is NOT altered.
          Mahesh Madgavkar / ACG named; ACG as an organisation; the three unnamed
          quotes attributed honestly as "Client" (they are unnamed on the source).
          Tasteful gallery layout, cyan accents, polished in both themes. -->
     <section class="panel" data-chapter="testimonials">
-      <div class="backdrop" aria-hidden="true">
-        <picture>
-          <source srcset="img/novatr-tower-night.webp" type="image/webp">
-          <img src="img/novatr-tower-night.jpg" alt="" loading="lazy" />
-        </picture>
-      </div>
+      <!-- V8 §9 — no-repeat: the night-tower backdrop is dropped (it echoed the hero);
+           the chapter rides its themed paper + the cyan-accented quote cards. -->
       <div class="wrap">
         <div class="chap-head rv"><p class="kicker"><span class="pm-rule"></span>06 — In Their Words</p></div>
         <h2 class="lede rv"><span class="line"><span class="line-inner">What the people we</span></span><span class="line"><span class="line-inner"><em>handed over to say.</em></span></span></h2>
@@ -1674,6 +1716,31 @@
 
   </div></div>
 
+  <!-- LIGHTBOX (moved outside #content so position:fixed is viewport-relative, not
+       caught by the virtual-scroll transform) -->
+    <!-- LIGHTBOX MARKUP -->
+    <div class="lb" id="lightbox" hidden>
+      <div class="lb-ov" id="lbOv"></div>
+      <div class="lb-panel" role="dialog" aria-modal="true" aria-labelledby="lbTitle" tabindex="-1">
+        <div class="lb-head">
+          <svg class="hive-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/></svg>
+          <h3 class="lb-title" id="lbTitle"><span id="lbName"></span><span class="lb-sub" id="lbSub"></span></h3>
+          <button type="button" class="lb-x" id="lbX" aria-label="Close gallery">×</button>
+        </div>
+        <p class="lb-desc" id="lbDesc"></p>
+        <div class="lb-stage">
+          <button type="button" class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous image">‹</button>
+          <figure class="lb-fig"><picture><source id="lbSrc" type="image/webp"><img id="lbImg" alt="" /></picture></figure>
+          <button type="button" class="lb-arrow lb-next" id="lbNext" aria-label="Next image">›</button>
+        </div>
+        <div class="lb-foot">
+          <p class="lb-cap" id="lbCap" aria-live="polite"></p>
+          <span class="lb-counter" id="lbCounter"></span>
+          <div class="lb-dots" id="lbDots" role="group" aria-label="Gallery images"></div>
+        </div>
+      </div>
+    </div>
+
   <!-- ============ PROOF STAGE — fixed full-bleed render -> as-built reveal ============
        Sits after #scroll (same z-index) so the drag handle is hit-testable above the
        transparent proof runway. Driven by the proof chapter's progress; identical in
@@ -1688,7 +1755,7 @@
     </div>
 
     <!-- comparison beat I: open office -->
-    <div class="pf-beat pf-cmp" data-w="0.26,0.63">
+    <div class="pf-beat pf-cmp" data-w="0.26,1">
       <picture>
         <source srcset="img/open-office-render.webp" type="image/webp">
         <img src="img/open-office-render.jpg" loading="lazy"
@@ -1715,89 +1782,14 @@
       </div>
     </div>
 
-    <!-- comparison beat II: board room -->
-    <div class="pf-beat pf-cmp" data-w="0.63,1">
-      <picture>
-        <source srcset="img/boardroom-render.webp" type="image/webp">
-        <img src="img/boardroom-render.jpg" loading="lazy"
-             alt="Board room render — conference table, panelling and lighting as visualized before construction" />
-      </picture>
-      <div class="pf-top" aria-hidden="true">
-        <picture>
-          <source srcset="img/boardroom-actual.webp" type="image/webp">
-          <img src="img/boardroom-actual.jpg" loading="lazy" alt="" />
-        </picture>
-      </div>
-      <div class="pf-line" aria-hidden="true"><span class="pf-tk pf-tk-t"></span><span class="pf-tk pf-tk-b"></span></div>
-      <span class="pf-lab pf-lab-l pf-ui" aria-hidden="true">Render</span>
-      <span class="pf-lab pf-lab-r pf-ui" aria-hidden="true">As Built</span>
-      <div class="pf-cap pf-ui"><span class="pc-name">Board room</span><span class="pc-sub">render / as built · the same frame</span></div>
-      <div class="pf-handle" role="slider" tabindex="0" aria-hidden="true" aria-orientation="horizontal"
-           aria-label="Comparison line, board room: render versus as-built photograph"
-           aria-valuemin="0" aria-valuemax="100" aria-valuenow="88" aria-valuetext="88% render">
-        <span class="pf-grip" aria-hidden="true">
-          <svg class="hive-mark" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true" focusable="false">
-            <path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/>
-          </svg>
-        </span>
-      </div>
-    </div>
-
+    <!-- V9 §: board room comparison deleted; open office is the single proof -->
     <span class="plate-corner pc-tl" aria-hidden="true"></span>
     <span class="plate-corner pc-tr" aria-hidden="true"></span>
     <span class="plate-corner pc-bl" aria-hidden="true"></span>
     <span class="plate-corner pc-br" aria-hidden="true"></span>
   </div>
 
-  <!-- ============ METHOD MODALS — one dialog, three contents (method-modals.md, verbatim) ============ -->
-  <div class="modal" id="modal" hidden>
-    <div class="modal-ov" id="modalOv"></div>
-    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
-      <div class="modal-head">
-        <svg class="hive-mark" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true" focusable="false">
-          <path d="M4 1.4H8.8A2.6 2.6 0 0 1 11.4 4V10.4A1 1 0 0 1 10.4 11.4H4A2.6 2.6 0 0 1 1.4 8.8V4A2.6 2.6 0 0 1 4 1.4Z M15.2 1.4H20A2.6 2.6 0 0 1 22.6 4V8.8A2.6 2.6 0 0 1 20 11.4H13.6A1 1 0 0 1 12.6 10.4V4A2.6 2.6 0 0 1 15.2 1.4Z M4 12.6H10.4A1 1 0 0 1 11.4 13.6V20A2.6 2.6 0 0 1 8.8 22.6H4A2.6 2.6 0 0 1 1.4 20V15.2A2.6 2.6 0 0 1 4 12.6Z M13.6 12.6H20A2.6 2.6 0 0 1 22.6 15.2V20A2.6 2.6 0 0 1 20 22.6H15.2A2.6 2.6 0 0 1 12.6 20V13.6A1 1 0 0 1 13.6 12.6Z"/>
-        </svg>
-        <h3 class="modal-title" id="modalTitle"></h3>
-        <button type="button" class="modal-x" id="modalX" aria-label="Close dialog">×</button>
-      </div>
-      <div class="modal-body" id="modalBody"></div>
-    </div>
-  </div>
-
-  <template id="tplModal0" data-title="Designed in Modules">
-    <p>A floor is not one decision. It is hundreds, repeated.</p>
-    <p>We resolve them once. A floor decomposes into a small set of workplace modules — a desk cluster, a meeting room, a corridor run — designed to a fixed standard, then replicated across the plate. Each repeat reuses a settled detail, so the decision count collapses and the schedule holds. Fewer unique parts means fewer things to draw, price, procure, and check.</p>
-    <p>Repetition also disciplines the services. Intelligent zoning and load balancing size the cooling to the way the floor actually works, rather than to a worst-case guess. A 100,000 sqft office carries roughly 400 TR of air-conditioning load; zoning that load module by module is where the operating cost comes down — and where the energy targets are met without compromise.</p>
-    <p>The module is the unit. The building is the count.</p>
-    <dl class="modal-spec">
-      <div><dt>AC load, 100,000 sqft</dt><dd>~400 TR</dd></div>
-      <div><dt>Cooling sized by</dt><dd>intelligent zoning + load balancing</dd></div>
-      <div><dt>Repeating unit</dt><dd>desk cluster · meeting room · corridor</dd></div>
-    </dl>
-  </template>
-
-  <template id="tplModal1" data-title="Built Twice">
-    <p>We build the project twice. First in the model, then on site.</p>
-    <p>In the model, every discipline — architecture, structure, MEP, interiors — occupies the same coordinated space. A duct that wants the path of a beam shows up as a clash on screen, where it costs a redraw. So clashes die on the screen, not on site, where they cost a week. The bill of quantities is extracted straight from the model, so what is priced is what is drawn. 4D scheduling ties the geometry to the calendar, so the sequence is tested before anyone mobilises.</p>
-    <p>Through the build, 24/7 live HD cameras keep the site visible from anywhere. At handover the model is updated to as-built, so you receive the building — and its model: a single source of truth that outlasts the keys.</p>
-    <dl class="modal-spec">
-      <div><dt>Coordination</dt><dd>clashes resolved in model, pre-site</dd></div>
-      <div><dt>BOQ</dt><dd>extracted from the model</dd></div>
-      <div><dt>Handover</dt><dd>as-built model + 24/7 live cameras</dd></div>
-    </dl>
-  </template>
-
-  <template id="tplModal2" data-title="Mapped First">
-    <p>Before a single workstation is placed, we map the floor.</p>
-    <p>Geopathic stress is the term for natural distortions in the earth's energy field — caused by underground water streams, geological faults, and the Hartmann and Curry grid lines that cross the ground. These zones are not confined to the basement. They rise through a building up to roughly 1,000 ft, and along their lines people report weaker concentration and slower decisions.</p>
-    <p>So the mapping comes first — before space planning, not after. Stress lines, water veins, and fault zones are identified and documented, and the work that needs the clearest heads — leadership, finance — is positioned off those lines. Vastu alignment is read on the same map.</p>
-    <p>The correction is made once, during fitout, before the walls close. Done once, it is permanent and needs no structural rework afterward. Quiet engineering, applied to where people sit.</p>
-    <dl class="modal-spec">
-      <div><dt>Vertical reach of stress zones</dt><dd>~1,000 ft</dd></div>
-      <div><dt>Sources mapped</dt><dd>water streams · fault lines · Hartmann/Curry grids</dd></div>
-      <div><dt>Correction</dt><dd>at fitout, once · zero structural rework</dd></div>
-    </dl>
-  </template>
+  <!-- V8 §6 — method modals removed; the three method cards now carry their content inline. -->
 
 <script>
 (function(){
@@ -1811,6 +1803,27 @@
   var bar        = document.getElementById('progress');
   var cue        = document.getElementById('cue');
   var sceneEls   = Array.prototype.slice.call(document.querySelectorAll('#scenes button'));
+  /* V9 — 11 chapters [hero,about,cadence,urna,amodaa,works,proof,engage,handover,
+     testimonials,contact] collapse to 8 nav beats. Projects covers the 3 plates + the
+     dive-in grid (4 sub-dots); Transparency = the open-office proof. */
+  var BTN_FOR_CHAP = [0,1,2,2,2,2,3,4,5,6,7];   // chapter index -> nav button index
+  var CHAP_FOR_BTN = [0,1,2,6,7,8,9,10];         // nav button index -> first chapter it jumps to
+  var PROJ_SUB     = { 2:0, 3:1, 4:2, 5:3 };     // cadence/urna/amodaa/works -> projects sub-dot
+  var CUE_NEXT     = ['About','Select Projects','Transparency','How we engage','The Handover','In their words','Contact'];
+  var nextcue  = document.getElementById('nextcue');
+  var ncName   = nextcue ? nextcue.querySelector('.nc-name') : null;
+  var projBtn  = sceneEls[2] || null;
+  var projDots = projBtn ? projBtn.querySelectorAll('.subdots i') : [];
+  function updateNextCue(bIdx, ch, probe){
+    if(!nextcue) return;
+    if(bIdx >= CUE_NEXT.length || !ch[CHAP_FOR_BTN[bIdx + 1]]){ nextcue.classList.remove('show'); return; }
+    var beatStart = ch[CHAP_FOR_BTN[bIdx]] ? ch[CHAP_FOR_BTN[bIdx]].top : 0;
+    var beatEnd   = ch[CHAP_FOR_BTN[bIdx + 1]].top;
+    var bp = (probe - beatStart) / Math.max(1, beatEnd - beatStart);
+    var show = bp > 0.8 && bp < 1.04 && smoothY > 60;
+    if(show && ncName && ncName.textContent !== CUE_NEXT[bIdx]) ncName.textContent = CUE_NEXT[bIdx];
+    nextcue.classList.toggle('show', show);
+  }
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var coarse = window.matchMedia('(pointer: coarse)').matches;
@@ -2081,10 +2094,17 @@
     // 3) whole-page progress bar
     bar.style.transform = 'scaleX(' + pageP + ')';
 
-    // 4) active chapter tick
+    // 4) active beat tick — 10 chapters map to 7 nav buttons; projects grouped
     var probe = smoothY + vh * 0.55, idx = 0, ch = S.chapters;
     for(var i = 0; i < ch.length; i++){ if(probe >= ch[i].top) idx = i; }
-    for(var k = 0; k < sceneEls.length; k++){ sceneEls[k].classList.toggle('on', k === idx); }
+    var bIdx = BTN_FOR_CHAP[idx] != null ? BTN_FOR_CHAP[idx] : 0;
+    for(var k = 0; k < sceneEls.length; k++){ sceneEls[k].classList.toggle('on', k === bIdx); }
+    if(projBtn){
+      var sub = PROJ_SUB[idx];
+      projBtn.classList.toggle('show-sub', sub != null);
+      if(sub != null){ for(var d = 0; d < projDots.length; d++){ projDots[d].classList.toggle('on', d === sub); } }
+    }
+    updateNextCue(bIdx, ch, probe);
 
     // 5) proof stage: beats, drafting-line sweep (until the user takes over)
     photoCover = 0;
@@ -2195,121 +2215,15 @@
   sceneEls.forEach(function(btn, i){
     btn.addEventListener('click', function(){
       var ch = window.__scrollState.chapters;
-      if(!ch || !ch[i]) return;    // pre-measure safety: no chapters, no jump
-      jumpTo(ch[i].top);
+      var ci = CHAP_FOR_BTN[i];          // each beat jumps to its first chapter
+      if(!ch || ci == null || !ch[ci]) return;
+      jumpTo(ch[ci].top);
     });
   });
 
-  /* ---------- method modals: one dialog, three contents ----------
-     Scroll lock x virtual scroll: the engine reads window scroll into targetY and
-     moves #content by transform — locking is therefore two-sided. (1) html gets
-     overflow:hidden, so the browser stops scrolling at the source (wheel, touch,
-     keys, scrollbar). (2) modalLock makes onScroll ignore any stray scroll event
-     (the scrollbar-removal reflow, browser restorations), so targetY never moves,
-     smoothY converges and the rAF tick idles stable underneath the dialog. On
-     close the saved offset is re-asserted BEFORE the engine listens again, so
-     there is no jump in either browser behavior. */
-  (function(){
-    var modal = document.getElementById('modal');
-    if(!modal) return;
-    var panel = modal.querySelector('.modal-panel');
-    var title = document.getElementById('modalTitle');
-    var body  = document.getElementById('modalBody');
-    var xBtn  = document.getElementById('modalX');
-    var ov    = document.getElementById('modalOv');
-    var cards = Array.prototype.slice.call(document.querySelectorAll('.cards .card[data-modal]'));
-    var lastFocus = null, savedY = 0, openIdx = -1;
-
-    /* 3D morph hook — the module script lerps toward this each frame.
-       0 = resting grid, 1..3 = that pillar's story. Never set under reduced
-       motion (3D is also hard-gated off there). */
-    window.__morphTarget = 0;
-    var finePointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-    function setMorph(n){ if(!reduce) window.__morphTarget = n; }
-    function hoverMorph(){           // after close: restore whatever is hovered/focused
-      var n = 0;
-      for(var i = 0; i < cards.length; i++){
-        try{ if(cards[i].matches(':hover') || cards[i] === document.activeElement) n = i + 1; }catch(_){}
-      }
-      setMorph(n);
-    }
-
-    function lock(){
-      savedY = window.scrollY || window.pageYOffset || 0;
-      modalLock = true;
-      document.documentElement.classList.add('modal-open');
-    }
-    function unlock(){
-      document.documentElement.classList.remove('modal-open');
-      window.scrollTo(0, savedY);
-      targetY = savedY;
-      modalLock = false;
-    }
-
-    function focusables(){
-      return Array.prototype.filter.call(
-        panel.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])'),
-        function(el){ return el.offsetParent !== null; });
-    }
-    function onKey(e){
-      if(e.key === 'Escape'){ e.preventDefault(); close(); return; }
-      if(e.key !== 'Tab') return;
-      var f = focusables();
-      if(!f.length){ e.preventDefault(); return; }
-      var first = f[0], last = f[f.length - 1];
-      // focus starts on the panel itself (tabindex=-1, outside the cycle):
-      // route the first Tab in either direction into the cycle, never out of it
-      if(f.indexOf(document.activeElement) === -1){
-        e.preventDefault(); (e.shiftKey ? last : first).focus(); return;
-      }
-      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
-    }
-    function open(idx){
-      var tpl = document.getElementById('tplModal' + idx);
-      if(!tpl || !('content' in tpl)) return;
-      // symmetric guard (mirrors the lightbox's `if(!lb.hidden) return`): never
-      // open over a dialog already holding the shared scroll-lock, so the two
-      // never both clear modalLock / html.modal-open out from under each other.
-      if(document.documentElement.classList.contains('modal-open')) return;
-      openIdx = idx;
-      title.textContent = tpl.getAttribute('data-title') || '';
-      body.innerHTML = '';
-      body.appendChild(tpl.content.cloneNode(true));
-      lastFocus = document.activeElement;
-      lock();
-      modal.hidden = false;
-      void modal.offsetWidth;        // commit display before the entrance transition
-      modal.classList.add('open');
-      document.addEventListener('keydown', onKey, true);
-      setMorph(idx + 1);             // touch / no-hover path: the story plays while open
-      panel.focus();                 // the panel scrolls — focusing it keeps arrow keys
-                                     // working when the spec body overflows max-height
-    }
-    function close(){
-      if(modal.hidden) return;
-      modal.classList.remove('open');
-      modal.hidden = true;
-      document.removeEventListener('keydown', onKey, true);
-      unlock();
-      openIdx = -1;
-      if(lastFocus && lastFocus.focus) lastFocus.focus();
-      lastFocus = null;
-      hoverMorph();
-    }
-    ov.addEventListener('click', close);
-    xBtn.addEventListener('click', close);
-    cards.forEach(function(card, i){
-      card.addEventListener('click', function(){ open(i); });
-      // 3D hover morphs: fine-pointer hover + keyboard focus tell each pillar's story
-      if(finePointer){
-        card.addEventListener('mouseenter', function(){ if(openIdx < 0) setMorph(i + 1); });
-        card.addEventListener('mouseleave', function(){ if(openIdx < 0) setMorph(0); });
-      }
-      card.addEventListener('focus', function(){ if(openIdx < 0) setMorph(i + 1); });
-      card.addEventListener('blur',  function(){ if(openIdx < 0) setMorph(0); });
-    });
-  })();
+  /* V8 §6 — method modals removed. The three method cards are now static, inline
+     content (no dialog, no scroll-lock, no 3D morph hook). modalLock stays defined
+     above and simply never flips true. */
 
   /* ---------- gallery lightbox: a SECOND accessible dialog ----------
      Carousel over each project's images. It REUSES the method modal's a11y
@@ -2342,47 +2256,57 @@
     /* captions trimmed from v5-image-manifest.md; concept projects carry their
        honesty tag in the project sub-line (never imply built). */
     var GALLERY = {
-      urna: { name:'urna', sub:'by Sanjay Mittal · Residential tower, Versova · Concept · in design development', imgs:[
+      urna: { name:'urna', sub:'by Sanjay Mittal · Residential tower, Versova · Concept · in design development',
+        desc:'A green-clad residential tower rising from a perforated-brick podium in parkland — designed for a dense Mumbai envelope, yet read at the scale of a city block. Renders are design-stage visualizations, not photographs of built work.', imgs:[
         { s:'urna-real-01', cap:'Golden-hour establishing render — the full tower in parkland.' },
         { s:'urna-real-02', cap:'Upward view — the perforated brick podium meeting the green-clad tower.' },
         { s:'urna-real-03', cap:'Street-context at dusk — the tower over its green podium, city edge behind.' } ] },
-      cadence: { name:'Cadence', sub:'Faceted glass office tower · Concept · in design development', imgs:[
+      cadence: { name:'Cadence', sub:'Faceted glass office tower · Concept · in design development',
+        desc:'A twisted, faceted glass office tower studied across weather and light — overcast, twilight, rain and clear day. A concept visualization in design development; no location or area is fixed.', imgs:[
         { s:'proj-cadence-01', cap:'The twisted glass tower under an overcast sky, wet street below.' },
         { s:'proj-cadence-02', cap:'Twilight — a glowing lobby at the base, yellow cabs at the kerb.' },
         { s:'proj-cadence-03', cap:'Aerial — the tower at the centre of a public plaza.' },
         { s:'proj-cadence-04', cap:'Rainy night — lit windows, a long-exposure street.' },
         { s:'proj-cadence-05', cap:'Upward atrium glow — faceted glass converging over a warm-lit interior.' },
         { s:'proj-cadence-06', cap:'The hourglass base and glazed entrance by day.' } ] },
-      amodaa: { name:'AMODAA', sub:'Bungalow · Lonavala · Built work', imgs:[
+      amodaa: { name:'AMODAA', sub:'Bungalow · Lonavala · Built work',
+        desc:'A built hill-station bungalow at Lonavala — a lit three-storey facade behind a perforated-metal screen, a double-height living room within, and a rooftop terrace over the hills.', imgs:[
         { s:'proj-amoda-01', cap:'Dusk exterior — the lit three-storey facade behind a perforated-metal screen.' },
         { s:'proj-amoda-02', cap:'Double-height living room, tan leather seating.' },
         { s:'proj-amoda-03', cap:'The same living room seen vertically — the full double-height sweep.' },
         { s:'proj-amoda-04', cap:'Rooftop terrace at sunset, the city and hills beyond.' } ] },
-      mpavilion: { name:'M Pavilion', sub:'Parametric pavilion · BuildHive concept study', imgs:[
+      mpavilion: { name:'M Pavilion', sub:'Parametric pavilion · BuildHive concept study',
+        desc:'A parametric lattice pavilion studied top-down, at eye level and lit at night — a BuildHive concept study exploring a freeform structural skin at a civic scale.', imgs:[
         { s:'proj-mpavilion-01', cap:'Top-down view of the parametric lattice pavilion beside an autumn tree.' },
         { s:'proj-mpavilion-02', cap:'Golden-hour, eye-level — people walking through the lattice.' },
         { s:'proj-mpavilion-03', cap:'Night — the illuminated lattice glowing against the skyline.' } ] },
-      ubp: { name:'UBP', sub:'Office tower · Concept · in design development', imgs:[
+      ubp: { name:'UBP', sub:'Office tower · Concept · in design development',
+        desc:'A terraced glass office tower with stepped cantilevers and a lit ground-floor lobby, shown at dusk. A design-stage concept.', imgs:[
         { s:'proj-ubp-01', cap:'Dusk — a terraced glass office tower with stepped cantilevers and a lit lobby.' } ] },
-      acg: { name:'ACG', sub:'Workplace · Kandivali · 8,500 sqft · 90 days · 2025', imgs:[
+      acg: { name:'ACG', sub:'Corporate office · Kandivali · 8,500 sqft · 90 days · 2025',
+        desc:'A contemporary work environment balancing functionality with refined aesthetics — a modern reception, open workstations and geometric ceiling elements in warm material finishes. Handed over in 90 days.', imgs:[
         { s:'proj-acg-kandivali-01', cap:'Hexagonal-ceiling open office, symmetric.' },
         { s:'proj-acg-kandivali-02', cap:'Reception — a curved desk, marble floor and an accent chair.' },
         { s:'proj-acg-kandivali-03', cap:'Breakout lounge — colourful carpet tiles and an autumn mural.' },
         { s:'proj-acg-kandivali-04', cap:'Open office, wide angle, glass partitions.' } ] },
-      astaguru: { name:'AstaGuru', sub:'Workplace · Fort, Mumbai · 9,000 sqft · 90 days · 2025', imgs:[
+      astaguru: { name:'AstaGuru', sub:'Corporate office · Fort, Mumbai · 9,000 sqft · 90 days · 2025',
+        desc:'A refined corporate environment in the historic Fort district of Mumbai — neutral greys, warm wood finishes and subtle accents create a sophisticated workspace with functional efficiency. Handed over in 90 days.', imgs:[
         { s:'proj-astaguru-fort-01', cap:'Double-height open office — a circular ceiling feature over a mezzanine and stair.' },
         { s:'proj-astaguru-fort-02', cap:'Branded reception — herringbone floor and lounge chairs.' },
         { s:'proj-astaguru-fort-03', cap:'The wider lobby and cabin corridor.' },
         { s:'proj-astaguru-fort-04', cap:'Boardroom — circular ceiling pendants and a line-art wall.' } ] },
-      bsm: { name:'BSM', sub:'Workplace · Olympia, Powai · 20,000 sqft · 90 days · 2022', imgs:[
+      bsm: { name:'BSM', sub:'Corporate office · Olympia, Powai · 20,000 sqft · 90 days · 2022',
+        desc:'A 20,000 sqft workplace built for clarity, organization and functional efficiency — neutral tones with warm wood accents, glass partitions keeping the floor open, and fluted panels adding depth and character. Handed over in 90 days.', imgs:[
         { s:'proj-bsm-olympia-01', cap:'Training room — symmetric geometric wood-panel feature walls.' },
         { s:'proj-bsm-olympia-02', cap:'Branded open office with a gold-trim glass railing.' },
         { s:'proj-bsm-olympia-03', cap:'A bright, glass-walled meeting room.' } ] },
-      odyssey: { name:'Odyssey', sub:'Residence · Built work', imgs:[
+      odyssey: { name:'Odyssey', sub:'Residence · Built work',
+        desc:'A built residence — a chandelier-lit living room over a marble floor with a mountain view, a formal dining room, and a marble-waterfall kitchen looking out over the city.', imgs:[
         { s:'proj-odyssey-01', cap:'Luxe living room — a chandelier, marble floor and a mountain view.' },
         { s:'proj-odyssey-02', cap:'Formal dining under a statement chandelier.' },
         { s:'proj-odyssey-03', cap:'Kitchen — a marble waterfall island with a city view.' } ] },
-      clifton: { name:'Clifton', sub:'Residence · Built work', imgs:[
+      clifton: { name:'Clifton', sub:'Residence · Built work',
+        desc:'A built apartment — a living room with mustard sofas, a green glass partition and a slatted TV wall; a bedroom behind a bold floral feature wall; and a dark-grey modular kitchen under copper pendants.', imgs:[
         { s:'proj-clifton-01', cap:'Living room — mustard sofas, a green glass partition and a slatted TV wall.' },
         { s:'proj-clifton-02', cap:'Bedroom — a bold floral feature wall, mirrored wardrobe and balcony view.' },
         { s:'proj-clifton-03', cap:'A dark-grey modular kitchen with copper pendants.' } ] }
@@ -2465,6 +2389,8 @@
       cur = data; idx = 0;
       nameEl.textContent = data.name;
       subEl.textContent = data.sub;
+      var descEl = document.getElementById('lbDesc');
+      if(descEl) descEl.textContent = data.desc || '';
       buildDots();
       render();
       lastFocus = opener || document.activeElement;
@@ -2820,7 +2746,7 @@ async function boot3d(){
     return st;
   }
 
-  const heroPlane = makeShaderPlane('img/urna-real-01.webp', 8.5, 0, 0.05, 0, 0,
+  const heroPlane = makeShaderPlane('img/hero-tower-night.webp', 8.5, 0, 0.05, 0, 0,
                                     HERO_FRAG, { uStage: { value: 0 }, uTheme: { value: 0 } });
 
   function applyHero(st, stage, win, dt, t){
@@ -2828,7 +2754,8 @@ async function boot3d(){
     const o = st.fade * win;
     st.mesh.visible = o > 0.002;
     if (!st.mesh.visible) return;
-    st.mesh.position.y = st.baseY + Math.sin(t * 0.40 + st.phase) * 0.015;   // idle float, quieted
+    // V8 §2: position/scale are driven by the screen-lock in tick() (gentle drift,
+    // no push-through). applyHero only owns the fade + shader resolve.
     st.mat.uniforms.uStage.value = stage;
     st.mat.uniforms.uOpacity.value = o;
     st.frameMat.opacity = o * 0.55;
@@ -3238,9 +3165,8 @@ async function boot3d(){
     /* engage merges Method + Proof: the modular assembly (GRID_C.z = -14) and the
        day gates (z -13.4 .. -17.4) are flown while the timeline DOM is on screen */
     engage:  { p: [0.7, 1.6, -9.4],   l: [0, -0.5, -14] },
-    /* proof is a DOM bed: a straight quiet drift that still carries the camera
-       through the last day gates */
-    proof:   { p: [0, 0.4, -16.2],    l: [0, 0.05, -20.6] },
+    /* V9 — proof/works/handover are DOM beds with no camera keyframe (the canvas
+       drifts behind); the path interpolates about -> engage -> contact monotonically. */
     contact: { p: [0, 0.9, -33],      l: [0, 1.8, -37] }
   };
   const END_POSE = { p: [0, 1.9, -34.5], l: [0, 4.6, -39] };   // gentle upward tilt out
@@ -3299,7 +3225,8 @@ async function boot3d(){
 
   /* ---------- per-frame tick ---------- */
   const clock = new THREE.Clock();
-  const _pos = new THREE.Vector3(), _look = new THREE.Vector3();
+  const _pos = new THREE.Vector3(), _look = new THREE.Vector3(), _fwd = new THREE.Vector3();
+  const HERO_BASE_W = 8.5, HERO_BASE_H = 8.5 * 1536 / 2752;   // hero plate natural size (16:9 bed)
 
   function tick(){
     requestAnimationFrame(tick);
@@ -3333,6 +3260,19 @@ async function boot3d(){
     const heroStage = clamp01((S.heroP - 0.12) / 0.62);
     const heroWin = 1 - clamp01((S.smoothY - heroRun * 0.92) / (vh * 0.55));
     applyHero(heroPlane, heroStage, heroWin, dt, t);
+    /* V8 §2 — gentle drift, not a push-through: lock the hero plate a fixed distance
+       in front of the camera so it never gets dollied through; a ≤4% scale drift +
+       a sliver of parallax sway give it life, then it dissolves (heroWin) before the
+       city. (3D-only path; reduced-motion never boots this module.) */
+    if (heroPlane.mesh.visible){
+      _fwd.copy(_look).sub(camera.position).normalize();
+      heroPlane.mesh.position.copy(camera.position).addScaledVector(_fwd, 6.2);
+      heroPlane.mesh.position.x += Math.sin(t * 0.22) * 0.05;
+      heroPlane.mesh.position.y += Math.sin(t * 0.17 + 1.3) * 0.04;
+      heroPlane.mesh.quaternion.copy(camera.quaternion);
+      const hd = 1 + heroStage * 0.04;
+      heroPlane.mesh.scale.set(HERO_BASE_W * hd, HERO_BASE_H * hd, 1);
+    }
 
     /* massing city scrubbed by ABOUT progress (the numbers sub-section sits mid-
        chapter): it rises as About opens and releases before About ends, so it is
